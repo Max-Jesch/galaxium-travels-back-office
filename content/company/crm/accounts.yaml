@@ -1,0 +1,13 @@
+# Corporate accounts. All companies are fictional.
+- {id: A-101, name: Helix Mining Cooperative, segment: Mining and Resources, home: Mars, contact: "Oksana Petrenko, Travel Manager"}
+- {id: A-102, name: Ceres Agritech, segment: Mining and Resources, home: Asteroid Belt, contact: "Luis Carvalho, Operations Director"}
+- {id: A-103, name: Tharsis Engineering, segment: Mining and Resources, home: Mars, contact: "Bao Nguyen, Procurement Lead"}
+- {id: A-104, name: Outer Belt Logistics, segment: Logistics, home: Jupiter, contact: "Imani Okeke, Head of Crew Planning"}
+- {id: A-105, name: Nimbus Freight, segment: Logistics, home: Earth, contact: "Peter Lindholm, Travel Buyer"}
+- {id: A-106, name: Europa Research Trust, segment: Research and Education, home: Europa, contact: "Dr. Selma Aydin, Programme Office"}
+- {id: A-107, name: Lunar Polytechnic Institute, segment: Research and Education, home: Moon, contact: "Jonas Weber, Finance Officer"}
+- {id: A-108, name: Aurora Biolabs, segment: Research and Education, home: Earth, contact: "Mei Sato, Lab Operations"}
+- {id: A-109, name: Red Sands Hospitality, segment: Hospitality and Media, home: Mars, contact: "Carla Mendes, Guest Travel"}
+- {id: A-110, name: Kepler Media Group, segment: Hospitality and Media, home: Earth, contact: "Arjun Desai, Production Travel"}
+- {id: A-111, name: Selene Resorts, segment: Hospitality and Media, home: Moon, contact: "Freya Nilsson, Partnerships"}
+- {id: A-112, name: Vesta Shipwrights, segment: Logistics, home: Asteroid Belt, contact: "Tariq Hassan, Yard Manager"}

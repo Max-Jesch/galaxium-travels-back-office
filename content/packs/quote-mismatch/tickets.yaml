@@ -1,0 +1,34 @@
+- id: GT-1011
+  title: Charged 5,000,000 after a quote of 550,000
+  status: waiting
+  priority: high
+  queue: support
+  requester: eve@marsmail.com
+  assignee: Kofi Mensah
+  created: 2026-10-28 09:35
+  related: booking 335, quote 5227
+  description: Eve booked Earth to Mars (flight 31, 3 December) in galaxium class. Quote 5227 shows 550,000. Booking 335 was charged 5,000,000. She asks for the charge to be corrected to the quoted price.
+  comments:
+    - {author: Kofi Mensah, date: 2026-10-28 09:41, text: Confirmed both amounts on the account. Waiting for finance.}
+- id: GT-1012
+  title: Economy to Mars charged 1,000,000, quote said 550,000
+  status: waiting
+  priority: normal
+  queue: support
+  requester: charlie@galaxium.com
+  assignee: Kofi Mensah
+  created: 2026-10-30 10:58
+  related: booking 309, quote 5188
+  description: Charlie booked Earth to Mars (flight 31) in economy on 22 October. Quoted 550,000, charged 1,000,000.
+  comments: []
+- id: GT-1013
+  title: Was I charged too little?
+  status: waiting
+  priority: low
+  queue: support
+  requester: grace@jupiter.com
+  assignee: Kofi Mensah
+  created: 2026-10-30 15:12
+  related: booking 338, quote 5231
+  description: Grace booked Earth to Mars (flight 31) in business. Quoted 2,750,000, charged 2,500,000. She asks whether a further charge will follow.
+  comments: []

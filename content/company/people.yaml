@@ -1,0 +1,13 @@
+# The fixed cast. Mail addresses use the reserved .example domain.
+- {id: ingrid.solberg, name: Ingrid Solberg, role: Finance Director, department: Finance, email: ingrid.solberg@galaxium.example, also_reads: [finance@galaxium.example]}
+- {id: tomas.rivera, name: Tomás Rivera, role: Financial Analyst, department: Finance, email: tomas.rivera@galaxium.example, also_reads: [finance@galaxium.example]}
+- {id: amara.okafor, name: Amara Okafor, role: Head of Sales, department: Sales, email: amara.okafor@galaxium.example}
+- {id: dev.malhotra, name: Dev Malhotra, role: Account Executive, department: Sales, email: dev.malhotra@galaxium.example}
+- {id: lena.fischer, name: Lena Fischer, role: Account Executive, department: Sales, email: lena.fischer@galaxium.example}
+- {id: nadia.haddad, name: Nadia Haddad, role: Support Lead, department: Support, email: nadia.haddad@galaxium.example, also_reads: [support@galaxium.example]}
+- {id: kofi.mensah, name: Kofi Mensah, role: Support Agent, department: Support, email: kofi.mensah@galaxium.example, also_reads: [support@galaxium.example]}
+- {id: helena.vogt, name: Helena Vogt, role: General Counsel, department: Legal, email: helena.vogt@galaxium.example}
+- {id: sam.whitlock, name: Sam Whitlock, role: Contracts Manager, department: Legal, email: sam.whitlock@galaxium.example, also_reads: [legal@galaxium.example]}
+- {id: priya.raman, name: Priya Raman, role: Head of Flight Operations, department: Operations, email: priya.raman@galaxium.example}
+- {id: yuki.tanaka, name: Yuki Tanaka, role: Route Planner, department: Operations, email: yuki.tanaka@galaxium.example}
+- {id: marcus.lindqvist, name: Marcus Lindqvist, role: "Engineering Manager, Booking Platform", department: Engineering, email: marcus.lindqvist@galaxium.example}

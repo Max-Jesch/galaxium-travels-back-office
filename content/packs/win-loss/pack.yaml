@@ -1,0 +1,12 @@
+title: Third quarter win-loss
+department: Sales
+job: Decide and present
+persona: amara.okafor
+today: 2026-11-04
+summary: Why did sales win and lose the corporate deals of the third quarter? Analyse the CRM, check the tracker, build the deck for the leadership meeting.
+prompt: |
+  I need the win-loss review for the third quarter for the leadership meeting. Go through
+  the closed deals in the CRM and the call notes, and tell me our win rate, what we lose on
+  and to whom. Dev keeps a tracker spreadsheet in the drive; check whether it agrees with
+  the CRM. Then build a short deck on our template and post the headline numbers in #sales.
+  Show me where each number comes from.

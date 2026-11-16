@@ -1,0 +1,7 @@
+- {name: general, purpose: Company-wide announcements}
+- {name: ops-routes, purpose: Route planning and the Monday route review}
+- {name: finance, purpose: "Close, reporting and reconciliations"}
+- {name: sales, purpose: Corporate accounts and pipeline}
+- {name: support, purpose: Customer cases and escalations}
+- {name: legal, purpose: Contracts and vendor reviews}
+- {name: eng-booking, purpose: Booking platform and hold service}

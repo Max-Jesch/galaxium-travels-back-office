@@ -1,0 +1,8 @@
+# Which systems the agent may write to. Reading is always open.
+# The Permissions tab of the web view can override these until the next reset.
+write:
+  mail: true
+  chat: true
+  tickets: true
+  crm: true
+  drive: true

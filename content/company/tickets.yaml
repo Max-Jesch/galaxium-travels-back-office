@@ -1,0 +1,53 @@
+- id: GT-1001
+  title: Booking rejected, name does not match
+  status: resolved
+  priority: normal
+  queue: support
+  requester: frank@venusmail.com
+  assignee: Kofi Mensah
+  created: 2026-10-14 10:22
+  description: Frank tried to book Earth to Venus as "Franklin". The booking system rejects a booking when the name does not match the traveller on the account.
+  comments:
+    - {author: Kofi Mensah, date: 2026-10-14 11:05, text: Explained the rule. Customer rebooked as Frank.}
+- id: GT-1002
+  title: Seat hold expired while paying
+  status: resolved
+  priority: low
+  queue: support
+  requester: ivan@asteroidbelt.com
+  assignee: Kofi Mensah
+  created: 2026-10-19 17:48
+  description: Ivan's hold on Mars to Jupiter expired after 15 minutes while he was looking for his payment card. Seat was still free.
+  comments:
+    - {author: Kofi Mensah, date: 2026-10-19 18:02, text: Asked him to request a new quote and hold. Booked on the second try.}
+- id: GT-1003
+  title: Refund amount for a possible cancellation
+  status: open
+  priority: normal
+  queue: support
+  requester: heidi@europa.com
+  assignee: Kofi Mensah
+  created: 2026-11-04 08:28
+  description: Heidi wants to know what she gets back if she cancels her Europa trip. Needs the refund, fee and travel credit for her booking under the refund policy.
+  comments: []
+- id: GT-1004
+  title: "Issue 43: show refund preview before cancelling"
+  status: in_progress
+  priority: normal
+  queue: engineering
+  requester: Nadia Haddad
+  assignee: Marcus Lindqvist
+  created: 2026-10-06 09:40
+  description: Support asks for a preview of refund, cancellation fee and travel credit before a customer confirms a cancellation. Tracked as issue 43 in the booking repository.
+  comments:
+    - {author: Marcus Lindqvist, date: 2026-10-20 15:28, text: Planned for the next release.}
+- id: GT-1005
+  title: Passengers ask whether Jupiter to Europa connects to Europa to Earth
+  status: open
+  priority: low
+  queue: support
+  requester: Kofi Mensah
+  assignee: ""
+  created: 2026-11-03 11:35
+  description: Two travellers this week assumed the Europa legs connect. They do not. Forwarded to operations for the route review.
+  comments: []

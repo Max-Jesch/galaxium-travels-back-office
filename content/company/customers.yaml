@@ -1,0 +1,11 @@
+# The ten travellers from the galaxium-travels seed data, with the same user ids.
+- {id: 1, name: Alice, email: alice@example.com}
+- {id: 2, name: Bob, email: bob@example.com}
+- {id: 3, name: Charlie, email: charlie@galaxium.com}
+- {id: 4, name: Diana, email: diana@moonmail.com}
+- {id: 5, name: Eve, email: eve@marsmail.com}
+- {id: 6, name: Frank, email: frank@venusmail.com}
+- {id: 7, name: Grace, email: grace@jupiter.com}
+- {id: 8, name: Heidi, email: heidi@europa.com}
+- {id: 9, name: Ivan, email: ivan@asteroidbelt.com}
+- {id: 10, name: Judy, email: judy@pluto.com}

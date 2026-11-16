@@ -1,0 +1,12 @@
+title: The quote mismatch
+department: Finance
+job: Numbers work, then keep the records current
+persona: tomas.rivera
+today: 2026-11-04
+summary: Customers say they were charged a different price than they were quoted. Reconcile October's quotes against bookings, write the memo, hand the cause to engineering.
+prompt: |
+  Ingrid asked me to find out how big the quote problem is before the October close.
+  Compare last month's price quotes with what customers were actually charged, tell me
+  how many bookings are off and by how much, and what the cause is. Then draft the memo
+  for Ingrid in the drive, open a ticket for engineering, and post the headline in #finance.
+  Tell me which numbers you are unsure about.

@@ -1,0 +1,21 @@
+# Open pipeline. Closed deals from the third quarter live in the win-loss scenario pack.
+- id: D-2101
+  name: Europa Research Trust, Pluto field season 2027
+  account_id: A-106
+  owner: Lena Fischer
+  stage: proposal
+  amount: 38000000
+  close_date: 2026-12-15
+  next_step: Send revised proposal once a second monthly Pluto departure is confirmed or ruled out.
+  notes:
+    - {author: Lena Fischer, date: 2026-10-21, text: "Call with Dr. Aydin. They need two Pluto departures a month from March to June. One departure does not work for crew rotation."}
+- id: D-2102
+  name: Outer Belt Logistics, crew rotation renewal
+  account_id: A-104
+  owner: Dev Malhotra
+  stage: negotiation
+  amount: 52000000
+  close_date: 2026-11-28
+  next_step: Legal to return the redlined master agreement.
+  notes:
+    - {author: Dev Malhotra, date: 2026-10-29, text: "Imani wants holds extended beyond 15 minutes for group bookings. Told her I would ask engineering."}

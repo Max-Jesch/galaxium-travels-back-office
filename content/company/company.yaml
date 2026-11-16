@@ -1,0 +1,7 @@
+name: Galaxium Travels
+tagline: Interplanetary travel, booked like a train ticket.
+domain: galaxium.example
+# The story's date. Every mail, chat message and report is written relative to it.
+today: 2026-11-04
+# Whose desk the agent works at when no scenario pack says otherwise.
+persona: priya.raman

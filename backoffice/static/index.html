@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galaxium Back Office</title>
+<style>
+  :root {
+    --bg: #f6f5f1; --panel: #ffffff; --ink: #1c1b22; --muted: #6b6a75; --line: #e4e2da;
+    --accent: #4b3fd1; --accent-soft: #ecebfb; --new: #0a7d4f; --new-soft: #e2f5ec;
+    --warn: #b3261e; --warn-soft: #fbe9e7;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #15141a; --panel: #1e1d25; --ink: #eceaf2; --muted: #9c9aa8; --line: #32303c;
+      --accent: #a79cff; --accent-soft: #2b2850; --new: #5fd6a0; --new-soft: #17382b;
+      --warn: #ff8a80; --warn-soft: #452220; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 14px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--ink); }
+  header { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--panel); }
+  header h1 { font-size: 16px; margin: 0; letter-spacing: .01em; }
+  header .meta { color: var(--muted); font-size: 13px; }
+  header .spacer { flex: 1; }
+  select, button { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+  button:hover, select:hover { border-color: var(--accent); }
+  .layout { display: grid; grid-template-columns: 190px 1fr; min-height: calc(100vh - 54px); }
+  nav { border-right: 1px solid var(--line); padding: 12px 8px; }
+  nav a { display: flex; justify-content: space-between; padding: 7px 12px; border-radius: 6px; color: var(--ink); text-decoration: none; cursor: pointer; }
+  nav a.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  nav a span { color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
+  nav hr { border: 0; border-top: 1px solid var(--line); margin: 10px 4px; }
+  main { padding: 20px 24px; min-width: 0; }
+  h2 { font-size: 18px; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 16px; }
+  .split { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 16px; align-items: start; }
+  .list, .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+  .list > div { padding: 10px 14px; border-bottom: 1px solid var(--line); cursor: pointer; }
+  .list > div:last-child { border-bottom: 0; }
+  .list > div.on { background: var(--accent-soft); }
+  .list .t { font-weight: 600; overflow-wrap: anywhere; }
+  .list .s { color: var(--muted); font-size: 12.5px; }
+  .card { padding: 16px 18px; margin-bottom: 12px; overflow-wrap: anywhere; }
+  .card.new { border-color: var(--new); }
+  .card h3 { margin: 0 0 6px; font-size: 15px; }
+  .body { white-space: pre-wrap; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; vertical-align: 1px; }
+  .badge.new { background: var(--new-soft); color: var(--new); }
+  .badge.warn { background: var(--warn-soft); color: var(--warn); }
+  .badge.plain { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
+  .wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  tr:last-child td { border-bottom: 0; }
+  code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .msg { padding: 6px 0; border-bottom: 1px solid var(--line); }
+  .msg:last-child { border-bottom: 0; }
+  .msg b { margin-right: 6px; }
+  .empty { color: var(--muted); padding: 30px; text-align: center; }
+  a.file { color: var(--accent); }
+  @media (max-width: 760px) {
+    .layout { grid-template-columns: 1fr; }
+    nav { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); }
+    nav a { white-space: nowrap; gap: 6px; } nav hr { display: none; }
+    .split { grid-template-columns: 1fr; } main { padding: 16px; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Galaxium Back Office</h1>
+  <span class="meta" id="meta"></span>
+  <span class="spacer"></span>
+  <label class="meta">Scenario <select id="pack"></select></label>
+  <button id="reset" title="Throw away everything the agent wrote">Reset</button>
+</header>
+<div class="layout">
+  <nav id="nav"></nav>
+  <main id="main"><div class="empty">Loading…</div></main>
+</div>
+<script>
+const TABS = [
+  ["mail", "Mail"], ["chat", "Chat"], ["tickets", "Tickets"], ["crm", "CRM"], ["drive", "Drive"], ["bookings", "Bookings"],
+  null, ["activity", "Activity"], ["permissions", "Permissions"], ["check", "Presenter check"],
+];
+let S = null, raw = "", tab = location.hash.slice(1) || "mail", sel = {}, truth = null;
+const $ = (id) => document.getElementById(id);
+const esc = (v) => String(v ?? "").replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const num = (v) => Number(v).toLocaleString("en-US");
+const isNew = (x) => x.written ? '<span class="badge new">written by agent</span>' : "";
+const post = (url, body) => fetch(url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})}).then(load);
+
+async function load() {
+  const text = await (await fetch("/api/state")).text();
+  if (text === raw) return;
+  raw = text; S = JSON.parse(text); render();
+}
+
+function counts() {
+  return {mail: S.mail.length, chat: S.chat.length, tickets: S.tickets.length, crm: S.deals.length,
+          drive: S.drive.length, activity: S.audit.length};
+}
+
+function render() {
+  const c = counts();
+  $("meta").textContent = `Today is ${S.today} · Desk: ${S.persona.name}, ${S.persona.role}`;
+  $("pack").innerHTML = S.packs.map((p) => `<option value="${esc(p.id)}" ${p.id === S.pack.id ? "selected" : ""}>${esc(p.title)}</option>`).join("")
+    + `<option value="none" ${S.pack.id === "none" ? "selected" : ""}>Company only</option>`;
+  $("nav").innerHTML = TABS.map((t) => t ? `<a data-tab="${t[0]}" class="${t[0] === tab ? "on" : ""}">${t[1]}<span>${c[t[0]] ?? ""}</span></a>` : "<hr>").join("");
+  $("main").innerHTML = VIEWS[tab] ? VIEWS[tab]() : VIEWS.mail();
+}
+
+function splitView(key, items, title, subtitle, detail) {
+  if (!items.length) return '<div class="empty">Nothing here.</div>';
+  const current = items.find((i) => i.id === sel[key]) || items[0];
+  return `<div class="split"><div class="list">${items.map((i) =>
+    `<div data-sel="${key}" data-id="${esc(i.id)}" class="${i === current ? "on" : ""}"><div class="t">${title(i)}</div><div class="s">${subtitle(i)}</div></div>`).join("")}
+    </div><div>${detail(current)}</div></div>`;
+}
+
+const VIEWS = {
+  mail: () => `<h2>Mail</h2><p class="sub">Every thread in the company mail system. ${esc(S.persona.name)}'s desk sends as ${esc(S.persona.email)}.</p>` +
+    splitView("mail", S.mail,
+      (t) => esc(t.subject) + (t.messages.some((m) => m.written) ? '<span class="badge new">new</span>' : ""),
+      (t) => `${esc(t.messages[0]?.from.replace(/<.*>/, ""))} · ${esc(t.last_date)} · ${t.messages.length} msg`,
+      (t) => t.messages.map((m) => `<div class="card ${m.written ? "new" : ""}"><h3>${esc(m.from)} ${isNew(m)}</h3>
+        <div class="s sub">To ${esc(m.to)}${m.cc ? " · Cc " + esc(m.cc) : ""} · ${esc(m.date)}</div><div class="body">${esc(m.body)}</div></div>`).join("")),
+
+  chat: () => `<h2>Chat</h2><p class="sub">Team channels.</p>` +
+    splitView("chat", S.channels.map((c) => ({...c, id: c.name})),
+      (c) => "#" + esc(c.name) + (S.chat.some((m) => m.channel === c.name && m.written) ? '<span class="badge new">new</span>' : ""),
+      (c) => esc(c.purpose),
+      (c) => { const ms = S.chat.filter((m) => m.channel === c.name); let day = "";
+        return `<div class="card">${ms.length ? ms.map((m) => {
+          const head = m.date !== day ? `<div class="s sub" style="margin:8px 0 0">${esc(day = m.date)}</div>` : "";
+          return `${head}<div class="msg"><b>${esc(m.author)}</b><span class="s">${esc(m.time)}</span>${isNew(m)}<div class="body">${esc(m.text)}</div></div>`;
+        }).join("") : '<div class="empty">No messages.</div>'}</div>`; }),
+
+  tickets: () => `<h2>Tickets</h2><p class="sub">Support, engineering, finance and legal queues.</p>` +
+    splitView("tickets", S.tickets,
+      (t) => `${esc(t.id)} ${esc(t.title)}${isNew(t)}`,
+      (t) => `${esc(t.queue)} · ${esc(t.status)} · ${esc(t.priority)}`,
+      (t) => `<div class="card ${t.written ? "new" : ""}"><h3>${esc(t.id)} · ${esc(t.title)}</h3>
+        <p class="sub"><span class="badge">${esc(t.status)}</span><span class="badge plain">${esc(t.queue)}</span><span class="badge plain">${esc(t.priority)}</span>
+        · Requester ${esc(t.requester || "none")} · Assignee ${esc(t.assignee || "unassigned")} · Created ${esc(t.created)}</p>
+        <div class="body">${esc(t.description)}</div>${t.related ? `<p class="s">Related: ${esc(t.related)}</p>` : ""}</div>` +
+        (t.comments || []).map((c) => `<div class="card"><b>${esc(c.author)}</b> <span class="s">${esc(c.date)}</span><div class="body">${esc(c.text)}</div></div>`).join("")),
+
+  crm: () => { const acc = Object.fromEntries(S.accounts.map((a) => [a.id, a]));
+    return `<h2>CRM</h2><p class="sub">${S.accounts.length} corporate accounts, ${S.deals.length} deals.</p>` +
+    splitView("crm", S.deals,
+      (d) => `${esc(d.name)}${isNew(d)}`,
+      (d) => `${esc(acc[d.account_id]?.name)} · ${esc(d.stage)} · ${num(d.amount)}`,
+      (d) => `<div class="card ${d.written ? "new" : ""}"><h3>${esc(d.id)} · ${esc(d.name)}</h3>
+        <p class="sub"><span class="badge ${d.stage === "lost" ? "warn" : d.stage === "won" ? "new" : ""}">${esc(d.stage)}</span>
+        ${esc(acc[d.account_id]?.name)} (${esc(acc[d.account_id]?.segment)}) · Owner ${esc(d.owner)} · ${num(d.amount)} credits · Close ${esc(d.close_date)}</p>
+        ${d.loss_reason ? `<p>Loss reason: ${esc(d.loss_reason)}${d.competitor ? " · Competitor: " + esc(d.competitor) : ""}</p>` : ""}
+        ${d.next_step ? `<p>Next step: ${esc(d.next_step)}</p>` : ""}</div>` +
+        (d.notes || []).map((n) => `<div class="card"><b>${esc(n.author)}</b> <span class="s">${esc(n.date)}</span><div class="body">${esc(n.text)}</div></div>`).join("")); },
+
+  drive: () => `<h2>Drive</h2><p class="sub">Shared files. Click a file to open the original.</p><div class="wrap"><table>
+    <tr><th>File</th><th>From</th><th class="n">Size</th></tr>${S.drive.map((f) =>
+    `<tr><td><a class="file" href="/drive/${encodeURI(f.path)}">${esc(f.path)}</a>${isNew(f)}</td><td>${esc(f.source)}</td><td class="n">${num(Math.ceil(f.size / 1024))} KB</td></tr>`).join("")}</table></div>`,
+
+  bookings: () => { const tbl = (title, key, rows) => `<div class="card"><h3>${title}</h3><div class="wrap"><table>
+      <tr><th>${key.replace("_", " ")}</th><th class="n">Bookings</th><th class="n">Cancelled</th><th class="n">Paid, excl. cancelled</th></tr>${rows.map((r) =>
+      `<tr><td>${esc(r[key])}</td><td class="n">${num(r.bookings)}</td><td class="n">${num(r.cancelled)}</td><td class="n">${num(r.price_paid_excluding_cancelled)}</td></tr>`).join("")}</table></div></div>`;
+    return `<h2>Bookings</h2><p class="sub">A fixed, read-only snapshot of the booking system, with ${num(S.bookings.quotes)} price quotes from the hold service. Amounts in credits.</p>` +
+      tbl("By month booked", "month", S.bookings.by_month) + tbl("By seat class", "seat_class", S.bookings.by_class) + tbl("By route", "route", S.bookings.by_route); },
+
+  activity: () => `<h2>Activity</h2><p class="sub">Every write the agent attempted through MCP, newest first.</p>` + (S.audit.length ? `<div class="wrap"><table>
+    <tr><th>Time</th><th>Tool</th><th>Outcome</th><th>Arguments</th></tr>${S.audit.map((a) =>
+    `<tr><td style="white-space:nowrap">${esc(a.time.replace("T", " "))}</td><td><code>${esc(a.tool)}</code><div class="s sub" style="margin:0">as ${esc(a.actor)}</div></td>
+     <td><span class="badge ${a.outcome === "ok" ? "new" : "warn"}">${esc(a.outcome)}</span><div class="s sub" style="margin:0">${esc(a.result)}</div></td>
+     <td><code class="body">${esc(JSON.stringify(a.args, null, 1))}</code></td></tr>`).join("")}</table></div>` : '<div class="empty">The agent has not written anything yet.</div>'),
+
+  permissions: () => `<h2>Permissions</h2><p class="sub">Reading is open. Writing can be switched off per system; a blocked call is refused and logged.</p>
+    <div class="card">${Object.entries(S.permissions).map(([sys, on]) =>
+      `<label style="margin-right:18px;white-space:nowrap"><input type="checkbox" data-perm="${sys}" ${on ? "checked" : ""}> ${sys} writes</label>`).join("")}</div>
+    <div class="wrap"><table><tr><th>Tool</th><th>System</th><th>Access</th><th>What it does</th></tr>${S.tools.map((t) =>
+    `<tr><td><code>${esc(t.name)}</code></td><td>${esc(t.system)}</td><td><span class="badge ${t.kind === "read" ? "plain" : t.allowed ? "new" : "warn"}">${t.kind === "read" ? "read" : t.allowed ? "write · allowed" : "write · blocked"}</span></td><td>${esc(t.description)}</td></tr>`).join("")}</table></div>`,
+
+  check: () => `<h2>Presenter check</h2><p class="sub">${esc(S.pack.title || "")}${S.pack.summary ? " · " + esc(S.pack.summary) : ""}</p>
+    ${S.pack.prompt ? `<div class="card"><h3>Prompt to give the agent</h3><div class="body">${esc(S.pack.prompt)}</div></div>` : ""}
+    <div class="card"><h3>Ground truth</h3>${truth === null
+      ? '<p class="sub">The expected answers. The agent cannot reach this through MCP. Keep it off screen until the check.</p><button id="reveal">Show ground truth</button>'
+      : `<div class="body">${esc(truth) || "This scenario has no ground truth file."}</div>`}</div>`,
+};
+
+document.addEventListener("click", async (e) => {
+  const nav = e.target.closest("[data-tab]"), row = e.target.closest("[data-sel]");
+  if (nav) { tab = nav.dataset.tab; location.hash = tab; render(); }
+  else if (row) { sel[row.dataset.sel] = row.dataset.id; render(); }
+  else if (e.target.id === "reveal") { truth = (await (await fetch("/api/ground-truth")).json()).text; render(); }
+  else if (e.target.id === "reset" && confirm("Reset the back office to its starting state?")) post("/api/reset");
+});
+document.addEventListener("change", (e) => {
+  if (e.target.id === "pack") { truth = null; sel = {}; post("/api/pack", {pack: e.target.value}); }
+  else if (e.target.dataset.perm) post("/api/permission", {system: e.target.dataset.perm, allowed: e.target.checked});
+});
+window.addEventListener("hashchange", () => { tab = location.hash.slice(1) || "mail"; if (S) render(); });
+load(); setInterval(load, 2000);
+</script>
+</body>
+</html>
