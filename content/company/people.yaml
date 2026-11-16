@@ -1,13 +1,70 @@
 # The fixed cast. Mail addresses use the reserved .example domain.
-- {id: ingrid.solberg, name: Ingrid Solberg, role: Finance Director, department: Finance, email: ingrid.solberg@galaxium.example, also_reads: [finance@galaxium.example]}
-- {id: tomas.rivera, name: Tomás Rivera, role: Financial Analyst, department: Finance, email: tomas.rivera@galaxium.example, also_reads: [finance@galaxium.example]}
-- {id: amara.okafor, name: Amara Okafor, role: Head of Sales, department: Sales, email: amara.okafor@galaxium.example}
-- {id: dev.malhotra, name: Dev Malhotra, role: Account Executive, department: Sales, email: dev.malhotra@galaxium.example}
-- {id: lena.fischer, name: Lena Fischer, role: Account Executive, department: Sales, email: lena.fischer@galaxium.example}
-- {id: nadia.haddad, name: Nadia Haddad, role: Support Lead, department: Support, email: nadia.haddad@galaxium.example, also_reads: [support@galaxium.example]}
-- {id: kofi.mensah, name: Kofi Mensah, role: Support Agent, department: Support, email: kofi.mensah@galaxium.example, also_reads: [support@galaxium.example]}
-- {id: helena.vogt, name: Helena Vogt, role: General Counsel, department: Legal, email: helena.vogt@galaxium.example}
-- {id: sam.whitlock, name: Sam Whitlock, role: Contracts Manager, department: Legal, email: sam.whitlock@galaxium.example, also_reads: [legal@galaxium.example]}
-- {id: priya.raman, name: Priya Raman, role: Head of Flight Operations, department: Operations, email: priya.raman@galaxium.example}
-- {id: yuki.tanaka, name: Yuki Tanaka, role: Route Planner, department: Operations, email: yuki.tanaka@galaxium.example}
-- {id: marcus.lindqvist, name: Marcus Lindqvist, role: "Engineering Manager, Booking Platform", department: Engineering, email: marcus.lindqvist@galaxium.example}
+# manager is the id of the person they report to. also_reads lists shared mailboxes.
+
+# Leadership
+- {id: renata.castellanos, name: Renata Castellanos, role: Chief Executive Officer, department: Leadership, email: renata.castellanos@galaxium.example, location: Earth HQ}
+- {id: olu.adeyemi, name: Olu Adeyemi, role: Chief Operating Officer, department: Leadership, email: olu.adeyemi@galaxium.example, manager: renata.castellanos, location: Earth HQ}
+- {id: farid.nazari, name: Farid Nazari, role: Chief Technology Officer, department: Leadership, email: farid.nazari@galaxium.example, manager: renata.castellanos, location: Earth HQ}
+
+# Finance
+- {id: ingrid.solberg, name: Ingrid Solberg, role: Finance Director, department: Finance, email: ingrid.solberg@galaxium.example, manager: renata.castellanos, location: Earth HQ, also_reads: [finance@galaxium.example]}
+- {id: tomas.rivera, name: Tomás Rivera, role: Financial Analyst, department: Finance, email: tomas.rivera@galaxium.example, manager: ingrid.solberg, location: Earth HQ, also_reads: [finance@galaxium.example]}
+- {id: chidi.eze, name: Chidi Eze, role: Financial Controller, department: Finance, email: chidi.eze@galaxium.example, manager: ingrid.solberg, location: Earth HQ, also_reads: [finance@galaxium.example]}
+- {id: beatrix.novak, name: Beatrix Novak, role: Accounts Payable Specialist, department: Finance, email: beatrix.novak@galaxium.example, manager: chidi.eze, location: Earth HQ, also_reads: [finance@galaxium.example, invoices@galaxium.example]}
+- {id: hana.kobayashi, name: Hana Kobayashi, role: Payroll and Expenses Specialist, department: Finance, email: hana.kobayashi@galaxium.example, manager: chidi.eze, location: Luna Station office}
+
+# Sales
+- {id: amara.okafor, name: Amara Okafor, role: Head of Sales, department: Sales, email: amara.okafor@galaxium.example, manager: renata.castellanos, location: Earth HQ}
+- {id: dev.malhotra, name: Dev Malhotra, role: Account Executive, department: Sales, email: dev.malhotra@galaxium.example, manager: amara.okafor, location: Earth HQ}
+- {id: lena.fischer, name: Lena Fischer, role: Account Executive, department: Sales, email: lena.fischer@galaxium.example, manager: amara.okafor, location: Luna Station office}
+- {id: bastien.moreau, name: Bastien Moreau, role: Account Executive, department: Sales, email: bastien.moreau@galaxium.example, manager: amara.okafor, location: Mars office}
+- {id: sinead.byrne, name: Sinead Byrne, role: Sales Operations Analyst, department: Sales, email: sinead.byrne@galaxium.example, manager: amara.okafor, location: Earth HQ}
+- {id: jamal.carter, name: Jamal Carter, role: Customer Success Manager, department: Sales, email: jamal.carter@galaxium.example, manager: amara.okafor, location: Earth HQ}
+
+# Marketing
+- {id: elise.fontaine, name: Elise Fontaine, role: Head of Marketing, department: Marketing, email: elise.fontaine@galaxium.example, manager: renata.castellanos, location: Earth HQ}
+- {id: noor.rahimi, name: Noor Rahimi, role: Content Lead, department: Marketing, email: noor.rahimi@galaxium.example, manager: elise.fontaine, location: Earth HQ}
+- {id: viktor.hale, name: Viktor Hale, role: Brand Designer, department: Marketing, email: viktor.hale@galaxium.example, manager: elise.fontaine, location: Earth HQ}
+- {id: pilar.navarro, name: Pilar Navarro, role: Events and Partnerships Manager, department: Marketing, email: pilar.navarro@galaxium.example, manager: elise.fontaine, location: Mars office}
+
+# Support
+- {id: nadia.haddad, name: Nadia Haddad, role: Support Lead, department: Support, email: nadia.haddad@galaxium.example, manager: olu.adeyemi, location: Earth HQ, also_reads: [support@galaxium.example]}
+- {id: kofi.mensah, name: Kofi Mensah, role: Support Agent, department: Support, email: kofi.mensah@galaxium.example, manager: nadia.haddad, location: Earth HQ, also_reads: [support@galaxium.example]}
+- {id: anneli.korhonen, name: Anneli Korhonen, role: Support Agent, department: Support, email: anneli.korhonen@galaxium.example, manager: nadia.haddad, location: Luna Station office, also_reads: [support@galaxium.example]}
+- {id: mateo.vargas, name: Mateo Vargas, role: Support Agent, department: Support, email: mateo.vargas@galaxium.example, manager: nadia.haddad, location: Mars office, also_reads: [support@galaxium.example]}
+- {id: thandi.dlamini, name: Thandi Dlamini, role: Senior Support Agent, department: Support, email: thandi.dlamini@galaxium.example, manager: nadia.haddad, location: Earth HQ, also_reads: [support@galaxium.example]}
+- {id: greta.olsen, name: Greta Olsen, role: Support Operations and Knowledge Base, department: Support, email: greta.olsen@galaxium.example, manager: nadia.haddad, location: Earth HQ}
+
+# Legal
+- {id: helena.vogt, name: Helena Vogt, role: General Counsel, department: Legal, email: helena.vogt@galaxium.example, manager: renata.castellanos, location: Earth HQ}
+- {id: sam.whitlock, name: Sam Whitlock, role: Contracts Manager, department: Legal, email: sam.whitlock@galaxium.example, manager: helena.vogt, location: Earth HQ, also_reads: [legal@galaxium.example]}
+- {id: isaac.brandt, name: Isaac Brandt, role: Compliance and Privacy Officer, department: Legal, email: isaac.brandt@galaxium.example, manager: helena.vogt, location: Earth HQ, also_reads: [legal@galaxium.example]}
+
+# Operations
+- {id: priya.raman, name: Priya Raman, role: Head of Flight Operations, department: Operations, email: priya.raman@galaxium.example, manager: olu.adeyemi, location: Earth HQ}
+- {id: yuki.tanaka, name: Yuki Tanaka, role: Route Planner, department: Operations, email: yuki.tanaka@galaxium.example, manager: priya.raman, location: Earth HQ}
+- {id: andrei.popescu, name: Andrei Popescu, role: Crew Scheduling Lead, department: Operations, email: andrei.popescu@galaxium.example, manager: priya.raman, location: Earth HQ}
+- {id: lucia.bianchi, name: Lucia Bianchi, role: Ground Operations Manager, department: Operations, email: lucia.bianchi@galaxium.example, manager: priya.raman, location: Luna Station office}
+- {id: kwame.asante, name: Kwame Asante, role: Safety Officer, department: Operations, email: kwame.asante@galaxium.example, manager: olu.adeyemi, location: Earth HQ}
+- {id: sofia.lindgren, name: Sofia Lindgren, role: Operations Controller, department: Operations, email: sofia.lindgren@galaxium.example, manager: priya.raman, location: Earth HQ, also_reads: [opscontrol@galaxium.example]}
+- {id: hiro.matsuda, name: Hiro Matsuda, role: Operations Controller, department: Operations, email: hiro.matsuda@galaxium.example, manager: priya.raman, location: Mars office, also_reads: [opscontrol@galaxium.example]}
+- {id: zainab.hussein, name: Zainab Hussein, role: Fleet Maintenance Planner, department: Operations, email: zainab.hussein@galaxium.example, manager: priya.raman, location: Luna Station office}
+
+# Engineering
+- {id: marcus.lindqvist, name: Marcus Lindqvist, role: "Engineering Manager, Booking Platform", department: Engineering, email: marcus.lindqvist@galaxium.example, manager: farid.nazari, location: Earth HQ}
+- {id: aditi.sharma, name: Aditi Sharma, role: "Senior Engineer, Hold Service", department: Engineering, email: aditi.sharma@galaxium.example, manager: marcus.lindqvist, location: Earth HQ}
+- {id: jonas.keller, name: Jonas Keller, role: "Engineer, Booking API", department: Engineering, email: jonas.keller@galaxium.example, manager: marcus.lindqvist, location: Earth HQ}
+- {id: wren.abbott, name: Wren Abbott, role: "Engineer, Web Frontend", department: Engineering, email: wren.abbott@galaxium.example, manager: marcus.lindqvist, location: Luna Station office}
+- {id: emeka.obi, name: Emeka Obi, role: Site Reliability Engineer, department: Engineering, email: emeka.obi@galaxium.example, manager: farid.nazari, location: Earth HQ}
+- {id: clara.jensen, name: Clara Jensen, role: Quality Engineer, department: Engineering, email: clara.jensen@galaxium.example, manager: marcus.lindqvist, location: Earth HQ}
+- {id: felix.braun, name: Felix Braun, role: Data Engineer, department: Engineering, email: felix.braun@galaxium.example, manager: farid.nazari, location: Earth HQ}
+- {id: maya.goldberg, name: Maya Goldberg, role: "Product Manager, Booking", department: Engineering, email: maya.goldberg@galaxium.example, manager: farid.nazari, location: Earth HQ}
+
+# People and workplace
+- {id: dorothea.klein, name: Dorothea Klein, role: Head of People, department: People, email: dorothea.klein@galaxium.example, manager: renata.castellanos, location: Earth HQ}
+- {id: samir.chaudhry, name: Samir Chaudhry, role: Recruiter, department: People, email: samir.chaudhry@galaxium.example, manager: dorothea.klein, location: Earth HQ}
+- {id: agnes.wojcik, name: Agnes Wójcik, role: Office Manager, department: People, email: agnes.wojcik@galaxium.example, manager: dorothea.klein, location: Earth HQ}
+
+# IT
+- {id: bruno.ferreira, name: Bruno Ferreira, role: IT Manager, department: IT, email: bruno.ferreira@galaxium.example, manager: farid.nazari, location: Earth HQ, also_reads: [it@galaxium.example]}
+- {id: ling.zhou, name: Ling Zhou, role: IT Support Technician, department: IT, email: ling.zhou@galaxium.example, manager: bruno.ferreira, location: Earth HQ, also_reads: [it@galaxium.example]}

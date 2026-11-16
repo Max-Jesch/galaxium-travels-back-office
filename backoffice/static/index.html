@@ -6,201 +6,578 @@
 <title>Galaxium Back Office</title>
 <style>
   :root {
-    --bg: #f6f5f1; --panel: #ffffff; --ink: #1c1b22; --muted: #6b6a75; --line: #e4e2da;
-    --accent: #4b3fd1; --accent-soft: #ecebfb; --new: #0a7d4f; --new-soft: #e2f5ec;
-    --warn: #b3261e; --warn-soft: #fbe9e7;
+    --bg: #f3f2f1; --panel: #ffffff; --panel2: #faf9f8; --ink: #201f1e; --muted: #605e5c; --faint: #8a8886; --line: #e1dfdd;
+    --hover: #f3f2f1; --sel: #e5f1fb; --accent: #0f6cbd; --accent-ink: #ffffff; --accent-soft: #deecf9;
+    --new: #0b6a0b; --new-soft: #dff6dd; --warn: #a4262c; --warn-soft: #fde7e9; --amber: #8a5a00; --amber-soft: #fff4ce;
+    --top: #1b1a2e; --top-ink: #f4f3ff; --rail: #ebe9f3;
+    --chat-side: #2f1a38; --chat-side-ink: #d9cfe0; --chat-side-on: #1264a3; --chat-side-hover: #432650;
+    --shadow: 0 1px 2px rgba(0,0,0,.08), 0 4px 16px rgba(0,0,0,.06);
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #15141a; --panel: #1e1d25; --ink: #eceaf2; --muted: #9c9aa8; --line: #32303c;
-      --accent: #a79cff; --accent-soft: #2b2850; --new: #5fd6a0; --new-soft: #17382b;
-      --warn: #ff8a80; --warn-soft: #452220; }
+    :root { --bg: #17161c; --panel: #201f26; --panel2: #1b1a21; --ink: #ecebf0; --muted: #a9a7b3; --faint: #7d7b88; --line: #35333f;
+      --hover: #2a2932; --sel: #1d3550; --accent: #6cb8f6; --accent-ink: #0b1a2a; --accent-soft: #1d3550;
+      --new: #6fdc8c; --new-soft: #183a22; --warn: #ff9aa2; --warn-soft: #4a1f24; --amber: #ffd479; --amber-soft: #43360f;
+      --top: #100f1c; --rail: #1b1a24; --chat-side: #1f1326; --chat-side-hover: #33203d;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 6px 20px rgba(0,0,0,.35); }
   }
   * { box-sizing: border-box; }
-  body { margin: 0; font: 14px/1.5 -apple-system, "Segoe UI", system-ui, sans-serif; background: var(--bg); color: var(--ink); }
-  header { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: center; padding: 12px 20px; border-bottom: 1px solid var(--line); background: var(--panel); }
-  header h1 { font-size: 16px; margin: 0; letter-spacing: .01em; }
-  header .meta { color: var(--muted); font-size: 13px; }
-  header .spacer { flex: 1; }
-  select, button { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
-  button:hover, select:hover { border-color: var(--accent); }
-  .layout { display: grid; grid-template-columns: 190px 1fr; min-height: calc(100vh - 54px); }
-  nav { border-right: 1px solid var(--line); padding: 12px 8px; }
-  nav a { display: flex; justify-content: space-between; padding: 7px 12px; border-radius: 6px; color: var(--ink); text-decoration: none; cursor: pointer; }
-  nav a.on { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
-  nav a span { color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums; }
-  nav hr { border: 0; border-top: 1px solid var(--line); margin: 10px 4px; }
-  main { padding: 20px 24px; min-width: 0; }
-  h2 { font-size: 18px; margin: 0 0 4px; }
-  .sub { color: var(--muted); margin: 0 0 16px; }
-  .split { display: grid; grid-template-columns: minmax(240px, 340px) 1fr; gap: 16px; align-items: start; }
-  .list, .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
-  .list > div { padding: 10px 14px; border-bottom: 1px solid var(--line); cursor: pointer; }
-  .list > div:last-child { border-bottom: 0; }
-  .list > div.on { background: var(--accent-soft); }
-  .list .t { font-weight: 600; overflow-wrap: anywhere; }
-  .list .s { color: var(--muted); font-size: 12.5px; }
-  .card { padding: 16px 18px; margin-bottom: 12px; overflow-wrap: anywhere; }
-  .card.new { border-color: var(--new); }
-  .card h3 { margin: 0 0 6px; font-size: 15px; }
-  .body { white-space: pre-wrap; }
-  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 99px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; vertical-align: 1px; }
-  .badge.new { background: var(--new-soft); color: var(--new); }
-  .badge.warn { background: var(--warn-soft); color: var(--warn); }
-  .badge.plain { background: var(--bg); color: var(--muted); border: 1px solid var(--line); }
-  .wrap { overflow-x: auto; }
-  table { border-collapse: collapse; width: 100%; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; }
-  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
-  th { font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
-  td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-  tr:last-child td { border-bottom: 0; }
-  code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; }
-  .msg { padding: 6px 0; border-bottom: 1px solid var(--line); }
-  .msg:last-child { border-bottom: 0; }
-  .msg b { margin-right: 6px; }
-  .empty { color: var(--muted); padding: 30px; text-align: center; }
-  a.file { color: var(--accent); }
-  @media (max-width: 760px) {
-    .layout { grid-template-columns: 1fr; }
-    nav { display: flex; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--line); }
-    nav a { white-space: nowrap; gap: 6px; } nav hr { display: none; }
-    .split { grid-template-columns: 1fr; } main { padding: 16px; }
+  html, body { height: 100%; }
+  body { margin: 0; font: 14px/1.45 "Segoe UI", -apple-system, system-ui, "Helvetica Neue", sans-serif; background: var(--bg); color: var(--ink); overflow: hidden; }
+  button, select, input { font: inherit; color: inherit; }
+  a { color: var(--accent); text-decoration: none; cursor: pointer; }
+  h1, h2, h3, h4 { margin: 0; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; } ::-webkit-scrollbar-thumb { background: color-mix(in srgb, var(--faint) 45%, transparent); border-radius: 6px; border: 2px solid transparent; background-clip: content-box; }
+
+  /* shell */
+  #top { height: 46px; background: var(--top); color: var(--top-ink); display: flex; align-items: center; gap: 14px; padding: 0 14px; }
+  #top .brand { font-weight: 650; letter-spacing: .02em; display: flex; align-items: center; gap: 9px; white-space: nowrap; }
+  #top .brand i { width: 22px; height: 22px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ffd58a, #e8743b 55%, #7b2a55); box-shadow: 0 0 0 2px rgba(255,255,255,.15); display: inline-block; }
+  #top .search { flex: 1; max-width: 520px; margin: 0 auto; }
+  #top .search input { width: 100%; height: 30px; border-radius: 6px; border: 0; background: rgba(255,255,255,.14); color: var(--top-ink); padding: 0 12px; outline: none; }
+  #top .search input::placeholder { color: rgba(255,255,255,.6); }
+  #top .desk { display: flex; align-items: center; gap: 8px; font-size: 12.5px; line-height: 1.2; white-space: nowrap; }
+  #top .desk small { display: block; opacity: .7; }
+  #top select, #top button { height: 30px; border-radius: 6px; border: 1px solid rgba(255,255,255,.25); background: transparent; color: var(--top-ink); padding: 0 10px; cursor: pointer; max-width: 200px; }
+  #top select option { color: #000; }
+  #top button:hover, #top select:hover { background: rgba(255,255,255,.12); }
+  #shell { display: grid; grid-template-columns: 68px 1fr; height: calc(100% - 46px); }
+  #rail { background: var(--rail); border-right: 1px solid var(--line); display: flex; flex-direction: column; align-items: stretch; padding: 6px 0; overflow-y: auto; }
+  #rail a { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; font-size: 10.5px; color: var(--muted); position: relative; }
+  #rail a svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  #rail a:hover { color: var(--ink); }
+  #rail a.on { color: var(--accent); font-weight: 600; }
+  #rail a.on::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); }
+  #rail a b { position: absolute; top: 3px; right: 10px; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 8px; background: var(--warn); color: #fff; font-size: 10px; line-height: 16px; text-align: center; }
+  #rail hr { width: 36px; border: 0; border-top: 1px solid var(--line); margin: 6px auto; }
+  #rail .cap { font-size: 9px; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); text-align: center; margin-top: 2px; }
+  #main { min-width: 0; min-height: 0; display: flex; flex-direction: column; }
+  .panes { flex: 1; display: grid; min-height: 0; background: var(--panel); }
+  .pane { min-height: 0; min-width: 0; overflow-y: auto; border-right: 1px solid var(--line); }
+  .pane:last-child { border-right: 0; }
+  .col { display: flex; flex-direction: column; min-height: 0; min-width: 0; overflow: hidden; }
+  .scroll { flex: 1; overflow-y: auto; min-height: 0; }
+  .bar { display: flex; align-items: center; gap: 8px; padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--panel); min-height: 46px; flex-wrap: wrap; }
+  .bar h2 { font-size: 16px; font-weight: 650; }
+  .grow { flex: 1; }
+  .btn { height: 30px; padding: 0 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--panel); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: var(--ink); }
+  .btn:hover { background: var(--hover); }
+  .btn.on { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  input.q { height: 30px; border: 1px solid var(--line); border-radius: 4px; padding: 0 10px; background: var(--panel); min-width: 180px; outline: none; }
+  input.q:focus { border-color: var(--accent); }
+  .muted { color: var(--muted); } .faint { color: var(--faint); } .small { font-size: 12px; } .nowrap { white-space: nowrap; }
+  .empty { padding: 48px 24px; color: var(--muted); text-align: center; }
+  .chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; padding: 1px 8px; border-radius: 10px; background: var(--hover); color: var(--muted); border: 1px solid var(--line); white-space: nowrap; font-weight: 400; }
+  .chip.new { background: var(--new-soft); color: var(--new); border-color: transparent; font-weight: 600; }
+  .chip.warn { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+  .chip.amber { background: var(--amber-soft); color: var(--amber); border-color: transparent; }
+  .chip.blue { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+  .av { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; color: #fff; font-size: 12px; font-weight: 600; flex: none; letter-spacing: .02em; vertical-align: middle; }
+  .av.sm { width: 22px; height: 22px; font-size: 9.5px; } .av.lg { width: 44px; height: 44px; font-size: 15px; } .av.sq { border-radius: 7px; }
+  table.t { width: 100%; border-collapse: collapse; }
+  table.t th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); padding: 8px 12px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--panel); z-index: 1; white-space: nowrap; }
+  table.t td { padding: 8px 12px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  table.t tr.row { cursor: pointer; } table.t tr.row:hover td { background: var(--hover); } table.t tr.on td { background: var(--sel); }
+  td.n, th.n { text-align: right !important; font-variant-numeric: tabular-nums; }
+
+  /* mail */
+  .mail { grid-template-columns: 216px 360px 1fr; }
+  .folders { background: var(--panel2); padding: 8px 6px; }
+  .folders h4 { font-size: 12px; color: var(--muted); padding: 12px 10px 4px; font-weight: 600; }
+  .folders a { display: flex; justify-content: space-between; gap: 8px; padding: 6px 10px; border-radius: 4px; color: var(--ink); }
+  .folders a:hover { background: var(--hover); } .folders a.on { background: var(--sel); font-weight: 600; }
+  .folders a span:last-child { color: var(--accent); font-weight: 600; font-size: 12px; }
+  .mlist .item { display: grid; grid-template-columns: 32px 1fr; gap: 10px; padding: 10px 12px 10px 9px; border-bottom: 1px solid var(--line); border-left: 3px solid transparent; cursor: pointer; }
+  .mlist .item:hover { background: var(--hover); } .mlist .item.on { background: var(--sel); }
+  .mlist .item.unread { border-left-color: var(--accent); } .mlist .item.unread .who, .mlist .item.unread .subj { font-weight: 650; } .mlist .item.unread .subj { color: var(--accent); }
+  .mlist .l1 { display: flex; justify-content: space-between; gap: 8px; } .mlist .who { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mlist .when { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .mlist .subj, .mlist .prev { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } .mlist .prev { color: var(--muted); font-size: 13px; }
+  .mlist .group { padding: 6px 12px; font-size: 12px; font-weight: 600; color: var(--muted); background: var(--panel2); border-bottom: 1px solid var(--line); position: sticky; top: 0; z-index: 1; }
+  .read { background: var(--bg); }
+  .read .head { padding: 16px 22px 10px; } .read .head h2 { font-size: 19px; font-weight: 600; margin-bottom: 6px; }
+  .msg { margin: 0 14px 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 14px 18px; }
+  .msg.written { border-color: var(--new); box-shadow: inset 3px 0 0 var(--new); }
+  .msg .mh { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; } .msg .mh .grow { min-width: 0; }
+  .msg .body { white-space: pre-wrap; overflow-wrap: anywhere; max-width: 78ch; }
+  .attach { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; margin: 8px 8px 0 0; cursor: pointer; background: var(--panel); }
+  .attach:hover { background: var(--hover); }
+
+  /* chat */
+  .chat { grid-template-columns: 250px 1fr; }
+  .side { background: var(--chat-side); color: var(--chat-side-ink); border-right: 0; padding-bottom: 20px; }
+  .side .ws { padding: 12px 16px; font-weight: 700; font-size: 16px; color: #fff; border-bottom: 1px solid rgba(255,255,255,.12); position: sticky; top: 0; background: var(--chat-side); z-index: 1; }
+  .side .ws small { display: block; font-weight: 400; font-size: 12px; opacity: .75; }
+  .side h4 { font-size: 13px; font-weight: 500; padding: 16px 16px 4px; opacity: .8; }
+  .side a { display: flex; align-items: center; gap: 8px; padding: 3px 10px 3px 16px; margin: 0 8px; border-radius: 6px; color: inherit; white-space: nowrap; overflow: hidden; }
+  .side a:hover { background: var(--chat-side-hover); } .side a.on { background: var(--chat-side-on); color: #fff; }
+  .side a.unread { color: #fff; font-weight: 700; } .side a .hash { opacity: .7; width: 14px; text-align: center; flex: none; }
+  .side a .dot { width: 9px; height: 9px; border-radius: 50%; background: #2bac76; flex: none; margin: 0 3px 0 2px; } .side a .dot.off { background: transparent; border: 1.5px solid currentColor; opacity: .6; }
+  .side a em { margin-left: auto; font-style: normal; background: #e01e5a; color: #fff; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 9px; }
+  .chead h2 { font-size: 16.5px; } .chead p { margin: 2px 0 0; color: var(--muted); font-size: 13px; }
+  .day { display: flex; align-items: center; margin: 14px 0 4px; } .day::before, .day::after { content: ""; flex: 1; border-top: 1px solid var(--line); }
+  .day span { border: 1px solid var(--line); border-radius: 14px; padding: 2px 14px; font-size: 12.5px; font-weight: 650; background: var(--panel); }
+  .cm { display: grid; grid-template-columns: 36px 1fr; gap: 10px; padding: 5px 20px; } .cm:hover { background: var(--hover); } .cm > div { min-width: 0; }
+  .cm.cont { padding-top: 1px; padding-bottom: 1px; } .cm.cont .gut { font-size: 10.5px; color: transparent; text-align: right; padding-top: 3px; } .cm.cont:hover .gut { color: var(--faint); }
+  .cm.written { background: var(--new-soft); }
+  .cm .av { width: 36px; height: 36px; border-radius: 8px; font-size: 13px; }
+  .cm .nm { font-weight: 700; } .cm .tm { font-size: 12px; color: var(--muted); margin-left: 6px; } .cm .app { font-size: 10px; background: var(--hover); color: var(--muted); border-radius: 3px; padding: 0 4px; margin-left: 5px; font-weight: 600; vertical-align: 1px; border: 1px solid var(--line); }
+  .cm .tx { overflow-wrap: anywhere; max-width: 86ch; } .cm .tx code, .md code { background: var(--hover); border: 1px solid var(--line); border-radius: 3px; padding: 0 4px; font-size: 12.5px; }
+  .mention { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); border-radius: 3px; padding: 0 2px; font-weight: 500; }
+  .rx { display: inline-flex; gap: 4px; align-items: center; border: 1px solid var(--line); background: var(--hover); border-radius: 12px; padding: 0 8px; font-size: 12px; margin: 4px 4px 0 0; }
+  .thr { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 12.5px; font-weight: 650; color: var(--accent); cursor: pointer; padding: 2px 6px; border-radius: 5px; border: 1px solid transparent; }
+  .thr:hover { border-color: var(--line); background: var(--panel); } .thr span { color: var(--muted); font-weight: 400; }
+  .replies { border-left: 2px solid var(--line); margin: 4px 0 2px 2px; padding-left: 4px; } .replies .cm { padding: 4px 8px; grid-template-columns: 26px 1fr; } .replies .av { width: 26px; height: 26px; font-size: 10px; border-radius: 6px; }
+  .composer { margin: 8px 20px 16px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; color: var(--faint); background: var(--panel); }
+
+  /* drive */
+  .drive { grid-template-columns: 236px 1fr; }
+  .tree { background: var(--panel2); padding: 10px 8px; }
+  .tree a { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 16px; color: var(--ink); white-space: nowrap; overflow: hidden; }
+  .tree a:hover { background: var(--hover); } .tree a.on { background: var(--sel); font-weight: 600; color: var(--accent); }
+  .tree a.sub { padding-left: 34px; font-size: 13px; }
+  .fold { width: 18px; height: 14px; border-radius: 2px 3px 3px 3px; background: #e9b949; position: relative; flex: none; display: inline-block; } .fold::before { content: ""; position: absolute; top: -3px; left: 0; width: 8px; height: 4px; border-radius: 2px 2px 0 0; background: #e9b949; }
+  .ft { width: 26px; height: 30px; border-radius: 3px; color: #fff; font-size: 8.5px; font-weight: 700; display: inline-flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; flex: none; letter-spacing: .03em; background: #6b6a75; }
+  .ft.xlsx, .ft.csv { background: #1d7044; } .ft.docx { background: #2b579a; } .ft.pptx { background: #c43e1c; } .ft.yaml, .ft.json { background: #7a4fbf; }
+  .crumbs { display: flex; align-items: center; gap: 6px; font-size: 17px; flex-wrap: wrap; } .crumbs a { color: var(--ink); padding: 2px 6px; border-radius: 4px; } .crumbs a:hover { background: var(--hover); } .crumbs a:last-child { font-weight: 650; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; padding: 4px 14px 8px; }
+  .fcard { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; cursor: pointer; background: var(--panel); } .fcard:hover { background: var(--hover); }
+  .fcard div { min-width: 0; } .fcard b { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .gridf { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 12px; padding: 4px 14px 14px; }
+  .gcard { border: 1px solid var(--line); border-radius: 8px; overflow: hidden; cursor: pointer; background: var(--panel); } .gcard:hover { box-shadow: var(--shadow); }
+  .gcard .thumb { height: 96px; background: var(--panel2); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--line); } .gcard .thumb .ft { transform: scale(1.5); }
+  .gcard .nm { padding: 8px 10px; font-size: 13px; } .gcard .nm b { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+  h3.sec { font-size: 12.5px; font-weight: 600; color: var(--muted); padding: 14px 16px 6px; }
+
+  /* drawer */
+  #drawer { position: fixed; top: 46px; right: 0; bottom: 0; width: min(900px, 94vw); background: var(--panel); border-left: 1px solid var(--line); box-shadow: var(--shadow); display: none; flex-direction: column; z-index: 20; }
+  #drawer.open { display: flex; }
+  #drawer .body { padding: 18px 24px 40px; }
+  .tabs { display: flex; gap: 2px; padding: 0 14px; border-bottom: 1px solid var(--line); background: var(--panel); flex-wrap: wrap; }
+  .tabs a { padding: 9px 12px; color: var(--muted); border-bottom: 2px solid transparent; } .tabs a.on { color: var(--accent); border-color: var(--accent); font-weight: 600; }
+  .sheet { border-collapse: collapse; font-size: 12.5px; } .sheet td, .sheet th { border: 1px solid var(--line); padding: 3px 8px; white-space: nowrap; } .sheet th { background: var(--panel2); color: var(--muted); font-weight: 500; } .sheet tr:first-child td { font-weight: 650; background: var(--panel2); position: sticky; top: 0; }
+  .md { max-width: 80ch; } .md h1 { font-size: 22px; margin: 4px 0 12px; } .md h2 { font-size: 17px; margin: 22px 0 8px; } .md h3 { font-size: 14.5px; margin: 16px 0 6px; } .md h4 { margin: 12px 0 4px; } .md p { margin: 8px 0; } .md ul, .md ol { margin: 6px 0; padding-left: 22px; } .md li { margin: 3px 0; }
+  .md table { border-collapse: collapse; margin: 10px 0; font-size: 13px; } .md td, .md th { border: 1px solid var(--line); padding: 5px 10px; text-align: left; } .md th { background: var(--panel2); } .md blockquote { margin: 8px 0; padding: 2px 14px; border-left: 3px solid var(--line); color: var(--muted); } .md pre { background: var(--panel2); border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px; overflow-x: auto; font-size: 12.5px; } .md hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+
+  /* tickets */
+  .tickets { grid-template-columns: 200px minmax(380px, 1.1fr) 1.2fr; }
+  .st { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: var(--faint); } .st.open { background: #d83b01; } .st.in_progress { background: #0f6cbd; } .st.waiting { background: #c19c00; } .st.resolved, .st.closed { background: #6bb700; }
+  .tdet { padding: 18px 22px; } .tdet h2 { font-size: 18px; margin: 4px 0 10px; } .kv { display: grid; grid-template-columns: 120px 1fr; gap: 6px 12px; font-size: 13px; margin: 12px 0; } .kv dt { color: var(--muted); } .kv dd { margin: 0; }
+  .cmt { display: grid; grid-template-columns: 32px 1fr; gap: 10px; padding: 10px 0; border-top: 1px solid var(--line); }
+
+  /* crm */
+  .kan { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(250px, 1fr); gap: 10px; padding: 12px; overflow-x: auto; flex: 1; min-height: 0; background: var(--bg); }
+  .kcol { display: flex; flex-direction: column; min-height: 0; background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; border-top: 3px solid #8a8886; }
+  .kcol > header { padding: 10px 12px; border-bottom: 1px solid var(--line); } .kcol > header b { display: flex; justify-content: space-between; } .kcol > header small { color: var(--muted); }
+  .kcol.proposal { border-top-color: #0f6cbd; } .kcol.negotiation { border-top-color: #8764b8; } .kcol.won { border-top-color: #6bb700; } .kcol.lost { border-top-color: #d13438; }
+  .kcard { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 9px 11px; margin: 8px; cursor: pointer; } .kcard:hover { box-shadow: var(--shadow); } .kcard.written { border-color: var(--new); }
+  .kcard b { display: block; font-weight: 600; } .kcard .amt { font-variant-numeric: tabular-nums; font-weight: 600; margin: 3px 0; } .kcard .ft2 { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); }
+
+  /* calendar */
+  .cal { flex: 1; display: grid; grid-template-columns: 52px repeat(5, 1fr); grid-template-rows: auto auto 1fr; min-height: 0; overflow-y: auto; background: var(--panel); }
+  .cal .dh { padding: 8px 10px; border-bottom: 1px solid var(--line); border-left: 1px solid var(--line); position: sticky; top: 0; background: var(--panel); z-index: 3; } .cal .dh b { font-size: 20px; font-weight: 400; display: block; } .cal .dh.today { color: var(--accent); box-shadow: inset 0 3px 0 var(--accent); } .cal .dh.today b { font-weight: 650; }
+  .cal .ad { border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 3px; min-height: 12px; }
+  .cal .hrs { position: relative; height: 780px; } .cal .hrs span { position: absolute; right: 6px; font-size: 11px; color: var(--muted); transform: translateY(-7px); }
+  .cal .dc { position: relative; height: 780px; border-left: 1px solid var(--line); background-image: repeating-linear-gradient(to bottom, transparent 0 59px, var(--line) 59px 60px); } .cal .dc.today { background-color: color-mix(in srgb, var(--accent) 5%, transparent); }
+  .ev { position: absolute; border-radius: 4px; padding: 2px 6px; font-size: 12px; line-height: 1.25; overflow: hidden; background: var(--accent-soft); border-left: 3px solid var(--accent); cursor: pointer; }
+  .ev.written { background: var(--new-soft); border-left-color: var(--new); } .ev.other { background: var(--hover); border-left-color: var(--faint); } .ev b { font-weight: 600; display: block; } .ev.allday { position: static; margin-bottom: 2px; }
+
+  /* other views */
+  .page { padding: 18px 22px 40px; overflow-y: auto; flex: 1; background: var(--bg); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .kpi, .card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 14px 16px; } .kpi b { font-size: 22px; font-weight: 650; display: block; font-variant-numeric: tabular-nums; } .kpi span { color: var(--muted); font-size: 12.5px; }
+  .card { padding: 0; overflow: hidden; margin-bottom: 16px; overflow-x: auto; } .card > h3 { font-size: 14px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  .load { display: inline-block; width: 70px; height: 7px; border-radius: 4px; background: var(--line); vertical-align: middle; margin-right: 6px; overflow: hidden; } .load i { display: block; height: 100%; background: var(--accent); }
+  .ppl { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-bottom: 8px; }
+  .pcard { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px; display: flex; gap: 12px; align-items: center; } .pcard.me { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); } .pcard div { min-width: 0; } .pcard b, .pcard span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .log { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; } .log.denied, .log.error { border-color: var(--warn); } .log pre { margin: 8px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12.5px; background: var(--panel2); border-radius: 6px; padding: 8px 10px; max-height: 220px; overflow: auto; }
+  .sw { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--line); } .sw:last-child { border: 0; }
+  .toggle { width: 40px; height: 22px; border-radius: 11px; background: var(--faint); position: relative; cursor: pointer; flex: none; border: 0; } .toggle::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: left .12s; } .toggle.on { background: var(--new); } .toggle.on::after { left: 21px; }
+  .back { display: none; }
+
+  @media (max-width: 860px) {
+    #shell { grid-template-columns: 1fr; grid-template-rows: 1fr auto; } #rail { order: 2; flex-direction: row; border-right: 0; border-top: 1px solid var(--line); overflow-x: auto; padding: 0; } #rail a { min-width: 62px; } #rail hr, #rail .cap { display: none; } #rail a.on::before { display: none; }
+    #top .search, #top .desk small { display: none; } #top { gap: 8px; padding: 0 8px; } #top .brand span { display: none; } #top .desk { flex: 1; overflow: hidden; }
+    .panes { grid-template-columns: 1fr !important; } .panes > .hide-narrow { display: none; } .back { display: inline-flex; }
+    .cal { grid-template-columns: 40px repeat(5, minmax(120px, 1fr)); overflow-x: auto; } .page { padding: 12px; } .msg { margin: 0 8px 8px; padding: 12px; } input.q { min-width: 110px; flex: 1; }
   }
 </style>
 </head>
 <body>
-<header>
-  <h1>Galaxium Back Office</h1>
-  <span class="meta" id="meta"></span>
-  <span class="spacer"></span>
-  <label class="meta">Scenario <select id="pack"></select></label>
+<div id="top">
+  <div class="brand"><i></i><span>Galaxium Back Office</span></div>
+  <div class="search"><input id="gq" placeholder="Search mail, chat, files, tickets and deals" autocomplete="off"></div>
+  <div class="desk" id="desk"></div>
+  <select id="pack" title="Scenario pack"></select>
   <button id="reset" title="Throw away everything the agent wrote">Reset</button>
-</header>
-<div class="layout">
-  <nav id="nav"></nav>
-  <main id="main"><div class="empty">Loading…</div></main>
 </div>
+<div id="shell"><nav id="rail"></nav><div id="main"><div class="empty">Loading…</div></div></div>
+<div id="drawer"></div>
+
 <script>
-const TABS = [
-  ["mail", "Mail"], ["chat", "Chat"], ["tickets", "Tickets"], ["crm", "CRM"], ["drive", "Drive"], ["bookings", "Bookings"],
-  null, ["activity", "Activity"], ["permissions", "Permissions"], ["check", "Presenter check"],
-];
-let S = null, raw = "", tab = location.hash.slice(1) || "mail", sel = {}, truth = null;
+const ICON = {
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  drive: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  tickets: '<path d="M4 6h16v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4z"/><path d="M14 6v12" stroke-dasharray="2 2"/>',
+  crm: '<path d="M3 20h18M6 20V10M11 20V4M16 20v-7M21 20v-4"/>',
+  bookings: '<path d="M12 3c3 2 5 6 5 10l2 3-4 1-1 3h-4l-1-3-4-1 2-3c0-4 2-8 5-10z"/><circle cx="12" cy="10" r="1.6"/>',
+  people: '<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.4"/><path d="M16 14.2c3 .2 5 2.3 5 5.3"/>',
+  activity: '<path d="M3 12h4l3-8 4 16 3-8h4"/>',
+  permissions: '<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-4"/>',
+  check: '<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>',
+};
+const APPS = [["mail", "Mail"], ["chat", "Chat"], ["calendar", "Calendar"], ["drive", "Drive"], ["tickets", "Tickets"], ["crm", "CRM"], ["bookings", "Bookings"], ["people", "People"],
+  null, ["activity", "Activity"], ["permissions", "Permissions"], ["check", "Check"]];
+const STAGES = [["prospect", "Prospect"], ["proposal", "Proposal"], ["negotiation", "Negotiation"], ["won", "Closed won"], ["lost", "Closed lost"]];
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const OVERLAYS = ["drive.file", "crm.deal", "crm.acc", "cal.ev"];
+const VIEWS = {};
+
+let S = null, ver = "", app = location.hash.slice(1) || "mail", truth = null, truthPack = "", previews = {};
+const ui = {"mail.folder": "inbox", "drive.folder": "", "drive.view": "list", "crm.tab": "pipeline", "cal.mine": true};
 const $ = (id) => document.getElementById(id);
-const esc = (v) => String(v ?? "").replace(/[&<>"]/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
-const num = (v) => Number(v).toLocaleString("en-US");
-const isNew = (x) => x.written ? '<span class="badge new">written by agent</span>' : "";
-const post = (url, body) => fetch(url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})}).then(load);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const num = (v) => Number(v || 0).toLocaleString("en-US");
+const set = (o) => `data-set="${esc(JSON.stringify(o))}"`;
+const narrow = () => innerWidth <= 860;
+const written = (x) => x && x.written ? '<span class="chip new">written by the agent</span>' : "";
+const post = (url, body) => fetch(url, {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body || {})}).then(() => load(true));
 
-async function load() {
-  const text = await (await fetch("/api/state")).text();
-  if (text === raw) return;
-  raw = text; S = JSON.parse(text); render();
+/* ---------- people, dates, text ---------- */
+const hue = (s) => { let h = 0; for (const c of String(s)) h = (h * 31 + c.charCodeAt(0)) % 360; return h; };
+const person = (name) => S.people.find((p) => p.name === name || p.id === name || p.email === name);
+const nameOf = (addr) => { const m = /^\s*"?([^"<]*?)"?\s*<([^>]+)>/.exec(addr || ""); return m ? (m[1] || m[2]) : (addr || "").trim(); };
+const emailOf = (addr) => { const m = /<([^>]+)>/.exec(addr || ""); return (m ? m[1] : addr || "").trim().toLowerCase(); };
+const isBot = (name) => !person(name) && / Bot$|^Galaxium |System|Alerts|Notifier|Desk$/.test(name || "");
+function av(name, cls = "") {
+  const p = person(name), parts = String(name || "?").replace(/[^\p{L}\s]/gu, "").trim().split(/\s+/);
+  const ini = ((parts[0] || "?")[0] + (parts.length > 1 ? parts[parts.length - 1][0] : "")).toUpperCase();
+  const bot = isBot(name), bg = bot ? "#4a4a55" : `hsl(${hue(name)} ${p ? 48 : 22}% ${p ? 42 : 50}%)`;
+  return `<span class="av ${cls} ${bot ? "sq" : ""}" style="background:${bg}" title="${esc(name)}">${bot ? "⚙" : esc(ini)}</span>`;
+}
+const D = (s) => { const [y, m, d] = String(s).slice(0, 10).split("-").map(Number); return new Date(y, m - 1, d); };
+const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const addDays = (s, n) => { const d = D(s); d.setDate(d.getDate() + n); return iso(d); };
+const monday = (s) => addDays(s, -((D(s).getDay() + 6) % 7));
+const dShort = (s) => { const d = D(s); return `${DAYS[d.getDay()]} ${d.getDate()} ${MONTHS[d.getMonth()]}`; };
+const dLong = (s) => s === S.today ? "Today" : s === addDays(S.today, -1) ? "Yesterday" : D(s).toLocaleDateString("en-GB", {weekday: "long", day: "numeric", month: "long"});
+const when = (s) => { s = String(s || ""); if (!s) return ""; const d = s.slice(0, 10); return d === S.today ? s.slice(11, 16) : d > addDays(S.today, -6) && d < S.today ? `${DAYS[D(d).getDay()]} ${s.slice(11, 16)}` : dShort(d).slice(4) + (d.slice(0, 4) !== S.today.slice(0, 4) ? " " + d.slice(0, 4) : ""); };
+const size = (n) => n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : n > 1024 ? Math.round(n / 1024) + " KB" : n + " B";
+const ext = (p) => (p.split(".").pop() || "").toLowerCase();
+const ftype = (p) => `<span class="ft ${esc(ext(p))}">${esc(ext(p).toUpperCase().slice(0, 4))}</span>`;
+const base = (p) => p.split("/").pop();
+const mins = (t) => +t.slice(0, 2) * 60 + +t.slice(3, 5);
+const has = (obj, q) => !q || q.toLowerCase().split(/\s+/).every((w) => JSON.stringify(obj).toLowerCase().includes(w));
+
+function inline(s) {
+  return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<b>$1</b>").replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?]|$)/g, "$1<b>$2</b>")
+    .replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+}
+function chatText(s) {
+  let h = inline(s).replace(/(^|\s)#([a-z0-9-]{2,})/g, (m, a, c) => S.channels.some((x) => x.name === c) ? `${a}<a ${set({"chat.ch": c})}>#${c}</a>` : m);
+  h = h.replace(/@(here|channel|everyone|[A-ZÀ-Ý][\p{L}]+(?: [A-ZÀ-Ý][\p{L}]+)?)/gu, (m, n) => {
+    if (/^(here|channel|everyone)$/.test(n)) return `<span class="mention">@${n}</span>`;
+    const first = n.split(" ")[0], full = S.people.find((p) => p.name === n), hit = full || S.people.find((p) => p.name.split(" ")[0] === first);
+    return hit ? `<span class="mention">@${esc(full ? n : first)}</span>${full ? "" : esc(n.slice(first.length))}` : m;
+  });
+  return h.replace(/\n/g, "<br>");
+}
+function md(src) {
+  const out = [], lines = String(src || "").split("\n"); let i = 0, list = null;
+  const close = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  while (i < lines.length) {
+    const l = lines[i]; let m;
+    if (/^```/.test(l)) { close(); const buf = []; i++; while (i < lines.length && !/^```/.test(lines[i])) buf.push(lines[i++]); out.push(`<pre>${esc(buf.join("\n"))}</pre>`); i++; continue; }
+    if (/^\s*\|.*\|\s*$/.test(l)) { close(); const rows = []; while (i < lines.length && /^\s*\|.*\|\s*$/.test(lines[i])) rows.push(lines[i++]);
+      const cells = (r) => r.trim().slice(1, -1).split("|").map((c) => c.trim()), hasHead = rows[1] && /^[\s|:-]+$/.test(rows[1]);
+      out.push("<table>" + rows.filter((r, k) => !(hasHead && k === 1)).map((r, k) => "<tr>" + cells(r).map((c) => hasHead && k === 0 ? `<th>${inline(c)}</th>` : `<td>${inline(c)}</td>`).join("") + "</tr>").join("") + "</table>"); continue; }
+    if ((m = /^(#{1,4})\s+(.*)$/.exec(l))) { close(); out.push(`<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`); }
+    else if ((m = /^\s*[-*]\s+(.*)$/.exec(l))) { if (list !== "ul") { close(); out.push("<ul>"); list = "ul"; } out.push(`<li>${inline(m[1])}</li>`); }
+    else if ((m = /^\s*\d+[.)]\s+(.*)$/.exec(l))) { if (list !== "ol") { close(); out.push("<ol>"); list = "ol"; } out.push(`<li>${inline(m[1])}</li>`); }
+    else if ((m = /^>\s?(.*)$/.exec(l))) { close(); out.push(`<blockquote>${inline(m[1])}</blockquote>`); }
+    else if (/^(-{3,}|\*{3,})\s*$/.test(l)) { close(); out.push("<hr>"); }
+    else if (!l.trim()) close();
+    else { close(); const buf = [l]; while (i + 1 < lines.length && lines[i + 1].trim() && !/^(\s*[-*]\s|\s*\d+[.)]\s|#{1,4}\s|>|```|\s*\|)/.test(lines[i + 1])) buf.push(lines[++i]); out.push(`<p>${inline(buf.join("\n")).replace(/\n/g, "<br>")}</p>`); }
+    i++;
+  }
+  close(); return `<div class="md">${out.join("")}</div>`;
 }
 
-function counts() {
-  return {mail: S.mail.length, chat: S.chat.length, tickets: S.tickets.length, crm: S.deals.length,
-          drive: S.drive.length, activity: S.audit.length};
+/* ---------- loading and shell ---------- */
+async function load(force) {
+  try {
+    if (!force && S) { const v = (await (await fetch("/api/version")).json()).version; if (v === ver) return; }
+    S = await (await fetch("/api/state")).json(); ver = S.version; previews = {};
+    if (truthPack !== S.pack.id) truth = null;
+    render();
+  } catch (e) { if (!S) $("main").innerHTML = '<div class="empty">The back office is not answering. Is it running?</div>'; else console.error(e); }
 }
+const mine = (addr) => S.my_addresses.includes(emailOf(addr));
+const fromMe = (m) => emailOf(m.from) === S.persona.email.toLowerCase();
+const isUnread = (t) => { const last = t.messages[t.messages.length - 1]; return !!last && !fromMe(last) && !last.written && last.date.slice(0, 10) >= addDays(S.today, -1); };
+const toMe = (t) => t.messages.some((m) => !fromMe(m) && (m.to + "," + m.cc).split(",").some(mine));
 
 function render() {
-  const c = counts();
-  $("meta").textContent = `Today is ${S.today} · Desk: ${S.persona.name}, ${S.persona.role}`;
-  $("pack").innerHTML = S.packs.map((p) => `<option value="${esc(p.id)}" ${p.id === S.pack.id ? "selected" : ""}>${esc(p.title)}</option>`).join("")
-    + `<option value="none" ${S.pack.id === "none" ? "selected" : ""}>Company only</option>`;
-  $("nav").innerHTML = TABS.map((t) => t ? `<a data-tab="${t[0]}" class="${t[0] === tab ? "on" : ""}">${t[1]}<span>${c[t[0]] ?? ""}</span></a>` : "<hr>").join("");
-  $("main").innerHTML = VIEWS[tab] ? VIEWS[tab]() : VIEWS.mail();
+  const keep = {}; document.querySelectorAll("[data-scroll]").forEach((e) => keep[e.dataset.scroll] = e.scrollTop);
+  const act = document.activeElement, focus = act && act.id && act.id !== "gq" ? {id: act.id, pos: act.selectionStart} : null, me = S.persona;
+  $("desk").innerHTML = `${av(me.name)}<div>${esc(me.name)}<small>${esc(me.role)} · ${dShort(S.today)} ${S.today.slice(0, 4)}</small></div>`;
+  $("pack").innerHTML = S.packs.map((p) => `<option value="${esc(p.id)}" ${p.id === S.pack.id ? "selected" : ""}>${esc(p.title)}</option>`).join("") + `<option value="none" ${S.pack.id === "none" ? "selected" : ""}>Company only</option>`;
+  const badge = {mail: S.mail.filter((t) => toMe(t) && isUnread(t)).length, activity: S.audit.length};
+  $("rail").innerHTML = APPS.map((a) => a ? `<a data-go="${a[0]}" class="${a[0] === app ? "on" : ""}"><svg viewBox="0 0 24 24">${ICON[a[0]]}</svg>${a[1]}${badge[a[0]] ? `<b>${badge[a[0]]}</b>` : ""}</a>` : '<hr><div class="cap">Presenter</div>').join("");
+  $("main").innerHTML = (VIEWS[app] || VIEWS.mail)();
+  renderDrawer();
+  document.querySelectorAll("[data-scroll]").forEach((e) => { const k = e.dataset.scroll; e.scrollTop = k in keep ? keep[k] : e.dataset.bottom ? e.scrollHeight : 0; });
+  if (focus && $(focus.id)) { $(focus.id).focus(); try { $(focus.id).setSelectionRange(focus.pos, focus.pos); } catch (e) {} }
 }
 
-function splitView(key, items, title, subtitle, detail) {
-  if (!items.length) return '<div class="empty">Nothing here.</div>';
-  const current = items.find((i) => i.id === sel[key]) || items[0];
-  return `<div class="split"><div class="list">${items.map((i) =>
-    `<div data-sel="${key}" data-id="${esc(i.id)}" class="${i === current ? "on" : ""}"><div class="t">${title(i)}</div><div class="s">${subtitle(i)}</div></div>`).join("")}
-    </div><div>${detail(current)}</div></div>`;
+/* ---------- mail ---------- */
+function mailFolders() {
+  const shared = S.my_addresses.slice(1).filter((a) => S.mail.some((t) => t.participants.includes(a)));
+  const f = [["inbox", "Inbox", (t) => toMe(t)], ["sent", "Sent items", (t) => t.messages.some(fromMe)], ["flagged", "Flagged", (t) => t.flagged && toMe(t)]];
+  shared.forEach((a) => f.push(["box:" + a, a.split("@")[0] === "all" ? "All staff" : a.split("@")[0] + "@", (t) => t.participants.includes(a), "Shared mailboxes and lists"]));
+  const labels = {}; S.mail.filter(toMe).forEach((t) => t.labels.forEach((l) => labels[l] = (labels[l] || 0) + 1));
+  Object.keys(labels).sort((a, b) => labels[b] - labels[a]).slice(0, 10).forEach((l) => f.push(["label:" + l, l, (t) => toMe(t) && t.labels.includes(l), "Categories"]));
+  f.push(["all", "Everyone's mail", () => true, "Presenter"]);
+  return f;
 }
-
-const VIEWS = {
-  mail: () => `<h2>Mail</h2><p class="sub">Every thread in the company mail system. ${esc(S.persona.name)}'s desk sends as ${esc(S.persona.email)}.</p>` +
-    splitView("mail", S.mail,
-      (t) => esc(t.subject) + (t.messages.some((m) => m.written) ? '<span class="badge new">new</span>' : ""),
-      (t) => `${esc(t.messages[0]?.from.replace(/<.*>/, ""))} · ${esc(t.last_date)} · ${t.messages.length} msg`,
-      (t) => t.messages.map((m) => `<div class="card ${m.written ? "new" : ""}"><h3>${esc(m.from)} ${isNew(m)}</h3>
-        <div class="s sub">To ${esc(m.to)}${m.cc ? " · Cc " + esc(m.cc) : ""} · ${esc(m.date)}</div><div class="body">${esc(m.body)}</div></div>`).join("")),
-
-  chat: () => `<h2>Chat</h2><p class="sub">Team channels.</p>` +
-    splitView("chat", S.channels.map((c) => ({...c, id: c.name})),
-      (c) => "#" + esc(c.name) + (S.chat.some((m) => m.channel === c.name && m.written) ? '<span class="badge new">new</span>' : ""),
-      (c) => esc(c.purpose),
-      (c) => { const ms = S.chat.filter((m) => m.channel === c.name); let day = "";
-        return `<div class="card">${ms.length ? ms.map((m) => {
-          const head = m.date !== day ? `<div class="s sub" style="margin:8px 0 0">${esc(day = m.date)}</div>` : "";
-          return `${head}<div class="msg"><b>${esc(m.author)}</b><span class="s">${esc(m.time)}</span>${isNew(m)}<div class="body">${esc(m.text)}</div></div>`;
-        }).join("") : '<div class="empty">No messages.</div>'}</div>`; }),
-
-  tickets: () => `<h2>Tickets</h2><p class="sub">Support, engineering, finance and legal queues.</p>` +
-    splitView("tickets", S.tickets,
-      (t) => `${esc(t.id)} ${esc(t.title)}${isNew(t)}`,
-      (t) => `${esc(t.queue)} · ${esc(t.status)} · ${esc(t.priority)}`,
-      (t) => `<div class="card ${t.written ? "new" : ""}"><h3>${esc(t.id)} · ${esc(t.title)}</h3>
-        <p class="sub"><span class="badge">${esc(t.status)}</span><span class="badge plain">${esc(t.queue)}</span><span class="badge plain">${esc(t.priority)}</span>
-        · Requester ${esc(t.requester || "none")} · Assignee ${esc(t.assignee || "unassigned")} · Created ${esc(t.created)}</p>
-        <div class="body">${esc(t.description)}</div>${t.related ? `<p class="s">Related: ${esc(t.related)}</p>` : ""}</div>` +
-        (t.comments || []).map((c) => `<div class="card"><b>${esc(c.author)}</b> <span class="s">${esc(c.date)}</span><div class="body">${esc(c.text)}</div></div>`).join("")),
-
-  crm: () => { const acc = Object.fromEntries(S.accounts.map((a) => [a.id, a]));
-    return `<h2>CRM</h2><p class="sub">${S.accounts.length} corporate accounts, ${S.deals.length} deals.</p>` +
-    splitView("crm", S.deals,
-      (d) => `${esc(d.name)}${isNew(d)}`,
-      (d) => `${esc(acc[d.account_id]?.name)} · ${esc(d.stage)} · ${num(d.amount)}`,
-      (d) => `<div class="card ${d.written ? "new" : ""}"><h3>${esc(d.id)} · ${esc(d.name)}</h3>
-        <p class="sub"><span class="badge ${d.stage === "lost" ? "warn" : d.stage === "won" ? "new" : ""}">${esc(d.stage)}</span>
-        ${esc(acc[d.account_id]?.name)} (${esc(acc[d.account_id]?.segment)}) · Owner ${esc(d.owner)} · ${num(d.amount)} credits · Close ${esc(d.close_date)}</p>
-        ${d.loss_reason ? `<p>Loss reason: ${esc(d.loss_reason)}${d.competitor ? " · Competitor: " + esc(d.competitor) : ""}</p>` : ""}
-        ${d.next_step ? `<p>Next step: ${esc(d.next_step)}</p>` : ""}</div>` +
-        (d.notes || []).map((n) => `<div class="card"><b>${esc(n.author)}</b> <span class="s">${esc(n.date)}</span><div class="body">${esc(n.text)}</div></div>`).join("")); },
-
-  drive: () => `<h2>Drive</h2><p class="sub">Shared files. Click a file to open the original.</p><div class="wrap"><table>
-    <tr><th>File</th><th>From</th><th class="n">Size</th></tr>${S.drive.map((f) =>
-    `<tr><td><a class="file" href="/drive/${encodeURI(f.path)}">${esc(f.path)}</a>${isNew(f)}</td><td>${esc(f.source)}</td><td class="n">${num(Math.ceil(f.size / 1024))} KB</td></tr>`).join("")}</table></div>`,
-
-  bookings: () => { const tbl = (title, key, rows) => `<div class="card"><h3>${title}</h3><div class="wrap"><table>
-      <tr><th>${key.replace("_", " ")}</th><th class="n">Bookings</th><th class="n">Cancelled</th><th class="n">Paid, excl. cancelled</th></tr>${rows.map((r) =>
-      `<tr><td>${esc(r[key])}</td><td class="n">${num(r.bookings)}</td><td class="n">${num(r.cancelled)}</td><td class="n">${num(r.price_paid_excluding_cancelled)}</td></tr>`).join("")}</table></div></div>`;
-    return `<h2>Bookings</h2><p class="sub">A fixed, read-only snapshot of the booking system, with ${num(S.bookings.quotes)} price quotes from the hold service. Amounts in credits.</p>` +
-      tbl("By month booked", "month", S.bookings.by_month) + tbl("By seat class", "seat_class", S.bookings.by_class) + tbl("By route", "route", S.bookings.by_route); },
-
-  activity: () => `<h2>Activity</h2><p class="sub">Every write the agent attempted through MCP, newest first.</p>` + (S.audit.length ? `<div class="wrap"><table>
-    <tr><th>Time</th><th>Tool</th><th>Outcome</th><th>Arguments</th></tr>${S.audit.map((a) =>
-    `<tr><td style="white-space:nowrap">${esc(a.time.replace("T", " "))}</td><td><code>${esc(a.tool)}</code><div class="s sub" style="margin:0">as ${esc(a.actor)}</div></td>
-     <td><span class="badge ${a.outcome === "ok" ? "new" : "warn"}">${esc(a.outcome)}</span><div class="s sub" style="margin:0">${esc(a.result)}</div></td>
-     <td><code class="body">${esc(JSON.stringify(a.args, null, 1))}</code></td></tr>`).join("")}</table></div>` : '<div class="empty">The agent has not written anything yet.</div>'),
-
-  permissions: () => `<h2>Permissions</h2><p class="sub">Reading is open. Writing can be switched off per system; a blocked call is refused and logged.</p>
-    <div class="card">${Object.entries(S.permissions).map(([sys, on]) =>
-      `<label style="margin-right:18px;white-space:nowrap"><input type="checkbox" data-perm="${sys}" ${on ? "checked" : ""}> ${sys} writes</label>`).join("")}</div>
-    <div class="wrap"><table><tr><th>Tool</th><th>System</th><th>Access</th><th>What it does</th></tr>${S.tools.map((t) =>
-    `<tr><td><code>${esc(t.name)}</code></td><td>${esc(t.system)}</td><td><span class="badge ${t.kind === "read" ? "plain" : t.allowed ? "new" : "warn"}">${t.kind === "read" ? "read" : t.allowed ? "write · allowed" : "write · blocked"}</span></td><td>${esc(t.description)}</td></tr>`).join("")}</table></div>`,
-
-  check: () => `<h2>Presenter check</h2><p class="sub">${esc(S.pack.title || "")}${S.pack.summary ? " · " + esc(S.pack.summary) : ""}</p>
-    ${S.pack.prompt ? `<div class="card"><h3>Prompt to give the agent</h3><div class="body">${esc(S.pack.prompt)}</div></div>` : ""}
-    <div class="card"><h3>Ground truth</h3>${truth === null
-      ? '<p class="sub">The expected answers. The agent cannot reach this through MCP. Keep it off screen until the check.</p><button id="reveal">Show ground truth</button>'
-      : `<div class="body">${esc(truth) || "This scenario has no ground truth file."}</div>`}</div>`,
+VIEWS.mail = () => {
+  const folders = mailFolders(), cur = folders.find((f) => f[0] === ui["mail.folder"]) || folders[0], q = ui["mail.q"] || "";
+  const list = S.mail.filter(cur[2]).filter((t) => has([t.subject, t.messages], q));
+  const sel = list.find((t) => t.id === ui["mail.id"]) || (narrow() ? null : list[0]);
+  let group = "", last = "";
+  const side = folders.map((f) => { const n = f[0] === "sent" ? 0 : S.mail.filter(f[2]).filter(isUnread).length, h = f[3] && f[3] !== group ? `<h4>${group = f[3]}</h4>` : "";
+    return `${h}<a ${set({"mail.folder": f[0], "mail.id": null, "mail.q": ""})} class="${f === cur ? "on" : ""}"><span>${esc(f[1])}</span><span>${n || ""}</span></a>`; }).join("");
+  const wk = monday(S.today);
+  const bucket = (d) => { d = d.slice(0, 10); return d === S.today ? "Today" : d === addDays(S.today, -1) ? "Yesterday" : d >= wk ? "Earlier this week" : d >= addDays(wk, -7) ? "Last week" : d.slice(0, 7) === S.today.slice(0, 7) ? "Earlier this month" : `${MONTHS[+d.slice(5, 7) - 1]} ${d.slice(0, 4)}`; };
+  const items = list.slice(0, 400).map((t) => { const m = t.messages[t.messages.length - 1], b = bucket(t.last_date), head = b !== last ? `<div class="group">${last = b}</div>` : "";
+    const who = cur[0] === "sent" ? "To: " + nameOf(m.to.split(",")[0]) : nameOf(m.from);
+    return `${head}<div class="item ${t === sel ? "on" : ""} ${isUnread(t) ? "unread" : ""}" ${set({"mail.id": t.id})}>${av(nameOf(m.from))}<div style="min-width:0">
+      <div class="l1"><span class="who">${esc(who)}${t.messages.length > 1 ? ` <span class="faint">(${t.messages.length})</span>` : ""}</span><span class="when">${t.attachments.length ? "📎 " : ""}${t.flagged ? "⚑ " : ""}${when(t.last_date)}</span></div>
+      <div class="subj">${esc(t.subject)}</div><div class="prev">${t.messages.some((x) => x.written) ? '<span class="chip new">agent</span> ' : ""}${esc(m.body.replace(/\s+/g, " ").slice(0, 110))}</div></div></div>`; }).join("");
+  const read = sel ? `<div class="head"><button class="btn back" ${set({"mail.id": null})}>← Back</button><h2>${esc(sel.subject)}</h2>${sel.labels.map((l) => `<span class="chip">${esc(l)}</span>`).join(" ")}</div>` +
+    sel.messages.map((m) => `<div class="msg ${m.written ? "written" : ""}"><div class="mh">${av(nameOf(m.from))}<div class="grow"><b>${esc(nameOf(m.from))}</b> <span class="faint small">&lt;${esc(emailOf(m.from))}&gt;</span> ${written(m)}
+      <div class="small muted">To: ${esc(m.to.split(",").map(nameOf).join("; "))}${m.cc ? ` · Cc: ${esc(m.cc.split(",").map(nameOf).join("; "))}` : ""}</div></div><span class="small muted nowrap">${dShort(m.date)} ${m.date.slice(11, 16)}</span></div>
+      <div class="body">${esc(m.body)}</div></div>`).join("") +
+    (sel.attachments.length ? `<div style="margin:0 14px 20px">${sel.attachments.map((a) => `<span class="attach" data-go="drive" ${set({"drive.file": a, "drive.folder": a.split("/").slice(0, -1).join("/"), "drive.mode": "", "drive.q": ""})}>${ftype(a)}<span>${esc(base(a))}<br><span class="small muted">in the drive</span></span></span>`).join("")}</div>` : "")
+    : '<div class="empty">Select a conversation to read it.</div>';
+  return `<div class="panes mail"><div class="pane folders ${narrow() ? "hide-narrow" : ""}" data-scroll="mf"><div style="padding:6px 10px 2px;overflow:hidden;text-overflow:ellipsis"><b>${esc(S.persona.email)}</b></div>${side}</div>
+    <div class="col pane ${sel && narrow() ? "hide-narrow" : ""}"><div class="bar"><h2>${esc(cur[1])}</h2><span class="chip">${list.length}</span><span class="grow"></span><input class="q" id="mailq" data-q="mail.q" placeholder="Search this folder" value="${esc(q)}"></div>
+      <div class="scroll mlist" data-scroll="ml:${esc(cur[0])}">${items || '<div class="empty">No mail here.</div>'}</div></div>
+    <div class="pane read ${!sel && narrow() ? "hide-narrow" : ""}" data-scroll="mr:${sel ? esc(sel.id) : ""}">${read}</div></div>`;
 };
 
-document.addEventListener("click", async (e) => {
-  const nav = e.target.closest("[data-tab]"), row = e.target.closest("[data-sel]");
-  if (nav) { tab = nav.dataset.tab; location.hash = tab; render(); }
-  else if (row) { sel[row.dataset.sel] = row.dataset.id; render(); }
-  else if (e.target.id === "reveal") { truth = (await (await fetch("/api/ground-truth")).json()).text; render(); }
-  else if (e.target.id === "reset" && confirm("Reset the back office to its starting state?")) post("/api/reset");
+/* ---------- chat ---------- */
+const dmName = (c) => (c.members || []).filter((m) => m !== S.persona.id).map((m) => (person(m) || {name: m}).name).join(", ") || S.persona.name;
+function chatMsg(m, prev, key) {
+  const cont = prev && prev.author === m.author && prev.date === m.date && !prev.replies && !m.written === !prev.written && Math.abs(mins(m.time) - mins(prev.time)) < 6;
+  const body = `<div class="tx">${chatText(m.text)}</div>${(m.reactions || []).map((r) => `<span class="rx">${esc(r.emoji)} <b>${esc(r.count)}</b></span>`).join("")}`;
+  const open = ui["chat.open." + key], rs = m.replies || [];
+  const thread = rs.length ? `<div><span class="thr" data-toggle="chat.open.${esc(key)}">${[...new Set(rs.map((r) => r.author))].slice(0, 3).map((a) => av(a, "sm sq")).join("")} ${rs.length} ${rs.length > 1 ? "replies" : "reply"} <span>${open ? "hide" : "last reply " + rs[rs.length - 1].time}</span></span></div>${open ? `<div class="replies">${rs.map((r) => chatMsg(r, null, "")).join("")}</div>` : ""}` : "";
+  if (cont) return `<div class="cm cont"><span class="gut">${m.time}</span><div>${body}${thread}</div></div>`;
+  return `<div class="cm ${m.written ? "written" : ""}">${av(m.author, "sq")}<div><span class="nm">${esc(m.author)}</span>${isBot(m.author) ? '<span class="app">APP</span>' : ""}<span class="tm">${m.time}</span> ${written(m)}${body}${thread}</div></div>`;
+}
+VIEWS.chat = () => {
+  const chans = S.channels.filter((c) => c.type !== "dm"), dms = S.channels.filter((c) => c.type === "dm");
+  const cur = S.channels.find((c) => c.name === ui["chat.ch"]) || chans.find((c) => c.name === "general") || chans[0], q = ui["chat.q"] || "";
+  const by = {}; S.chat.forEach((m) => (by[m.channel] = by[m.channel] || []).push(m));
+  const fresh = (c) => (by[c.name] || []).filter((m) => m.date >= S.today && m.author !== S.persona.name && !isBot(m.author)).length;
+  const link = (c, label, pre) => { const n = c === cur ? 0 : fresh(c); return `<a ${set({"chat.ch": c.name, "chat.q": ""})} class="${c === cur ? "on" : ""} ${n ? "unread" : ""}">${pre}<span style="overflow:hidden;text-overflow:ellipsis">${esc(label)}</span>${n && c.type === "dm" ? `<em>${n}</em>` : ""}</a>`; };
+  const sections = {}; chans.forEach((c) => (sections[c.section || "Channels"] = sections[c.section || "Channels"] || []).push(c));
+  const side = `<div class="ws">Galaxium Travels<small>${esc(S.persona.name)}</small></div>` + Object.entries(sections).map(([n, cs]) => `<h4>${esc(n)}</h4>` + cs.map((c) => link(c, c.name, '<span class="hash">#</span>')).join("")).join("") +
+    (dms.length ? "<h4>Direct messages</h4>" + dms.map((c) => link(c, dmName(c), `<span class="dot ${hue(c.name) % 3 ? "" : "off"}"></span>`)).join("") : "");
+  const msgs = q ? S.chat.filter((m) => has(m, q)) : by[cur.name] || [];
+  let day = "", prev = null;
+  const body = msgs.slice(-600).map((m, i) => { const head = m.date !== day ? `<div class="day"><span>${dLong(day = m.date)}</span></div>` : "";
+    const h = head + (q ? `<div class="small muted" style="padding:6px 20px 0">in <a ${set({"chat.ch": m.channel, "chat.q": ""})}>#${esc(m.channel)}</a></div>` : "") + chatMsg(m, head || q ? null : prev, `${m.channel}|${m.date}|${m.time}|${i}`); prev = m; return h; }).join("");
+  const title = cur.type === "dm" ? esc(dmName(cur)) : "# " + esc(cur.name), people = new Set((by[cur.name] || []).map((m) => m.author)).size;
+  return `<div class="panes chat"><div class="pane side ${narrow() && ui["chat.ch"] ? "hide-narrow" : ""}" data-scroll="cs">${side}</div>
+    <div class="col ${narrow() && !ui["chat.ch"] ? "hide-narrow" : ""}"><div class="bar chead"><button class="btn back" ${set({"chat.ch": null})}>←</button><div><h2>${q ? "Search results" : title}</h2><p>${q ? `${msgs.length} messages` : esc(cur.topic || cur.purpose || (cur.type === "dm" ? "Direct message" : ""))}</p></div><span class="grow"></span>${q ? "" : `<span class="chip">${people} people · ${msgs.length} messages</span>`}<input class="q" id="chatq" data-q="chat.q" placeholder="Search chat" value="${esc(q)}"></div>
+      <div class="scroll" data-scroll="cm:${esc(cur.name)}:${esc(q)}" data-bottom="1">${body || '<div class="empty">Nothing has been said here yet.</div>'}<div style="height:8px"></div></div>
+      <div class="composer">Message ${title} · posts arrive here when the agent uses its chat tool</div></div></div>`;
+};
+
+/* ---------- drive ---------- */
+VIEWS.drive = () => {
+  const folder = ui["drive.folder"] || "", q = ui["drive.q"] || "", mode = ui["drive.mode"] || "", view = ui["drive.view"];
+  const subs = (dir) => { const n = dir ? dir.length + 1 : 0; return [...new Set(S.drive.filter((f) => f.path.startsWith(dir ? dir + "/" : "") && f.path.slice(n).includes("/")).map((f) => f.path.slice(n).split("/")[0]))].sort(); };
+  const count = (dir) => S.drive.filter((f) => f.path.startsWith(dir + "/")).length;
+  const go = (dir) => set({"drive.folder": dir, "drive.mode": "", "drive.q": "", "drive.file": null});
+  const tree = `<a ${go("")} class="${!folder && !mode ? "on" : ""}"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.7">${ICON.drive}</svg> Shared drive</a>` +
+    subs("").map((t) => `<a ${go(t)} class="${folder === t && !mode ? "on" : ""}" style="padding-left:20px"><span class="fold"></span>${esc(t)}</a>` + (folder.split("/")[0] === t && !mode ? subs(t).map((s) => `<a class="sub ${folder === t + "/" + s ? "on" : ""}" ${go(t + "/" + s)}><span class="fold" style="transform:scale(.8)"></span>${esc(s)}</a>`).join("") : "")).join("") +
+    `<hr style="border:0;border-top:1px solid var(--line);margin:10px 6px"><a ${set({"drive.mode": "recent", "drive.q": ""})} class="${mode === "recent" ? "on" : ""}">🕘 Recent</a><a ${set({"drive.mode": "agent", "drive.q": ""})} class="${mode === "agent" ? "on" : ""}">✎ Written by the agent <span class="chip new" style="margin-left:auto">${S.drive.filter((f) => f.written).length}</span></a>`;
+  let files, folders = [];
+  if (q) files = S.drive.filter((f) => has([f.path, f.owner], q));
+  else if (mode === "recent") files = [...S.drive].sort((a, b) => b.modified.localeCompare(a.modified)).slice(0, 40);
+  else if (mode === "agent") files = S.drive.filter((f) => f.written);
+  else { const n = folder ? folder.length + 1 : 0; files = S.drive.filter((f) => f.path.startsWith(folder ? folder + "/" : "") && !f.path.slice(n).includes("/")); folders = subs(folder); }
+  const parts = folder ? folder.split("/") : [];
+  const crumbs = q ? "<a>Search results</a>" : mode ? `<a>${mode === "recent" ? "Recent" : "Written by the agent"}</a>` : `<a ${go("")}>Shared drive</a>` + parts.map((p, i) => `<span class="faint">›</span><a ${go(parts.slice(0, i + 1).join("/"))}>${esc(p)}</a>`).join("");
+  const openf = (f) => set({"drive.file": f.path, "drive.sheet": 0});
+  const rows = view === "grid" ? `<div class="gridf">${files.map((f) => `<div class="gcard" ${openf(f)}><div class="thumb">${ftype(f.path)}</div><div class="nm"><b title="${esc(base(f.path))}">${esc(base(f.path))}</b><span class="small muted">${dShort(f.modified)} ${f.written ? "· agent" : ""}</span></div></div>`).join("")}</div>`
+    : `<table class="t"><tr><th>Name</th><th>Owner</th><th>Modified</th><th class="n">Size</th></tr>${files.map((f) => `<tr class="row ${ui["drive.file"] === f.path ? "on" : ""}" ${openf(f)}><td><span style="display:flex;align-items:center;gap:10px">${ftype(f.path)}<span><b style="font-weight:500">${esc(base(f.path))}</b> ${written(f)}${q || mode ? `<br><span class="small muted">${esc(f.path.split("/").slice(0, -1).join(" › "))}</span>` : ""}</span></span></td>
+      <td class="nowrap">${f.owner ? `${av(f.owner, "sm")} ${esc(f.owner)}` : '<span class="faint">–</span>'}</td><td class="nowrap muted">${dShort(f.modified)} ${f.modified.slice(0, 4)}</td><td class="n muted">${size(f.size)}</td></tr>`).join("")}</table>`;
+  return `<div class="panes drive"><div class="pane tree ${narrow() ? "hide-narrow" : ""}" data-scroll="dt">${tree}</div><div class="col">
+    <div class="bar"><div class="crumbs">${crumbs}</div><span class="grow"></span><input class="q" id="driveq" data-q="drive.q" placeholder="Search the drive" value="${esc(q)}">
+      <button class="btn ${view === "list" ? "on" : ""}" ${set({"drive.view": "list"})}>List</button><button class="btn ${view === "grid" ? "on" : ""}" ${set({"drive.view": "grid"})}>Grid</button></div>
+    <div class="scroll" data-scroll="df:${esc(folder + mode + q)}">${folders.length ? `<h3 class="sec">Folders</h3><div class="cards">${folders.map((s) => { const p = (folder ? folder + "/" : "") + s; return `<div class="fcard" ${go(p)}><span class="fold"></span><div><b>${esc(s)}</b><span class="small muted">${count(p)} files</span></div></div>`; }).join("")}</div>` : ""}
+      ${files.length ? `<h3 class="sec">Files</h3>${rows}` : folders.length ? "" : '<div class="empty">No files here.</div>'}</div></div></div>`;
+};
+async function preview(path) {
+  previews[path] = {loading: true};
+  try { previews[path] = await (await fetch("/api/drive-preview/" + path.split("/").map(encodeURIComponent).join("/"))).json(); } catch (e) { previews[path] = {error: String(e)}; }
+  renderDrawer();
+}
+
+/* ---------- drawer: file preview, deal, account, event ---------- */
+const notes = (ns) => (ns || []).length ? ns.map((n) => `<div class="cmt">${av(n.author)}<div><b>${esc(n.author)}</b> <span class="small muted">${esc(n.date)}</span><div style="white-space:pre-wrap">${esc(n.text)}</div></div></div>`).join("") : '<p class="muted">Nothing yet.</p>';
+function renderDrawer() {
+  const el = $("drawer"), keep = {}; el.querySelectorAll("[data-scroll]").forEach((e) => keep[e.dataset.scroll] = e.scrollTop);
+  let html = "";
+  const head = (title, sub, extra) => `<div class="bar" style="flex-wrap:nowrap"><div style="min-width:0;flex:1"><h2 style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${title}</h2><div class="small muted">${sub || ""}</div></div>${extra || ""}<button class="btn" data-close="1">Close ✕</button></div>`;
+  if (app === "drive" && ui["drive.file"]) {
+    const path = ui["drive.file"], f = S.drive.find((x) => x.path === path), p = previews[path];
+    if (f) { if (!p) preview(path);
+      let body = '<div class="empty">Opening…</div>';
+      if (p && p.kind === "sheet") { const k = Math.min(ui["drive.sheet"] || 0, p.sheets.length - 1), sh = p.sheets[k];
+        body = (p.sheets.length > 1 ? `<div class="tabs">${p.sheets.map((s, i) => `<a class="${i === k ? "on" : ""}" ${set({"drive.sheet": i})}>${esc(s.name)}</a>`).join("")}</div>` : "") +
+          `<div class="scroll" data-scroll="pv:${esc(path)}:${k}" style="overflow:auto"><table class="sheet">${sh.rows.map((r, i) => `<tr><th>${i + 1}</th>${r.map((c) => `<td ${typeof c === "number" ? 'class="n"' : ""}>${esc(typeof c === "number" ? num(c) : c)}</td>`).join("")}</tr>`).join("")}</table>${sh.total > sh.rows.length ? `<p class="muted small" style="padding:8px">Showing the first ${sh.rows.length} of ${sh.total} rows.</p>` : ""}</div>`; }
+      else if (p && p.text !== undefined) body = `<div class="scroll body" data-scroll="pv:${esc(path)}">${p.kind === "markdown" ? md(p.text) : `<div class="md" style="white-space:pre-wrap">${esc(p.text)}</div>`}</div>`;
+      else if (p && p.error) body = `<div class="empty">${esc(p.error)}</div>`;
+      html = head(`<span style="display:inline-flex;gap:10px;align-items:center">${ftype(path)} ${esc(base(path))}</span>`, `${esc(path.split("/").slice(0, -1).join(" › "))} · ${esc(f.owner || "no owner")} · changed ${dShort(f.modified)} ${f.modified.slice(0, 4)} · ${size(f.size)} ${written(f)}`, `<a class="btn" href="/drive/${esc(path)}">Download</a>`) + body; }
+  } else if (app === "crm" && ui["crm.deal"]) {
+    const d = S.deals.find((x) => x.id === ui["crm.deal"]);
+    if (d) { const a = S.accounts.find((x) => x.id === d.account_id) || {};
+      html = head(esc(d.name), `${esc(d.id)} · ${esc(a.name || "")} ${written(d)}`) + `<div class="scroll body" data-scroll="dd"><dl class="kv"><dt>Stage</dt><dd><span class="chip ${d.stage === "won" ? "new" : d.stage === "lost" ? "warn" : "blue"}">${esc(d.stage)}</span></dd><dt>Amount</dt><dd><b>${num(d.amount)}</b> credits</dd><dt>Owner</dt><dd>${av(d.owner, "sm")} ${esc(d.owner)}</dd><dt>Close date</dt><dd>${esc(d.close_date || "")}</dd>
+        ${d.competitor ? `<dt>Competitor</dt><dd>${esc(d.competitor)}</dd>` : ""}${d.loss_reason ? `<dt>Loss reason</dt><dd>${esc(d.loss_reason)}</dd>` : ""}${d.next_step ? `<dt>Next step</dt><dd>${esc(d.next_step)}</dd>` : ""}<dt>Account</dt><dd><a ${set({"crm.deal": null, "crm.acc": a.id})}>${esc(a.name || d.account_id)}</a> · ${esc(a.segment || "")}</dd></dl>
+        <h3 style="margin-top:18px">Notes</h3>${notes(d.notes)}</div>`; }
+  } else if (app === "crm" && ui["crm.acc"]) {
+    const a = S.accounts.find((x) => x.id === ui["crm.acc"]);
+    if (a) { const ds = S.deals.filter((d) => d.account_id === a.id);
+      html = head(esc(a.name), `${esc(a.id)} · ${esc(a.segment)} · ${esc(a.home)} ${written(a)}`) + `<div class="scroll body" data-scroll="da"><dl class="kv">${a.owner ? `<dt>Account owner</dt><dd>${av(a.owner, "sm")} ${esc(a.owner)}</dd>` : ""}${a.tier ? `<dt>Tier</dt><dd>${esc(a.tier)}</dd>` : ""}${a.since ? `<dt>Customer since</dt><dd>${esc(a.since)}</dd>` : ""}${a.travellers ? `<dt>Travellers a year</dt><dd>${num(a.travellers)}</dd>` : ""}<dt>Main contact</dt><dd>${esc(a.contact || "")}</dd></dl>
+        ${(a.contacts || []).length ? `<h3>Contacts</h3><table class="t" style="margin:6px 0 18px">${a.contacts.map((c) => `<tr><td>${av(c.name, "sm")} ${esc(c.name)}</td><td class="muted">${esc(c.title || "")}</td><td class="muted">${esc(c.email || "")}</td></tr>`).join("")}</table>` : ""}
+        <h3>Deals</h3><table class="t" style="margin:6px 0 18px">${ds.map((d) => `<tr class="row" ${set({"crm.deal": d.id, "crm.acc": null})}><td class="muted">${esc(d.id)}</td><td>${esc(d.name)}</td><td><span class="chip">${esc(d.stage)}</span></td><td class="n">${num(d.amount)}</td></tr>`).join("") || '<tr><td class="muted">No deals.</td></tr>'}</table>
+        <h3>Notes</h3>${notes(a.notes)}</div>`; }
+  } else if (app === "calendar" && ui["cal.ev"]) {
+    const e = S.events.find((x) => x.id === ui["cal.ev"]);
+    if (e) html = head(esc(e.title), `${dLong(e.start.slice(0, 10))} · ${e.start.slice(11, 16)}${e.end ? "–" + e.end.slice(11, 16) : ""} ${written(e)}`) + `<div class="scroll body"><dl class="kv"><dt>Organiser</dt><dd>${esc(e.organizer || "")}</dd><dt>Where</dt><dd>${esc(e.location || "–")}</dd><dt>Attendees</dt><dd>${(e.attendees || []).map((a) => `<span class="chip">${esc((person(a) || {name: a}).name)}</span>`).join(" ") || "–"}</dd>${e.repeats ? `<dt>Repeats</dt><dd>${esc(e.repeats)}</dd>` : ""}</dl>${e.notes ? md(e.notes) : ""}</div>`;
+  }
+  el.innerHTML = html; el.classList.toggle("open", !!html);
+  el.querySelectorAll("[data-scroll]").forEach((e) => { if (e.dataset.scroll in keep) e.scrollTop = keep[e.dataset.scroll]; });
+}
+
+/* ---------- tickets ---------- */
+VIEWS.tickets = () => {
+  const fq = ui["tk.queue"] || "", fs = ui["tk.status"] || "", q = ui["tk.q"] || "", done = (t) => /resolved|closed/.test(t.status);
+  const queues = {}, statuses = {}; S.tickets.forEach((t) => { queues[t.queue] = (queues[t.queue] || 0) + 1; statuses[t.status] = (statuses[t.status] || 0) + 1; });
+  const list = S.tickets.filter((t) => (!fq || t.queue === fq) && (!fs || (fs === "mine" ? t.assignee === S.persona.name : fs === "active" ? !done(t) : t.status === fs)) && has(t, q)).sort((a, b) => String(b.created).localeCompare(String(a.created)));
+  const sel = list.find((t) => t.id === ui["tk.id"]) || (narrow() ? null : list[0]);
+  const side = `<h4>Views</h4><a ${set({"tk.status": "", "tk.queue": "", "tk.id": null})} class="${!fs && !fq ? "on" : ""}"><span>All tickets</span><span>${S.tickets.length}</span></a>
+    <a ${set({"tk.status": "active", "tk.id": null})} class="${fs === "active" ? "on" : ""}"><span>Not yet solved</span><span>${S.tickets.filter((t) => !done(t)).length}</span></a>
+    <a ${set({"tk.status": "mine", "tk.id": null})} class="${fs === "mine" ? "on" : ""}"><span>Assigned to me</span><span>${S.tickets.filter((t) => t.assignee === S.persona.name).length}</span></a>
+    <h4>Queues</h4>${Object.keys(queues).sort().map((k) => `<a ${set({"tk.queue": fq === k ? "" : k, "tk.id": null})} class="${fq === k ? "on" : ""}"><span>${esc(k)}</span><span>${queues[k]}</span></a>`).join("")}
+    <h4>Status</h4>${Object.keys(statuses).sort().map((k) => `<a ${set({"tk.status": fs === k ? "" : k, "tk.id": null})} class="${fs === k ? "on" : ""}"><span><i class="st ${esc(k)}"></i>${esc(k.replace("_", " "))}</span><span>${statuses[k]}</span></a>`).join("")}`;
+  const pri = (p) => p === "urgent" || p === "high" ? `<span class="chip warn">${esc(p)}</span>` : `<span class="chip">${esc(p || "normal")}</span>`;
+  const rows = list.slice(0, 300).map((t) => `<tr class="row ${t === sel ? "on" : ""}" ${set({"tk.id": t.id})}><td class="nowrap muted">${esc(t.id)}</td><td><b style="font-weight:${done(t) ? 400 : 600}">${esc(t.title)}</b> ${t.written ? '<span class="chip new">agent</span>' : ""}<br><span class="small muted">${esc(t.requester || "")} · ${esc(t.queue)}</span></td><td class="nowrap"><i class="st ${esc(t.status)}"></i>${esc(String(t.status).replace("_", " "))}</td><td class="nowrap small muted">${when(t.created)}</td></tr>`).join("");
+  const det = sel ? `<div class="tdet"><button class="btn back" ${set({"tk.id": null})}>← Back</button> <span class="muted">${esc(sel.id)}</span> ${written(sel)}<h2>${esc(sel.title)}</h2><span class="chip"><i class="st ${esc(sel.status)}"></i>${esc(String(sel.status).replace("_", " "))}</span> ${pri(sel.priority)} <span class="chip">${esc(sel.queue)}</span>
+    <dl class="kv"><dt>Requester</dt><dd>${esc(sel.requester || "–")}</dd><dt>Assignee</dt><dd>${sel.assignee ? `${av(sel.assignee, "sm")} ${esc(sel.assignee)}` : "Unassigned"}</dd><dt>Created</dt><dd>${esc(sel.created)}</dd>${sel.related ? `<dt>Related</dt><dd>${esc(sel.related)}</dd>` : ""}${sel.updated ? `<dt>Updated</dt><dd>${esc(sel.updated)}</dd>` : ""}</dl>
+    <div style="white-space:pre-wrap;margin:14px 0 18px;max-width:80ch">${esc(sel.description || "")}</div><h3>Conversation</h3>${notes(sel.comments)}</div>` : '<div class="empty">Select a ticket.</div>';
+  return `<div class="panes tickets"><div class="pane folders ${narrow() ? "hide-narrow" : ""}" data-scroll="tf">${side}</div>
+    <div class="col pane ${sel && narrow() ? "hide-narrow" : ""}"><div class="bar"><h2>Tickets</h2><span class="chip">${list.length}</span><span class="grow"></span><input class="q" id="tkq" data-q="tk.q" placeholder="Search tickets" value="${esc(q)}"></div><div class="scroll" data-scroll="tl:${esc(fq + fs)}"><table class="t">${rows}</table>${list.length ? "" : '<div class="empty">No tickets match.</div>'}</div></div>
+    <div class="pane ${!sel && narrow() ? "hide-narrow" : ""}" data-scroll="td:${sel ? esc(sel.id) : ""}">${det}</div></div>`;
+};
+
+/* ---------- CRM ---------- */
+VIEWS.crm = () => {
+  const tab = ui["crm.tab"], q = ui["crm.q"] || "", owner = ui["crm.owner"] || "";
+  const deals = S.deals.filter((d) => has(d, q) && (!owner || d.owner === owner)), accName = (id) => (S.accounts.find((a) => a.id === id) || {}).name || id;
+  const owners = [...new Set(S.deals.map((d) => d.owner))].sort(), stageChip = (d) => `<span class="chip ${d.stage === "won" ? "new" : d.stage === "lost" ? "warn" : "blue"}">${esc(d.stage)}</span>`;
+  const bar = `<div class="bar"><h2>CRM</h2><div class="tabs" style="border:0;padding:0 8px">${[["pipeline", "Pipeline"], ["deals", "All deals"], ["accounts", "Accounts"]].map((t) => `<a class="${tab === t[0] ? "on" : ""}" ${set({"crm.tab": t[0]})}>${t[1]}</a>`).join("")}</div><span class="grow"></span>
+    <select class="btn" data-sel="crm.owner"><option value="">All owners</option>${owners.map((o) => `<option ${o === owner ? "selected" : ""}>${esc(o)}</option>`).join("")}</select><input class="q" id="crmq" data-q="crm.q" placeholder="Search" value="${esc(q)}"></div>`;
+  if (tab === "accounts") { const accs = S.accounts.filter((a) => has(a, q) && (!owner || a.owner === owner));
+    return bar + `<div class="scroll" data-scroll="ca" style="background:var(--panel)"><table class="t"><tr><th>Account</th><th>Segment</th><th>Home</th><th>Owner</th><th>Main contact</th><th class="n">Open deals</th><th class="n">Open value</th></tr>${accs.map((a) => { const open = S.deals.filter((d) => d.account_id === a.id && !/won|lost/.test(d.stage)); return `<tr class="row" ${set({"crm.acc": a.id, "crm.deal": null})}><td><span style="display:flex;gap:10px;align-items:center">${av(a.name, "sq")}<span><b style="font-weight:600">${esc(a.name)}</b> ${written(a)}<br><span class="small muted">${esc(a.id)}${a.tier ? " · " + esc(a.tier) : ""}</span></span></span></td><td>${esc(a.segment)}</td><td>${esc(a.home)}</td><td>${esc(a.owner || "")}</td><td class="muted">${esc(a.contact || "")}</td><td class="n">${open.length || ""}</td><td class="n">${open.length ? num(open.reduce((s, d) => s + (d.amount || 0), 0)) : ""}</td></tr>`; }).join("")}</table></div>`; }
+  if (tab === "deals") return bar + `<div class="scroll" data-scroll="cd" style="background:var(--panel)"><table class="t"><tr><th>Deal</th><th>Account</th><th>Stage</th><th>Owner</th><th>Close date</th><th class="n">Amount</th></tr>${[...deals].sort((a, b) => String(b.close_date).localeCompare(String(a.close_date))).map((d) => `<tr class="row" ${set({"crm.deal": d.id, "crm.acc": null})}><td><b style="font-weight:600">${esc(d.name)}</b> ${written(d)}<br><span class="small muted">${esc(d.id)}</span></td><td>${esc(accName(d.account_id))}</td><td>${stageChip(d)}</td><td>${esc(d.owner)}</td><td class="nowrap">${esc(d.close_date || "")}</td><td class="n">${num(d.amount)}</td></tr>`).join("")}</table></div>`;
+  return bar + `<div class="kan" data-scroll="ck">${STAGES.map(([k, label]) => { const closed = /won|lost/.test(k), ds = deals.filter((d) => d.stage === k).sort((a, b) => closed ? String(b.close_date).localeCompare(String(a.close_date)) : String(a.close_date).localeCompare(String(b.close_date)));
+    return `<div class="kcol ${k}"><header><b><span>${label}</span><span class="muted">${ds.length}</span></b><small>${num(ds.reduce((s, d) => s + (d.amount || 0), 0))} credits</small></header><div class="scroll" data-scroll="ck:${k}">${ds.map((d) => `<div class="kcard ${d.written ? "written" : ""}" ${set({"crm.deal": d.id, "crm.acc": null})}><b>${esc(d.name)}</b><div class="small muted">${esc(accName(d.account_id))}</div><div class="amt">${num(d.amount)}</div><div class="ft2"><span>${av(d.owner, "sm")} ${esc(String(d.owner).split(" ")[0])}</span><span>${d.close_date ? dShort(d.close_date).slice(4) + " " + String(d.close_date).slice(0, 4) : ""}</span></div>${written(d)}</div>`).join("")}</div></div>`; }).join("")}</div>`;
+};
+
+/* ---------- calendar ---------- */
+const attends = (e) => [e.organizer, ...(e.attendees || [])].some((n) => [S.persona.name, S.persona.id, "everyone", S.persona.department].includes(n));
+VIEWS.calendar = () => {
+  const wk = ui["cal.week"] || monday(S.today), days = [0, 1, 2, 3, 4].map((i) => addDays(wk, i)), minesOnly = ui["cal.mine"], H0 = 7, H1 = 20;
+  const evs = S.events.filter((e) => e.start.slice(0, 10) >= days[0] && e.start.slice(0, 10) <= days[4] && (!minesOnly || attends(e)));
+  const head = `<div class="dh" style="border-left:0"></div>` + days.map((d) => `<div class="dh ${d === S.today ? "today" : ""}"><span class="small">${DAYS[D(d).getDay()]}</span><b>${D(d).getDate()}</b></div>`).join("");
+  const block = (e, cls, style) => `<div class="ev ${cls} ${e.written ? "written" : attends(e) ? "" : "other"}" style="${style}" ${set({"cal.ev": e.id})} title="${esc(e.title)}"><b>${esc(e.title)}</b>${e.start.length > 10 ? `${e.start.slice(11, 16)} ${esc(e.location || "")}` : ""}</div>`;
+  const allday = `<div class="ad" style="border-left:0"></div>` + days.map((d) => `<div class="ad">${evs.filter((e) => e.start.slice(0, 10) === d && e.start.length <= 10).map((e) => block(e, "allday", "")).join("")}</div>`).join("");
+  const hours = `<div class="hrs">${Array.from({length: H1 - H0}, (_, i) => `<span style="top:${i * 60}px">${i ? String(H0 + i).padStart(2, "0") + ":00" : ""}</span>`).join("")}</div>`;
+  const cols = days.map((d) => { const list = evs.filter((e) => e.start.slice(0, 10) === d && e.start.length > 10).sort((a, b) => a.start.localeCompare(b.start)), lanes = [], pos = [];
+    list.forEach((e) => { const s = mins(e.start.slice(11)), en = e.end ? mins(e.end.slice(11)) : s + 30; let k = lanes.findIndex((x) => x <= s); if (k < 0) k = lanes.push(0) - 1; lanes[k] = en; pos.push([e, k, s, en]); });
+    const n = Math.max(1, lanes.length);
+    return `<div class="dc ${d === S.today ? "today" : ""}">${pos.map(([e, k, s, en]) => block(e, "", `top:${s - H0 * 60}px;height:${Math.max(22, en - s - 2)}px;left:calc(${k * 100 / n}% + 2px);width:calc(${100 / n}% - 4px)`)).join("")}</div>`; }).join("");
+  const label = `${D(days[0]).getDate()} ${MONTHS[D(days[0]).getMonth()]} – ${D(days[4]).getDate()} ${MONTHS[D(days[4]).getMonth()]} ${days[4].slice(0, 4)}`;
+  return `<div class="bar"><h2>Calendar</h2><button class="btn" ${set({"cal.week": monday(S.today)})}>Today</button><button class="btn" ${set({"cal.week": addDays(wk, -7)})}>‹</button><button class="btn" ${set({"cal.week": addDays(wk, 7)})}>›</button><b>${label}</b><span class="grow"></span>
+    <button class="btn ${minesOnly ? "on" : ""}" ${set({"cal.mine": true})}>${esc(S.persona.name.split(" ")[0])}'s calendar</button><button class="btn ${minesOnly ? "" : "on"}" ${set({"cal.mine": false})}>Whole company</button></div>
+    <div class="cal" data-scroll="cal">${head}${allday}${hours}${cols}</div>`;
+};
+
+/* ---------- bookings, people ---------- */
+VIEWS.bookings = () => {
+  const b = S.bookings, sum = (k) => b.by_month.reduce((s, m) => s + m[k], 0), max = Math.max(...b.by_route.map((r) => r.bookings));
+  const fl = b.flights.filter((f) => has(f, ui["bk.q"] || "")), gx = (id) => "GX-" + String(id).padStart(3, "0");
+  return `<div class="bar"><h2>Booking system</h2><span class="chip amber">read-only snapshot</span><span class="grow"></span><input class="q" id="bkq" data-q="bk.q" placeholder="Filter flights" value="${esc(ui["bk.q"] || "")}"></div><div class="page" data-scroll="bk">
+    <div class="kpis"><div class="kpi"><b>${num(sum("bookings"))}</b><span>bookings since August</span></div><div class="kpi"><b>${num(sum("cancelled"))}</b><span>of them cancelled</span></div><div class="kpi"><b>${num(sum("price_paid_excluding_cancelled"))}</b><span>credits charged, without cancelled</span></div><div class="kpi"><b>${num(b.quotes)}</b><span>price quotes since 1 October</span></div><div class="kpi"><b>${b.flights.length}</b><span>flights flown or on sale</span></div></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:0 16px"><div class="card"><h3>By month booked</h3><table class="t"><tr><th>Month</th><th class="n">Bookings</th><th class="n">Cancelled</th><th class="n">Charged</th></tr>${b.by_month.map((m) => `<tr><td>${esc(m.month)}</td><td class="n">${m.bookings}</td><td class="n">${m.cancelled}</td><td class="n">${num(m.price_paid_total)}</td></tr>`).join("")}</table></div>
+    <div class="card"><h3>By route</h3><table class="t">${b.by_route.map((r) => `<tr><td>${esc(r.route)}</td><td class="nowrap"><span class="load" style="width:120px"><i style="width:${r.bookings * 100 / max}%"></i></span>${r.bookings}</td><td class="n">${num(r.price_paid_total)}</td></tr>`).join("")}</table></div></div>
+    <div class="card"><h3>Flights</h3><table class="t"><tr><th>Flight</th><th>Route</th><th>Departure</th><th>Seats sold</th><th class="n">Economy</th><th class="n">Business</th><th class="n">Galaxium</th><th></th></tr>${fl.map((f) => `<tr><td class="muted">${gx(f.flight_id)}</td><td class="nowrap"><b style="font-weight:600">${esc(f.origin)} → ${esc(f.destination)}</b></td><td class="nowrap">${dShort(f.departure_time)} ${f.departure_time.slice(0, 4)} · ${f.departure_time.slice(11, 16)}</td><td class="nowrap"><span class="load"><i style="width:${Math.min(100, f.booked * 100 / f.seats)}%"></i></span>${f.booked} / ${f.seats}</td><td class="n">${num(f.economy_price)}</td><td class="n">${num(f.business_price)}</td><td class="n">${num(f.galaxium_price)}</td><td>${f.departure_time.slice(0, 10) < S.today ? '<span class="chip">flown</span>' : f.booked >= f.seats ? '<span class="chip warn">full</span>' : '<span class="chip new">on sale</span>'}</td></tr>`).join("")}</table></div>
+    <div class="card"><h3>Latest bookings</h3><table class="t"><tr><th>Booking</th><th>Customer</th><th>Flight</th><th>Class</th><th>Status</th><th>Booked</th><th class="n">Charged</th></tr>${b.recent.map((r) => `<tr><td class="muted">${r.booking_id}</td><td>${esc(r.customer)}</td><td>${gx(r.flight_id)}</td><td>${esc(r.seat_class)}</td><td><span class="chip ${r.status === "cancelled" ? "warn" : ""}">${esc(r.status)}</span></td><td class="nowrap muted">${esc(r.booking_time.replace("T", " ").slice(0, 16))}</td><td class="n">${num(r.price_paid)}</td></tr>`).join("")}</table></div></div>`;
+};
+VIEWS.people = () => {
+  const q = ui["pp.q"] || "", depts = {}; S.people.filter((p) => has(p, q)).forEach((p) => (depts[p.department] = depts[p.department] || []).push(p));
+  return `<div class="bar"><h2>People</h2><span class="chip">${S.people.length} employees</span><span class="grow"></span><input class="q" id="ppq" data-q="pp.q" placeholder="Search people" value="${esc(q)}"></div><div class="page" data-scroll="pp">${Object.keys(depts).sort().map((d) => `<h3 class="sec" style="padding-left:0">${esc(d)} · ${depts[d].length}</h3><div class="ppl">${depts[d].map((p) => `<div class="pcard ${p.id === S.persona.id ? "me" : ""}">${av(p.name, "lg")}<div><b>${esc(p.name)}</b><span class="small">${esc(p.role)}</span><span class="small muted">${esc(p.email)}</span><span class="small faint">${esc([p.location, p.manager ? "reports to " + (person(p.manager) || {name: p.manager}).name : ""].filter(Boolean).join(" · "))}</span></div></div>`).join("")}</div>`).join("")}</div>`;
+};
+
+/* ---------- presenter ---------- */
+VIEWS.activity = () => `<div class="bar"><h2>Activity</h2><span class="muted">Every write the agent attempted, newest first.</span></div><div class="page" data-scroll="ac">${S.audit.length ? S.audit.map((a) => `<div class="log ${esc(a.outcome)}"><b>${esc(a.tool)}</b> <span class="chip ${a.outcome === "ok" ? "new" : "warn"}">${a.outcome === "ok" ? "done" : esc(a.outcome)}</span> <span class="chip">${esc(a.system)}</span> <span class="small muted">as ${esc(a.actor)} · ${esc(a.time.replace("T", " "))} · ${esc(a.result)}</span><pre>${esc(JSON.stringify(a.args, null, 2))}</pre></div>`).join("") : '<div class="empty">Nothing has been written yet. When the agent sends, posts, creates or updates something, it shows up here.</div>'}</div>`;
+VIEWS.permissions = () => `<div class="bar"><h2>Permissions</h2><span class="muted">Reading is always open. Switch writing off per system; a refused write is logged.</span></div><div class="page" data-scroll="pm"><div class="card">${Object.keys(S.permissions).map((s) => `<div class="sw"><button class="toggle ${S.permissions[s] ? "on" : ""}" data-perm="${esc(s)}" data-on="${S.permissions[s] ? "" : "1"}"></button><div><b style="text-transform:capitalize">${esc(s)}</b><div class="small muted">${S.permissions[s] ? "The agent may write here" : "Writing is switched off"}</div></div></div>`).join("")}</div>
+    <div class="card"><h3>Tools</h3><table class="t"><tr><th>Tool</th><th>System</th><th>Kind</th><th>What it does</th></tr>${S.tools.map((t) => `<tr><td><code>${esc(t.name)}</code></td><td>${esc(t.system)}</td><td><span class="chip ${t.kind === "write" ? (t.allowed ? "amber" : "warn") : ""}">${t.kind === "write" ? (t.allowed ? "writes" : "writes · off") : "reads"}</span></td><td class="muted">${esc(t.description)}</td></tr>`).join("")}</table></div></div>`;
+VIEWS.check = () => {
+  if (truth === null) { truthPack = S.pack.id; truth = ""; fetch("/api/ground-truth").then((r) => r.json()).then((j) => { truth = j.text || " "; if (app === "check") render(); }); }
+  const p = S.pack;
+  return `<div class="bar"><h2>Presenter check</h2><span class="chip warn">not visible to the agent</span></div><div class="page" data-scroll="ck2"><div class="card" style="padding:16px 20px"><h3 style="border:0;padding:0 0 6px">${esc(p.title || "No scenario pack is active")}</h3><p class="muted" style="margin:0 0 10px">${esc(p.summary || "")}</p>${p.prompt ? `<b class="small">Prompt to give the agent</b><pre style="white-space:pre-wrap;background:var(--panel2);border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:6px 0 0;font:inherit">${esc(p.prompt)}</pre>` : ""}</div>
+    <div class="card" style="padding:16px 22px">${truth && truth.trim() ? md(truth) : '<p class="muted">This pack has no ground truth.</p>'}</div></div>`;
+};
+
+/* ---------- search across everything ---------- */
+VIEWS.search = () => { const q = ui["g.q"] || "";
+  const sec = (title, items) => items.length ? `<div class="card"><h3>${title} · ${items.length}</h3><table class="t">${items.slice(0, 12).join("")}</table></div>` : "";
+  const out = !q ? "" : sec("Mail", S.mail.filter((t) => has([t.subject, t.messages], q)).map((t) => `<tr class="row" data-go="mail" ${set({"mail.folder": "all", "mail.id": t.id, "mail.q": ""})}><td>${esc(t.subject)}</td><td class="muted nowrap n">${when(t.last_date)}</td></tr>`)) +
+    sec("Chat", S.chat.filter((m) => has(m, q)).map((m) => `<tr class="row" data-go="chat" ${set({"chat.ch": m.channel, "chat.q": ""})}><td><b>${esc(m.author)}</b> in #${esc(m.channel)}: ${esc(m.text.slice(0, 140))}</td><td class="muted nowrap n">${dShort(m.date)}</td></tr>`)) +
+    sec("Drive", S.drive.filter((f) => has(f.path, q)).map((f) => `<tr class="row" data-go="drive" ${set({"drive.file": f.path, "drive.folder": f.path.split("/").slice(0, -1).join("/"), "drive.mode": "", "drive.q": ""})}><td>${esc(f.path)}</td><td class="muted nowrap n">${dShort(f.modified)}</td></tr>`)) +
+    sec("Tickets", S.tickets.filter((t) => has(t, q)).map((t) => `<tr class="row" data-go="tickets" ${set({"tk.id": t.id, "tk.queue": "", "tk.status": "", "tk.q": ""})}><td>${esc(t.id)} · ${esc(t.title)}</td><td class="muted n">${esc(t.status)}</td></tr>`)) +
+    sec("Deals and accounts", S.deals.filter((d) => has(d, q)).map((d) => `<tr class="row" data-go="crm" ${set({"crm.deal": d.id, "crm.acc": null})}><td>${esc(d.id)} · ${esc(d.name)}</td><td class="muted n">${esc(d.stage)}</td></tr>`).concat(S.accounts.filter((a) => has(a, q)).map((a) => `<tr class="row" data-go="crm" ${set({"crm.acc": a.id, "crm.deal": null, "crm.tab": "accounts"})}><td>${esc(a.id)} · ${esc(a.name)}</td><td class="muted n">account</td></tr>`))) +
+    sec("People", S.people.filter((p) => has(p, q)).map((p) => `<tr><td>${esc(p.name)} · ${esc(p.role)}</td><td class="muted n">${esc(p.email)}</td></tr>`));
+  return `<div class="bar"><h2>Search</h2><span class="muted">${esc(q)}</span></div><div class="page" data-scroll="gs">${out || '<div class="empty">Nothing found.</div>'}</div>`; };
+
+/* ---------- events ---------- */
+const closeOverlays = () => OVERLAYS.forEach((k) => ui[k] = null);
+document.addEventListener("click", (e) => {
+  const t = e.target.closest("[data-set],[data-go],[data-toggle],[data-close],[data-perm]"); if (!t) return;
+  if (t.dataset.close) { closeOverlays(); return render(); }
+  if (t.dataset.perm) return post("/api/permission", {system: t.dataset.perm, allowed: !!t.dataset.on});
+  if (t.dataset.toggle) ui[t.dataset.toggle] = !ui[t.dataset.toggle];
+  if (t.dataset.go || (app === "search" && t.dataset.set)) { closeOverlays(); if (t.dataset.go) { app = t.dataset.go; history.replaceState(null, "", "#" + app); $("gq").value = ""; ui["g.q"] = ""; } }
+  if (t.dataset.set) { const o = JSON.parse(t.dataset.set); Object.assign(ui, o); if ("chat.ch" in o && app !== "chat" && o["chat.ch"]) { app = "chat"; history.replaceState(null, "", "#chat"); } }
+  render();
 });
-document.addEventListener("change", (e) => {
-  if (e.target.id === "pack") { truth = null; sel = {}; post("/api/pack", {pack: e.target.value}); }
-  else if (e.target.dataset.perm) post("/api/permission", {system: e.target.dataset.perm, allowed: e.target.checked});
-});
-window.addEventListener("hashchange", () => { tab = location.hash.slice(1) || "mail"; if (S) render(); });
-load(); setInterval(load, 2000);
+document.addEventListener("input", (e) => { const k = e.target.dataset.q; if (k) { ui[k] = e.target.value; render(); } });
+document.addEventListener("change", (e) => { const k = e.target.dataset.sel; if (k) { ui[k] = e.target.value; render(); } });
+$("gq").addEventListener("input", (e) => { ui["g.q"] = e.target.value; app = e.target.value ? "search" : (location.hash.slice(1) || "mail"); closeOverlays(); render(); });
+document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("drawer").classList.contains("open")) { closeOverlays(); render(); } });
+$("pack").addEventListener("change", (e) => post("/api/pack", {pack: e.target.value}));
+$("reset").addEventListener("click", () => { if (confirm("Throw away everything the agent wrote and start again?")) post("/api/reset"); });
+addEventListener("hashchange", () => { app = location.hash.slice(1) || "mail"; if (S) render(); });
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => S && render(), 150); });
+load(true); setInterval(() => load(false), 2000);
 </script>
 </body>
 </html>

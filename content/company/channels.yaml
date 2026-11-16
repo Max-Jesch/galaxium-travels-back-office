@@ -1,7 +1,51 @@
-- {name: general, purpose: Company-wide announcements}
-- {name: ops-routes, purpose: Route planning and the Monday route review}
-- {name: finance, purpose: "Close, reporting and reconciliations"}
-- {name: sales, purpose: Corporate accounts and pipeline}
-- {name: support, purpose: Customer cases and escalations}
-- {name: legal, purpose: Contracts and vendor reviews}
-- {name: eng-booking, purpose: Booking platform and hold service}
+# Channels are grouped in the sidebar by `section`. A direct message has type dm and two or more members.
+- {name: general, section: Company, purpose: Company-wide announcements and things everyone should know}
+- {name: announcements, section: Company, purpose: "Official notices from leadership, People and IT. Replies in threads."}
+- {name: kudos, section: Company, purpose: Say thank you in public}
+- {name: random, section: Company, purpose: "Not work. Lunch, pets, launch photos."}
+- {name: office-earth, section: Company, purpose: "Earth HQ: deliveries, desks, the coffee machine"}
+- {name: help-it, section: Company, purpose: "Ask IT. Laptops, access, the VPN. For anything urgent open a ticket too."}
+
+- {name: ops-routes, section: Operations, purpose: Route planning and the Monday route review}
+- {name: ops-control, section: Operations, purpose: "Live operations log: departures, arrivals, delays"}
+- {name: ops-crew, section: Operations, purpose: Crew scheduling and rest rules}
+- {name: ops-ground, section: Operations, purpose: "Ground handling at Earth, Luna, Mars and the outer stations"}
+- {name: safety, section: Operations, purpose: Safety bulletins and reports. No blame.}
+
+- {name: finance, section: Finance and legal, purpose: "Close, reporting and reconciliations"}
+- {name: finance-close, section: Finance and legal, purpose: The month-end close checklist, day by day}
+- {name: legal, section: Finance and legal, purpose: Contracts and vendor reviews}
+- {name: procurement, section: Finance and legal, purpose: "Vendors, purchase requests and renewals"}
+
+- {name: sales, section: Commercial, purpose: Corporate accounts and pipeline}
+- {name: sales-wins, section: Commercial, purpose: Closed deals. Ring the bell.}
+- {name: deal-desk, section: Commercial, purpose: "Discount approvals and non-standard terms. Sales asks, Finance and Legal answer."}
+- {name: marketing, section: Commercial, purpose: "Campaigns, content, events"}
+- {name: support, section: Commercial, purpose: Customer cases and escalations}
+- {name: support-escalations, section: Commercial, purpose: Cases that need Engineering or Operations}
+
+- {name: eng-booking, section: Engineering, purpose: Booking platform and hold service}
+- {name: eng-deploys, section: Engineering, purpose: Every deployment to production. Posted by the pipeline.}
+- {name: eng-incidents, section: Engineering, purpose: "Incidents, on-call handover, postmortems"}
+- {name: eng-data, section: Engineering, purpose: "Data warehouse, exports and reports"}
+- {name: product, section: Engineering, purpose: Roadmap and customer feedback for the booking product}
+- {name: bookings-feed, section: Engineering, purpose: "Daily numbers from the booking system. Posted automatically at 07:00."}
+
+- {name: leadership, section: Leadership, purpose: Leadership team}
+- {name: people-team, section: Leadership, purpose: "Hiring, onboarding, policies"}
+
+# Direct messages. Only the members see them.
+- {name: dm-ingrid-tomas, type: dm, members: [ingrid.solberg, tomas.rivera]}
+- {name: dm-tomas-chidi, type: dm, members: [tomas.rivera, chidi.eze]}
+- {name: dm-tomas-felix, type: dm, members: [tomas.rivera, felix.braun]}
+- {name: dm-amara-dev, type: dm, members: [amara.okafor, dev.malhotra]}
+- {name: dm-amara-lena, type: dm, members: [amara.okafor, lena.fischer]}
+- {name: dm-amara-ingrid, type: dm, members: [amara.okafor, ingrid.solberg]}
+- {name: dm-sam-helena, type: dm, members: [sam.whitlock, helena.vogt]}
+- {name: dm-sam-lucia, type: dm, members: [sam.whitlock, lucia.bianchi]}
+- {name: dm-sam-beatrix, type: dm, members: [sam.whitlock, beatrix.novak]}
+- {name: dm-priya-yuki, type: dm, members: [priya.raman, yuki.tanaka]}
+- {name: dm-priya-olu, type: dm, members: [priya.raman, olu.adeyemi]}
+- {name: dm-priya-andrei, type: dm, members: [priya.raman, andrei.popescu]}
+- {name: dm-nadia-kofi, type: dm, members: [nadia.haddad, kofi.mensah]}
+- {name: dm-marcus-aditi, type: dm, members: [marcus.lindqvist, aditi.sharma]}

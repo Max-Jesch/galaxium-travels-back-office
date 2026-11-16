@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import json
+from collections import Counter
 from pathlib import Path
 
 from starlette.requests import Request
@@ -21,7 +23,16 @@ async def index(request: Request) -> Response:
 @mcp.custom_route("/api/state", methods=["GET"])
 async def state(request: Request) -> Response:
     perms = store.permissions()
+    me = store.persona()
+    bookings = store.snapshot("bookings")
+    taken = Counter(b["flight_id"] for b in bookings if b["status"] != "cancelled")
+    users = {u["user_id"]: u["name"] for u in store.snapshot("users")}
+    flights = [{**f, "booked": taken[f["flight_id"]],
+                "seats": f["economy_seats"] + f["business_seats"] + f["galaxium_seats"]} for f in store.snapshot("flights")]
     return JSONResponse({
+        "version": store.version(),
+        "my_addresses": store.mailbox_addresses(me),
+        "events": store.events(),
         "company": store.company(),
         "today": store.today(),
         "persona": store.persona(),
@@ -34,17 +45,35 @@ async def state(request: Request) -> Response:
         "tickets": sorted(store.tickets().values(), key=lambda t: t["id"], reverse=True),
         "accounts": list(store.accounts().values()),
         "deals": list(store.deals().values()),
-        "drive": store.drive_files(),
+        "drive": [{k: v for k, v in f.items() if k != "local_path"} for f in store.drive_files()],
+        "customers": store.customers(),
         "bookings": {
             "by_month": bookings_summary("month")["items"],
             "by_route": bookings_summary("route")["items"],
             "by_class": bookings_summary("seat_class")["items"],
             "quotes": len(store.snapshot("quotes")),
+            "total": len(bookings),
+            "flights": flights,
+            "recent": [{**b, "customer": users.get(b["user_id"], "")} for b in bookings[-60:]][::-1],
         },
         "audit": list(reversed(store.audit_log())),
         "permissions": perms,
         "tools": [{**t, "allowed": t["kind"] == "read" or perms.get(t["system"], True)} for t in TOOLS],
     })
+
+
+@mcp.custom_route("/api/version", methods=["GET"])
+async def version(request: Request) -> Response:
+    return JSONResponse({"version": store.version()})
+
+
+@mcp.custom_route("/api/drive-preview/{path:path}", methods=["GET"])
+async def drive_preview(request: Request) -> Response:
+    try:
+        body = json.dumps(store.drive_preview(request.path_params["path"]), default=str)
+        return Response(body, media_type="application/json")
+    except ValueError as exc:
+        return JSONResponse({"error": str(exc)}, status_code=404)
 
 
 @mcp.custom_route("/api/ground-truth", methods=["GET"])

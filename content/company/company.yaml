@@ -5,3 +5,17 @@ domain: galaxium.example
 today: 2026-11-04
 # Whose desk the agent works at when no scenario pack says otherwise.
 persona: priya.raman
+# Who looks after each top-level folder of the drive, when a file does not say.
+drive_owners:
+  finance: Chidi Eze
+  sales: Sinead Byrne
+  marketing: Elise Fontaine
+  support: Greta Olsen
+  legal: Sam Whitlock
+  ops: Yuki Tanaka
+  engineering: Marcus Lindqvist
+  people: Dorothea Klein
+  it: Bruno Ferreira
+  leadership: Renata Castellanos
+  policies: Helena Vogt
+  templates: Agnes Wójcik

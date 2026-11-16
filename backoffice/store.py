@@ -8,11 +8,12 @@ process and the web view always agree.
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import os
 import re
 import shutil
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -21,11 +22,12 @@ import yaml
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content"
 COMPANY = CONTENT / "company"
+GENERATED = CONTENT / "generated"  # routine volume written by scripts/build.py
 PACKS = CONTENT / "packs"
 SNAPSHOT = ROOT / "snapshot"
 STATE = Path(os.environ.get("BACKOFFICE_STATE", ROOT / "state"))
 DEFAULT_PACK = "quote-mismatch"
-SYSTEMS = ["mail", "chat", "tickets", "crm", "drive"]
+SYSTEMS = ["mail", "chat", "calendar", "tickets", "crm", "drive"]
 TEXT_SUFFIXES = {".md", ".txt", ".csv", ".yaml", ".yml", ".json"}
 
 
@@ -103,9 +105,9 @@ def set_active_pack(name: str) -> None:
 
 
 def _roots() -> list[tuple[str, Path]]:
-    """Content folders in load order: the company first, then the active pack(s)."""
+    """Content folders in load order: the company, its generated routine, then the active pack(s)."""
     pack = active_pack()
-    roots = [("company", COMPANY)]
+    roots = [("company", COMPANY), ("generated", GENERATED)]
     if pack == "all":
         roots += [(p["id"], PACKS / p["id"]) for p in list_packs()]
     elif pack != "none":
@@ -190,6 +192,8 @@ def _parse_thread(path: Path, source: str) -> dict:
         "id": meta.get("id", path.stem),
         "subject": meta.get("subject", path.stem),
         "labels": meta.get("labels", []),
+        "attachments": meta.get("attachments", []),
+        "flagged": bool(meta.get("flagged", False)),
         "source": source,
         "messages": messages,
     }
@@ -204,7 +208,7 @@ def mail_threads() -> list[dict]:
     for rec in _jsonl(STATE / "mail.jsonl"):
         t = threads.setdefault(rec["thread_id"], {
             "id": rec["thread_id"], "subject": rec["subject"], "labels": ["sent"],
-            "source": "agent", "messages": [],
+            "attachments": [], "flagged": False, "source": "agent", "messages": [],
         })
         t["messages"].append({**rec["message"], "written": True})
     for t in threads.values():
@@ -214,7 +218,10 @@ def mail_threads() -> list[dict]:
 
 
 def mailbox_addresses(person: dict) -> list[str]:
-    return [person["email"].lower()] + [a.lower() for a in person.get("also_reads", [])]
+    """A person's own address, the shared mailboxes they read, and the lists they are on."""
+    domain = company().get("domain", "galaxium.example")
+    lists = [f"all@{domain}", f"{person.get('department', '').lower()}@{domain}"] if person.get("department") else []
+    return list(dict.fromkeys([person["email"].lower()] + [a.lower() for a in person.get("also_reads", [])] + lists))
 
 
 def send_mail(to: str, subject: str, body: str, cc: str = "", thread_id: str = "") -> dict:
@@ -232,47 +239,95 @@ def send_mail(to: str, subject: str, body: str, cc: str = "", thread_id: str = "
 
 
 # ---------- chat ----------
+#
+# A channel is a folder of markdown files. Inside a file:
+#   ## 2026-10-26                 starts a new day (or give `date:` in the frontmatter)
+#   [10:02] Name: text            a message; following plain lines continue it
+#       [10:05] Name: text        indented: a reply in the thread of the message above
+#       + 👍 3, 🎉 1               indented, starting with +: reactions to the message above
 
-_CHAT_LINE = re.compile(r"^\[(\d{2}:\d{2})\]\s+([^:]+):\s?(.*)$")
+_CHAT_LINE = re.compile(r"^(\s*)\[(\d{2}:\d{2})\]\s+([^:]+):\s?(.*)$")
+_DAY_LINE = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2})\s*$")
+_REACTIONS = re.compile(r"^\s+\+\s+(.*)$")
 
 
-def channels() -> list[dict]:
-    known = {c["name"]: c for c in _yaml(COMPANY / "channels.yaml", [])}
+def channels(everyone: bool = False) -> list[dict]:
+    """Channels the person at the desk can see: every public one and their own direct messages."""
+    known = {c["name"]: {"type": "channel", "purpose": "", **c} for c in _yaml(COMPANY / "channels.yaml", [])}
     for _, root in _roots():
         for folder in sorted((root / "chat").glob("*/")):
-            known.setdefault(folder.name, {"name": folder.name, "purpose": ""})
-    return list(known.values())
+            known.setdefault(folder.name, {"name": folder.name, "type": "channel", "purpose": ""})
+    me = persona()["id"]
+    return [c for c in known.values() if everyone or c["type"] != "dm" or me in c.get("members", [])]
+
+
+def _parse_chat(path: Path, source: str) -> list[dict]:
+    meta, body = _frontmatter(path.read_text(encoding="utf-8"))
+    day = str(meta.get("date", path.stem[:10]))
+    out: list[dict] = []
+    last: dict | None = None  # the message a continuation line belongs to
+    for line in body.splitlines():
+        if m := _DAY_LINE.match(line):
+            day, last = m.group(1), None
+        elif m := _CHAT_LINE.match(line):
+            msg = {"channel": path.parent.name, "date": day, "time": m.group(2),
+                   "author": m.group(3).strip(), "text": m.group(4), "source": source}
+            if m.group(1) and out:
+                out[-1].setdefault("replies", []).append(msg)
+            else:
+                out.append(msg)
+            last = msg
+        elif (m := _REACTIONS.match(line)) and out:
+            out[-1]["reactions"] = [dict(zip(("emoji", "count"), (r.split() + ["1"])[:2])) for r in m.group(1).split(",") if r.strip()]
+        elif line.strip() and last:
+            last["text"] += "\n" + line.strip()
+    return out
 
 
 def chat_messages(channel: str | None = None) -> list[dict]:
+    visible = {c["name"] for c in channels()}
     out = []
     for source, root in _roots():
         for path in sorted((root / "chat").glob("*/*.md")):
-            if channel and path.parent.name != channel:
-                continue
-            meta, body = _frontmatter(path.read_text(encoding="utf-8"))
-            date = str(meta.get("date", path.stem[:10]))
-            for line in body.splitlines():
-                m = _CHAT_LINE.match(line)
-                if m:
-                    out.append({"channel": path.parent.name, "date": date, "time": m.group(1),
-                                "author": m.group(2).strip(), "text": m.group(3), "source": source})
-                elif line.strip() and out:
-                    out[-1]["text"] += "\n" + line
+            if path.parent.name in visible and (not channel or path.parent.name == channel):
+                out += _parse_chat(path, source)
     for rec in _jsonl(STATE / "chat.jsonl"):
-        if not channel or rec["channel"] == channel:
+        if rec["channel"] in visible and (not channel or rec["channel"] == channel):
             out.append({**rec, "source": "agent", "written": True})
     return sorted(out, key=lambda m: (m["date"], m["time"]))
 
 
 def post_chat(channel: str, text: str) -> dict:
     channel = channel.lstrip("#")
-    if channel not in {c["name"] for c in channels()}:
-        raise ValueError(f"No channel named {channel}. Channels: {', '.join(c['name'] for c in channels())}")
+    names = [c["name"] for c in channels()]
+    if channel not in names:
+        raise ValueError(f"No channel named {channel}. Channels: {', '.join(names)}")
     date, time = story_now().split(" ")
     rec = {"channel": channel, "date": date, "time": time, "author": persona()["name"], "text": text}
     _append_jsonl(STATE / "chat.jsonl", rec)
     return rec
+
+
+# ---------- calendar ----------
+
+def events() -> list[dict]:
+    """Events from `<root>/calendar/*.yaml` (each file a list) plus the ones written at the desk."""
+    out: dict[str, dict] = {}
+    for source, root in _roots():
+        for path in sorted((root / "calendar").glob("*.yaml")):
+            for item in _yaml(path, []):
+                out[str(item["id"])] = {"attendees": [], "location": "", "notes": "", **item, "source": source}
+    for eid, item in _json(STATE / "calendar.json", {}).items():
+        out[eid] = {**item, "written": True}
+    return sorted(out.values(), key=lambda e: e["start"])
+
+
+def create_event(fields: dict) -> dict:
+    saved = _json(STATE / "calendar.json", {})
+    event = {"id": f"EV-A{len(saved) + 1:03d}", "organizer": persona()["name"], "source": "agent", **fields}
+    saved[event["id"]] = event
+    _write_json(STATE / "calendar.json", saved)
+    return event
 
 
 # ---------- records: tickets and CRM ----------
@@ -309,7 +364,7 @@ def deals() -> dict[str, dict]:
 
 
 def create_ticket(fields: dict) -> dict:
-    numbers = [int(t.split("-")[1]) for t in tickets()]
+    numbers = [int(t.split("-")[1]) for t in tickets() if t.startswith("GT-")]
     ticket = {"id": f"GT-{max(numbers, default=1000) + 1}", "status": "open", "created": story_now(),
               "created_by": persona()["name"], "comments": [], **fields}
     _save_record("tickets", ticket)
@@ -336,15 +391,65 @@ def _drive_roots() -> list[tuple[str, Path]]:
     return [(s, r / "drive") for s, r in _roots()] + [("agent", STATE / "drive")]
 
 
+_DATED = re.compile(r"(20\d{2})-(0[1-9]|1[0-2])(?:-(0[1-9]|[12]\d|3[01]))?(?!\d)")
+
+
+def _drive_meta(path: Path, rel: str, source: str, index: dict, owners: dict) -> dict:
+    """Owner and last change of a file: from its frontmatter, the folder's `_index.yaml`, or a stable guess."""
+    if source == "agent":
+        return {"owner": persona()["name"], "modified": today()}
+    meta = dict(index.get(rel, {}))
+    if path.suffix == ".md" and not meta:
+        with path.open(encoding="utf-8") as f:
+            if f.readline().startswith("---"):
+                head = f.read(600).split("---", 1)[0]
+                meta = {k: v for k, v in (_plain(yaml.safe_load(head)) or {}).items() if k in ("owner", "modified")}
+    if "modified" not in meta:
+        day = date.fromisoformat(str(company().get("today")))
+        if m := _DATED.search(path.name):  # a dated file was last touched shortly after its date
+            named = date(int(m.group(1)), int(m.group(2)), int(m.group(3) or 28))
+            meta["modified"] = str(min(day, named + timedelta(days=2)))
+        else:
+            meta["modified"] = str(day - timedelta(days=int(hashlib.md5(rel.encode()).hexdigest(), 16) % 240 + 6))
+    meta.setdefault("owner", owners.get(rel.split("/")[0], ""))
+    return meta
+
+
 def drive_files() -> list[dict]:
     files: dict[str, dict] = {}
+    owners = company().get("drive_owners", {})
     for source, root in _drive_roots():
+        index = _yaml(root / "_index.yaml", {})
         for path in sorted(root.rglob("*")) if root.exists() else []:
-            if path.is_file() and not path.name.startswith((".", "~")):
+            if path.is_file() and not path.name.startswith((".", "~", "_")):
                 rel = path.relative_to(root).as_posix()
-                files[rel] = {"path": rel, "size": path.stat().st_size, "source": source,
-                              "local_path": str(path), **({"written": True} if source == "agent" else {})}
+                files[rel] = {"path": rel, "size": path.stat().st_size, "source": source, "local_path": str(path),
+                              **_drive_meta(path, rel, source, index, owners),
+                              **({"written": True} if source == "agent" else {})}
     return sorted(files.values(), key=lambda f: f["path"])
+
+
+def drive_preview(path: str) -> dict:
+    """What the web view shows for a file: sheets as rows, everything else as text."""
+    entry = next((f for f in drive_files() if f["path"] == path.strip("/")), None)
+    if not entry:
+        raise ValueError(f"No file at {path} in the drive")
+    local = Path(entry["local_path"])
+    public = {k: v for k, v in entry.items() if k != "local_path"}
+    if local.suffix.lower() in (".xlsx", ".csv"):
+        if local.suffix.lower() == ".csv":
+            with local.open(encoding="utf-8", newline="") as f:
+                sheets = [{"name": local.stem, "rows": [r for _, r in zip(range(301), csv.reader(f))]}]
+        else:
+            from openpyxl import load_workbook
+            sheets = [{"name": ws.title, "total": ws.max_row,
+                       "rows": [["" if v is None else v for v in row] for row in ws.iter_rows(max_row=301, values_only=True)]}
+                      for ws in load_workbook(local, data_only=True, read_only=True).worksheets]
+        return {**public, "kind": "sheet", "sheets": sheets}
+    text = drive_text(path)["text"]
+    if local.suffix.lower() == ".md":
+        text = _frontmatter(text)[1]
+    return {**public, "kind": "markdown" if local.suffix.lower() in (".md", ".pptx") else "text", "text": text}
 
 
 def drive_text(path: str, max_chars: int = 60000) -> dict:
@@ -438,6 +543,17 @@ def reset() -> None:
     if STATE.exists():
         shutil.rmtree(STATE)
     set_active_pack(pack)
+
+
+def version() -> str:
+    """Changes whenever content or state changes, so the web view knows when to reload."""
+    stamp = 0.0
+    count = 0
+    for folder in (CONTENT, STATE):
+        for path in folder.rglob("*") if folder.exists() else []:
+            count += 1
+            stamp = max(stamp, path.stat().st_mtime)
+    return f"{active_pack()}-{count}-{stamp}"
 
 
 def ground_truth() -> str:

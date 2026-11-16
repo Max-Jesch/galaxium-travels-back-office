@@ -14,7 +14,7 @@ You need Python 3.10 or newer.
 
 The first start sets itself up, which takes about a minute and needs the internet once. After that:
 
-- **Web view:** http://localhost:8090 shows the inbox, channels, tickets, CRM and drive, and everything the agent changes.
+- **Web view:** http://localhost:8090 shows the company the way an employee sees it: a three-pane inbox, chat with channels, threads and direct messages, a calendar, a drive with folders and file previews, a ticket queue, the CRM pipeline, the booking system and the staff directory. Everything the agent writes is marked in green where it lands, and listed on the *Activity* tab.
 - **MCP server:** http://localhost:8090/mcp
 
 To return to the starting state after a demo, press **Reset** in the web view or run:
@@ -64,12 +64,13 @@ The company content alone (choose *Company only*) supports two more jobs without
 
 ## What the agent can do
 
-27 tools, named by system. Reading is open. The seven writing tools are marked as such, can be switched off per system on the *Permissions* tab or in `permissions.yaml`, and every call to one is logged on the *Activity* tab with its arguments and outcome, including calls that were refused.
+29 tools, named by system. Reading is open. The eight writing tools are marked as such, can be switched off per system on the *Permissions* tab or in `permissions.yaml`, and every call to one is logged on the *Activity* tab with its arguments and outcome, including calls that were refused.
 
 | System | Read | Write |
 | --- | --- | --- |
 | Mail | `mail_list_threads`, `mail_read_thread` | `mail_send` |
 | Chat | `chat_list_channels`, `chat_read_channel`, `chat_search` | `chat_post_message` |
+| Calendar | `calendar_list_events` | `calendar_create_event` |
 | Tickets | `tickets_list`, `tickets_get` | `tickets_create`, `tickets_update` |
 | CRM | `crm_list_accounts`, `crm_list_deals`, `crm_get_deal` | `crm_update_deal`, `crm_add_account_note` |
 | Drive | `drive_list`, `drive_read`, `drive_search` | `drive_write_text` |
@@ -87,13 +88,16 @@ Everything the back office shows is a plain file under `content/`. Add a file an
 ```
 content/
   company/               always loaded
-    people.yaml          the cast: twelve employees
+    people.yaml          the cast: 48 employees in ten departments
     customers.yaml       the ten travellers from the booking app's seed data
+    channels.yaml        channels by sidebar section, and the direct messages
     mail/*.md            one file per thread
-    chat/<channel>/*.md  one file per day
+    chat/<channel>/*.md  one file per day, or one file with several days
+    calendar/*.yaml      meetings and deadlines
     tickets.yaml
     crm/accounts.yaml, crm/deals.yaml
     drive/               the shared drive, as real folders and files
+  generated/             same layout: the daily routine, written by scripts/build.py
   packs/<pack>/          same layout, plus pack.yaml and ground-truth.md
 snapshot/                flights, users, bookings and quotes as CSV
 ```
@@ -112,7 +116,26 @@ Date: 2026-11-03 19:02
 Hello, I may have to cancel my trip.
 ```
 
-A chat day is a file such as `chat/support/2026-11-02.md`, with one line per message: `[14:10] Kofi Mensah: Reminder for everyone on the queue.`
+A mail thread may also name `attachments: [path/in/the/drive.xlsx]` and `flagged: true` in its header.
+
+A chat file holds one or more days. An indented message is a reply in the thread of the message above it, and an indented line starting with `+` gives reactions:
+
+```markdown
+## 2026-11-02
+[09:30] Bruno Ferreira: Multi-factor sign-in becomes mandatory on Monday.
+    [09:44] Hana Kobayashi: Does that include the payroll system?
+    + 👍 4
+```
+
+A direct message is a channel with `type: dm` and `members` in `channels.yaml`. Only its members see it, in the web view and through the tools.
+
+A drive file shows an owner and a date in the web view. A markdown file can state them in a header (`owner:`, `modified:`); other files get the owner of their top folder from `company.yaml`.
+
+### How much is in there
+
+About 180 mail threads, 500 chat messages in 32 channels, 200 tickets, 100 drive files, 265 calendar entries, 28 corporate accounts and 30 to 48 deals, depending on the pack. Roughly a third is written by hand under `content/company/`: the conversations, decisions and documents. The rest is routine that a real company produces without thinking: daily booking summaries, vendor invoices, customer questions, deployment notices, weekly reports and recurring meetings. That part is generated from the snapshot by `scripts/routine.py`, so its numbers agree with the booking system.
+
+`content/company/drive/ops/how-we-fly.md` explains how the small booking snapshot (one scheduled departure per route per month) fits a company with deals worth tens of millions: charter flying is sold through the CRM and is not in the booking system.
 
 In the story, today is always **Wednesday 4 November 2026** (`content/company/company.yaml`). Write dates relative to that.
 

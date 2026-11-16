@@ -3,6 +3,7 @@
 write:
   mail: true
   chat: true
+  calendar: true
   tickets: true
   crm: true
   drive: true

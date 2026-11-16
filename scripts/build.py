@@ -466,4 +466,6 @@ if __name__ == "__main__":
     build_quote_mismatch(*data)
     build_win_loss()
     build_vendor_contract()
+    import routine  # the everyday volume: feeds, invoices, tickets, calendar, registers
+    routine.build()
     print(f"snapshot: {len(data[0])} users, {len(data[1])} flights, {len(data[2])} bookings, {len(data[3])} quotes")

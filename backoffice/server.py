@@ -90,7 +90,8 @@ def backoffice_info() -> dict:
         "currency": "credits",
         "systems": {
             "mail": "Threads in the company mail system",
-            "chat": "Team channels",
+            "chat": "Team channels and your direct messages",
+            "calendar": "Meetings and deadlines",
             "crm": "Corporate accounts and deals",
             "tickets": "Support and engineering queues",
             "drive": "Shared files: policies, templates, exports",
@@ -102,7 +103,7 @@ def backoffice_info() -> dict:
 
 @_read("directory")
 def directory_list_people(department: str = "") -> dict:
-    """List Galaxium employees with role, department and mail address."""
+    """List Galaxium employees with role, department, manager, location and mail address."""
     return _all([p for p in store.people() if not department or p["department"].lower() == department.lower()])
 
 
@@ -148,7 +149,7 @@ def mail_send(to: str, subject: str, body: str, cc: str = "", thread_id: str = "
 
 @_read("chat")
 def chat_list_channels() -> dict:
-    """List chat channels with their purpose and message count."""
+    """List the chat channels and your direct messages, with purpose and message count."""
     counts: dict[str, int] = defaultdict(int)
     for m in store.chat_messages():
         counts[m["channel"]] += 1
@@ -157,8 +158,12 @@ def chat_list_channels() -> dict:
 
 @_read("chat")
 def chat_read_channel(channel: str, since_date: str = "", limit: int = 100) -> dict:
-    """Read a channel's messages, oldest first. since_date is YYYY-MM-DD."""
-    messages = [m for m in store.chat_messages(channel.lstrip("#")) if m["date"] >= since_date]
+    """Read a channel or one of your direct messages, oldest first. Replies sit under the message they answer. since_date is YYYY-MM-DD."""
+    channel = channel.lstrip("#")
+    names = [c["name"] for c in store.channels()]
+    if channel not in names:
+        raise ValueError(f"No channel named {channel}. Channels: {', '.join(names)}")
+    messages = [m for m in store.chat_messages(channel) if m["date"] >= since_date]
     return _page(messages[-limit:], limit)
 
 
@@ -170,8 +175,39 @@ def chat_search(query: str, limit: int = 30) -> dict:
 
 @_write("chat")
 def chat_post_message(channel: str, text: str) -> dict:
-    """Post a message to a channel as the person whose desk you are at."""
+    """Post a message to a channel or one of your direct messages, as the person whose desk you are at."""
     return store.post_chat(channel, text)
+
+
+# ---------- calendar ----------
+
+def _attends(event: dict, person: dict) -> bool:
+    names = [event.get("organizer", "")] + list(event.get("attendees", []))
+    return any(n in (person["name"], person["id"], "everyone", person.get("department")) for n in names)
+
+
+@_read("calendar")
+def calendar_list_events(start_date: str = "", end_date: str = "", person: str = "me", query: str = "") -> dict:
+    """List meetings and deadlines between two dates (YYYY-MM-DD). person is "me" (default), "all" or a name."""
+    start_date = start_date or store.today()
+    end_date = end_date or start_date[:8] + "31"
+    items = [e for e in store.events() if start_date <= e["start"][:10] <= end_date]
+    if person != "all":
+        who = store.persona() if person == "me" else store.find_person(person)
+        if not who:
+            raise ValueError(f"No person called {person}")
+        items = [e for e in items if _attends(e, who)]
+    if query:
+        items = [e for e in items if _matches(e, query)]
+    return _all(items)
+
+
+@_write("calendar")
+def calendar_create_event(title: str, start: str, end: str, attendees: list[str] | None = None,
+                          location: str = "", notes: str = "") -> dict:
+    """Put a meeting in the calendar, organised by you. start and end are "YYYY-MM-DD HH:MM"."""
+    return store.create_event({"title": title, "start": start, "end": end, "attendees": attendees or [],
+                               "location": location, "notes": notes})
 
 
 # ---------- tickets ----------
@@ -182,7 +218,7 @@ def _ticket_summary(t: dict) -> dict:
 
 @_read("tickets")
 def tickets_list(status: str = "", queue: str = "", query: str = "", limit: int = 50) -> dict:
-    """List tickets. Filter by status (open, in_progress, waiting, resolved), queue (support, engineering, finance, legal) or words."""
+    """List tickets. Filter by status (open, in_progress, waiting, resolved), queue (support, engineering, it, facilities, finance, legal) or words."""
     items = [t for t in store.tickets().values()
              if (not status or t.get("status") == status) and (not queue or t.get("queue") == queue)
              and (not query or _matches(t, query))]
@@ -201,7 +237,7 @@ def tickets_get(ticket_id: str) -> dict:
 @_write("tickets")
 def tickets_create(title: str, description: str, queue: str = "support", priority: str = "normal",
                    requester: str = "", assignee: str = "", related: str = "") -> dict:
-    """Create a ticket. queue is support, engineering, finance or legal. related can name other tickets, threads or bookings."""
+    """Create a ticket. queue is support, engineering, it, facilities, finance or legal. related can name other tickets, threads or bookings."""
     return store.create_ticket({"title": title, "description": description, "queue": queue, "priority": priority,
                                 "requester": requester, "assignee": assignee, "related": related})
 
