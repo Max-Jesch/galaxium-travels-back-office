@@ -9,6 +9,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import sys
 
 from . import store
@@ -38,6 +39,7 @@ def main() -> None:
     from . import web  # noqa: F401  (registers the web view routes)
     from .server import mcp
 
+    os.environ.setdefault("BACKOFFICE_URL", f"http://localhost:{args.port}")
     if args.stdio:
         mcp.run()
         return

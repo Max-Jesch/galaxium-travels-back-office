@@ -234,7 +234,7 @@ const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 const OVERLAYS = ["drive.file", "crm.deal", "crm.acc", "cal.ev"];
 const VIEWS = {};
 
-let S = null, ver = "", app = location.hash.slice(1) || "mail", truth = null, truthPack = "", previews = {};
+let S = null, ver = "", app = location.hash.slice(1).split("/")[0] || "mail", truth = null, truthPack = "", previews = {};
 const ui = {"mail.folder": "inbox", "drive.folder": "", "drive.view": "list", "crm.tab": "pipeline", "cal.mine": true};
 const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
@@ -308,7 +308,8 @@ function md(src) {
 async function load(force) {
   try {
     if (!force && S) { const v = (await (await fetch("/api/version")).json()).version; if (v === ver) return; }
-    S = await (await fetch("/api/state")).json(); ver = S.version; previews = {};
+    const first = !S; S = await (await fetch("/api/state")).json(); ver = S.version; previews = {};
+    if (first) route();
     if (truthPack !== S.pack.id) truth = null;
     render();
   } catch (e) { if (!S) $("main").innerHTML = '<div class="empty">The back office is not answering. Is it running?</div>'; else console.error(e); }
@@ -329,6 +330,7 @@ function render() {
   renderDrawer();
   document.querySelectorAll("[data-scroll]").forEach((e) => { const k = e.dataset.scroll; e.scrollTop = k in keep ? keep[k] : e.dataset.bottom ? e.scrollHeight : 0; });
   if (focus && $(focus.id)) { $(focus.id).focus(); try { $(focus.id).setSelectionRange(focus.pos, focus.pos); } catch (e) {} }
+  syncHash();
 }
 
 /* ---------- mail ---------- */
@@ -558,8 +560,32 @@ VIEWS.search = () => { const q = ui["g.q"] || "";
     sec("People", S.people.filter((p) => has(p, q)).map((p) => `<tr><td>${esc(p.name)} · ${esc(p.role)}</td><td class="muted n">${esc(p.email)}</td></tr>`));
   return `<div class="bar"><h2>Search</h2><span class="muted">${esc(q)}</span></div><div class="page" data-scroll="gs">${out || '<div class="empty">Nothing found.</div>'}</div>`; };
 
-/* ---------- events ---------- */
+/* ---------- links ----------
+   The address names the open record, so that it can be linked to:
+   #tickets/GT-1004  #mail/<thread id>  #chat/<channel>  #drive/<path>  #calendar/<event id>  #crm/deal/<id>  #crm/account/<id> */
 const closeOverlays = () => OVERLAYS.forEach((k) => ui[k] = null);
+const dirOf = (path) => path.split("/").slice(0, -1).join("/");
+function route() {
+  const parts = location.hash.slice(1).split("/").map((x) => { try { return decodeURIComponent(x); } catch (e) { return x; } });
+  app = parts[0] || "mail"; const id = parts.slice(1).join("/"); if (!id || !S) return;
+  closeOverlays();
+  if (app === "mail") { const t = S.mail.find((x) => x.id === id), cur = mailFolders().find((f) => f[0] === ui["mail.folder"]);
+    if (t) Object.assign(ui, {"mail.id": id, "mail.q": "", "mail.folder": cur && cur[2](t) ? cur[0] : toMe(t) ? "inbox" : t.messages.some(fromMe) ? "sent" : "all"}); }
+  else if (app === "chat") Object.assign(ui, {"chat.ch": id, "chat.q": ""});
+  else if (app === "tickets") Object.assign(ui, {"tk.id": id, "tk.queue": "", "tk.status": "", "tk.q": ""});
+  else if (app === "drive") Object.assign(ui, {"drive.file": id, "drive.folder": dirOf(id), "drive.mode": "", "drive.q": ""});
+  else if (app === "calendar") { const e = S.events.find((x) => x.id === id); if (e) Object.assign(ui, {"cal.ev": id, "cal.week": monday(e.start)}); }
+  else if (app === "crm") ui[parts[1] === "account" ? "crm.acc" : "crm.deal"] = parts.slice(2).join("/");
+}
+function syncHash() {
+  if (app === "search") return;
+  const id = {mail: ui["mail.id"], chat: ui["chat.ch"], tickets: ui["tk.id"], drive: ui["drive.file"], calendar: ui["cal.ev"],
+    crm: ui["crm.deal"] ? "deal/" + ui["crm.deal"] : ui["crm.acc"] ? "account/" + ui["crm.acc"] : ""}[app];
+  const h = "#" + app + (id ? "/" + String(id).split("/").map(encodeURIComponent).join("/") : "");
+  if (location.hash !== h) history.replaceState(null, "", h);
+}
+
+/* ---------- events ---------- */
 document.addEventListener("click", (e) => {
   const t = e.target.closest("[data-set],[data-go],[data-toggle],[data-close],[data-perm]"); if (!t) return;
   if (t.dataset.close) { closeOverlays(); return render(); }
@@ -571,11 +597,11 @@ document.addEventListener("click", (e) => {
 });
 document.addEventListener("input", (e) => { const k = e.target.dataset.q; if (k) { ui[k] = e.target.value; render(); } });
 document.addEventListener("change", (e) => { const k = e.target.dataset.sel; if (k) { ui[k] = e.target.value; render(); } });
-$("gq").addEventListener("input", (e) => { ui["g.q"] = e.target.value; app = e.target.value ? "search" : (location.hash.slice(1) || "mail"); closeOverlays(); render(); });
+$("gq").addEventListener("input", (e) => { ui["g.q"] = e.target.value; app = e.target.value ? "search" : (location.hash.slice(1).split("/")[0] || "mail"); closeOverlays(); render(); });
 document.addEventListener("keydown", (e) => { if (e.key === "Escape" && $("drawer").classList.contains("open")) { closeOverlays(); render(); } });
 $("pack").addEventListener("change", (e) => post("/api/pack", {pack: e.target.value}));
 $("reset").addEventListener("click", () => { if (confirm("Throw away everything the agent wrote and start again?")) post("/api/reset"); });
-addEventListener("hashchange", () => { app = location.hash.slice(1) || "mail"; if (S) render(); });
+addEventListener("hashchange", () => { route(); if (S) render(); });
 let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => S && render(), 150); });
 load(true); setInterval(() => load(false), 2000);
 </script>

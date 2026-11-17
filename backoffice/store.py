@@ -120,6 +120,11 @@ def pack_meta() -> dict:
     return {"id": pack, **(_yaml(PACKS / pack / "pack.yaml", {}) if pack not in ("all", "none") else {})}
 
 
+def web_url() -> str:
+    """Where the web view is served; `__main__` sets BACKOFFICE_URL when it starts on another port."""
+    return os.environ.get("BACKOFFICE_URL", "http://localhost:8090").rstrip("/")
+
+
 def company() -> dict:
     return _yaml(COMPANY / "company.yaml", {})
 

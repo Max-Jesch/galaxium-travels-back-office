@@ -9,6 +9,7 @@ from __future__ import annotations
 import functools
 from collections import defaultdict
 from typing import Any, Callable
+from urllib.parse import quote
 
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
@@ -21,7 +22,8 @@ mcp = FastMCP(
         "The corporate systems of Galaxium Travels, a fictional interplanetary travel company: "
         "mail, chat, CRM, tickets, a shared drive and a read-only snapshot of bookings and quotes. "
         "Call backoffice_info first to learn today's date and whose desk you are working at. "
-        "Amounts are in credits. Tools that send, post, create or update are logged."
+        "Amounts are in credits. Tools that send, post, create or update are logged, and return a url "
+        "that opens the record in the web view: give it to the user when you report what you did."
     ),
     stateless_http=True,
     json_response=True,
@@ -64,6 +66,12 @@ def _write(system: str) -> Callable:
     return decorate
 
 
+def _linked(result: dict, app: str, *parts: Any) -> dict:
+    """Add the address of the record in the web view, for the agent to cite."""
+    path = "/".join(quote(str(p), safe="/") for p in (app, *parts))
+    return {**result, "url": f"{store.web_url()}/#{path}"}
+
+
 def _matches(record: Any, query: str) -> bool:
     return all(word in str(record).lower() for word in query.lower().split())
 
@@ -98,6 +106,10 @@ def backoffice_info() -> dict:
             "bookings": "Read-only snapshot of flights, bookings and price quotes",
         },
         "write_permissions": store.permissions(),
+        "web_view": store.web_url(),
+        "links": "Write tools return a url for what they changed. Other records open at "
+                 "<web_view>/#tickets/<id>, #mail/<thread id>, #chat/<channel>, #drive/<path>, "
+                 "#calendar/<event id>, #crm/deal/<id> and #crm/account/<id>.",
     }
 
 
@@ -142,7 +154,8 @@ def mail_read_thread(thread_id: str) -> dict:
 @_write("mail")
 def mail_send(to: str, subject: str, body: str, cc: str = "", thread_id: str = "") -> dict:
     """Send a mail from your desk. Give thread_id to reply in an existing thread. Mail stays inside the back office."""
-    return store.send_mail(to, subject, body, cc, thread_id)
+    sent = store.send_mail(to, subject, body, cc, thread_id)
+    return _linked(sent, "mail", sent["thread_id"])
 
 
 # ---------- chat ----------
@@ -176,7 +189,8 @@ def chat_search(query: str, limit: int = 30) -> dict:
 @_write("chat")
 def chat_post_message(channel: str, text: str) -> dict:
     """Post a message to a channel or one of your direct messages, as the person whose desk you are at."""
-    return store.post_chat(channel, text)
+    posted = store.post_chat(channel, text)
+    return _linked(posted, "chat", posted["channel"])
 
 
 # ---------- calendar ----------
@@ -206,8 +220,9 @@ def calendar_list_events(start_date: str = "", end_date: str = "", person: str =
 def calendar_create_event(title: str, start: str, end: str, attendees: list[str] | None = None,
                           location: str = "", notes: str = "") -> dict:
     """Put a meeting in the calendar, organised by you. start and end are "YYYY-MM-DD HH:MM"."""
-    return store.create_event({"title": title, "start": start, "end": end, "attendees": attendees or [],
-                               "location": location, "notes": notes})
+    event = store.create_event({"title": title, "start": start, "end": end, "attendees": attendees or [],
+                                "location": location, "notes": notes})
+    return _linked(event, "calendar", event["id"])
 
 
 # ---------- tickets ----------
@@ -238,16 +253,18 @@ def tickets_get(ticket_id: str) -> dict:
 def tickets_create(title: str, description: str, queue: str = "support", priority: str = "normal",
                    requester: str = "", assignee: str = "", related: str = "") -> dict:
     """Create a ticket. queue is support, engineering, it, facilities, finance or legal. related can name other tickets, threads or bookings."""
-    return store.create_ticket({"title": title, "description": description, "queue": queue, "priority": priority,
-                                "requester": requester, "assignee": assignee, "related": related})
+    ticket = store.create_ticket({"title": title, "description": description, "queue": queue, "priority": priority,
+                                  "requester": requester, "assignee": assignee, "related": related})
+    return _linked(ticket, "tickets", ticket["id"])
 
 
 @_write("tickets")
 def tickets_update(ticket_id: str, status: str = "", assignee: str = "", priority: str = "",
                    queue: str = "", comment: str = "") -> dict:
     """Change a ticket's status, assignee, priority or queue, and optionally add a comment. Empty fields stay as they are."""
-    return store.update_record("tickets", ticket_id,
-                               {"status": status, "assignee": assignee, "priority": priority, "queue": queue}, comment)
+    ticket = store.update_record("tickets", ticket_id,
+                                 {"status": status, "assignee": assignee, "priority": priority, "queue": queue}, comment)
+    return _linked(ticket, "tickets", ticket["id"])
 
 
 # ---------- CRM ----------
@@ -280,14 +297,16 @@ def crm_get_deal(deal_id: str) -> dict:
 def crm_update_deal(deal_id: str, stage: str = "", amount: int = 0, close_date: str = "",
                     loss_reason: str = "", next_step: str = "", note: str = "") -> dict:
     """Update a deal's stage, amount, close date, loss reason or next step, and optionally add a note. Empty fields stay as they are."""
-    return store.update_record("deals", deal_id, {"stage": stage, "amount": amount or None, "close_date": close_date,
+    deal = store.update_record("deals", deal_id, {"stage": stage, "amount": amount or None, "close_date": close_date,
                                                   "loss_reason": loss_reason, "next_step": next_step}, note)
+    return _linked(deal, "crm", "deal", deal["id"])
 
 
 @_write("crm")
 def crm_add_account_note(account_id: str, note: str) -> dict:
     """Add a note to a corporate account."""
-    return store.update_record("accounts", account_id, {}, note)
+    account = store.update_record("accounts", account_id, {}, note)
+    return _linked(account, "crm", "account", account["id"])
 
 
 # ---------- drive ----------
@@ -318,7 +337,8 @@ def drive_search(query: str) -> dict:
 @_write("drive")
 def drive_write_text(path: str, content: str) -> dict:
     """Save a text file (.md, .csv, .txt) to the shared drive, for example a memo under finance/ or a report under reports/."""
-    return store.drive_write(path, content)
+    saved = store.drive_write(path, content)
+    return _linked(saved, "drive", saved["path"])
 
 
 # ---------- bookings snapshot (read only) ----------
