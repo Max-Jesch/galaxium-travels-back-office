@@ -137,7 +137,7 @@
   .tree a.sub { padding-left: 34px; font-size: 13px; }
   .fold { width: 18px; height: 14px; border-radius: 2px 3px 3px 3px; background: #e9b949; position: relative; flex: none; display: inline-block; } .fold::before { content: ""; position: absolute; top: -3px; left: 0; width: 8px; height: 4px; border-radius: 2px 2px 0 0; background: #e9b949; }
   .ft { width: 26px; height: 30px; border-radius: 3px; color: #fff; font-size: 8.5px; font-weight: 700; display: inline-flex; align-items: flex-end; justify-content: center; padding-bottom: 4px; flex: none; letter-spacing: .03em; background: #6b6a75; }
-  .ft.xlsx, .ft.csv { background: #1d7044; } .ft.docx { background: #2b579a; } .ft.pptx { background: #c43e1c; } .ft.yaml, .ft.json { background: #7a4fbf; }
+  .ft.xlsx, .ft.csv { background: #3f7d6b; } .ft.docx { background: #4a4870; } .ft.pptx { background: #e8743b; } .ft.yaml, .ft.json { background: #7a4fbf; }
   .crumbs { display: flex; align-items: center; gap: 6px; font-size: 17px; flex-wrap: wrap; } .crumbs a { color: var(--ink); padding: 2px 6px; border-radius: 4px; } .crumbs a:hover { background: var(--hover); } .crumbs a:last-child { font-weight: 650; }
   .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 10px; padding: 4px 14px 8px; }
   .fcard { display: flex; align-items: center; gap: 12px; border: 1px solid var(--line); border-radius: 8px; padding: 10px 14px; cursor: pointer; background: var(--panel); } .fcard:hover { background: var(--hover); }
@@ -444,7 +444,9 @@ function renderDrawer() {
       if (p && p.kind === "sheet") { const k = Math.min(ui["drive.sheet"] || 0, p.sheets.length - 1), sh = p.sheets[k];
         body = (p.sheets.length > 1 ? `<div class="tabs">${p.sheets.map((s, i) => `<a class="${i === k ? "on" : ""}" ${set({"drive.sheet": i})}>${esc(s.name)}</a>`).join("")}</div>` : "") +
           `<div class="scroll" data-scroll="pv:${esc(path)}:${k}" style="overflow:auto"><table class="sheet">${sh.rows.map((r, i) => `<tr><th>${i + 1}</th>${r.map((c) => `<td ${typeof c === "number" ? 'class="n"' : ""}>${esc(typeof c === "number" ? num(c) : c)}</td>`).join("")}</tr>`).join("")}</table>${sh.total > sh.rows.length ? `<p class="muted small" style="padding:8px">Showing the first ${sh.rows.length} of ${sh.total} rows.</p>` : ""}</div>`; }
-      else if (p && p.text !== undefined) body = `<div class="scroll body" data-scroll="pv:${esc(path)}">${p.kind === "markdown" ? md(p.text) : `<div class="md" style="white-space:pre-wrap">${esc(p.text)}</div>`}</div>`;
+      else if (p && p.text !== undefined) { const pages = p.rendered && ui["drive.view"] !== "text", text = `<div class="scroll body" data-scroll="pv:${esc(path)}">${p.kind === "markdown" ? md(p.text) : `<div class="md" style="white-space:pre-wrap">${esc(p.text)}</div>`}</div>`;
+        body = (p.rendered ? `<div class="tabs"><a class="${pages ? "on" : ""}" ${set({"drive.view": "pages"})}>${/\.pptx$/i.test(path) ? "Slides" : "Pages"}</a><a class="${pages ? "" : "on"}" ${set({"drive.view": "text"})}>Text, as the agent reads it</a></div>` : "") +
+          (pages ? `<iframe title="Preview" src="/api/drive-pdf/${path.split("/").map(encodeURIComponent).join("/")}#toolbar=0&navpanes=0&view=FitH" style="flex:1;width:100%;min-height:0;border:0;background:#525659"></iframe>` : text); }
       else if (p && p.error) body = `<div class="empty">${esc(p.error)}</div>`;
       html = head(`<span style="display:inline-flex;gap:10px;align-items:center">${ftype(path)} ${esc(base(path))}</span>`, `${esc(path.split("/").slice(0, -1).join(" › "))} · ${esc(f.owner || "no owner")} · changed ${dShort(f.modified)} ${f.modified.slice(0, 4)} · ${size(f.size)} ${written(f)}`, `<a class="btn" href="/drive/${esc(path)}">Download</a>`) + body; }
   } else if (app === "crm" && ui["crm.deal"]) {
@@ -464,7 +466,8 @@ function renderDrawer() {
     const e = S.events.find((x) => x.id === ui["cal.ev"]);
     if (e) html = head(esc(e.title), `${dLong(e.start.slice(0, 10))} · ${e.start.slice(11, 16)}${e.end ? "–" + e.end.slice(11, 16) : ""} ${written(e)}`) + `<div class="scroll body"><dl class="kv"><dt>Organiser</dt><dd>${esc(e.organizer || "")}</dd><dt>Where</dt><dd>${esc(e.location || "–")}</dd><dt>Attendees</dt><dd>${(e.attendees || []).map((a) => `<span class="chip">${esc((person(a) || {name: a}).name)}</span>`).join(" ") || "–"}</dd>${e.repeats ? `<dt>Repeats</dt><dd>${esc(e.repeats)}</dd>` : ""}</dl>${e.notes ? md(e.notes) : ""}</div>`;
   }
-  el.innerHTML = html; el.classList.toggle("open", !!html);
+  if (el._html !== html) { el.innerHTML = html; el._html = html; }  // unchanged: leave it, so an embedded preview does not reload
+  el.classList.toggle("open", !!html);
   el.querySelectorAll("[data-scroll]").forEach((e) => { if (e.dataset.scroll in keep) e.scrollTop = keep[e.dataset.scroll]; });
 }
 

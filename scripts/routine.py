@@ -22,11 +22,9 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 
 import yaml
-from docx import Document
-from openpyxl import Workbook
-from openpyxl.styles import Font
-from pptx import Presentation
-from pptx.util import Pt
+
+import documents
+import office
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "content" / "generated"
@@ -71,54 +69,29 @@ def write(path: str, text: str) -> None:
     target.write_text(text, encoding="utf-8")
 
 
-def xlsx(path: str, sheets: dict[str, list[dict]]) -> None:
-    wb = Workbook()
-    wb.remove(wb.active)
-    for title, rows in sheets.items():
-        ws = wb.create_sheet(title[:31])
-        ws.append(list(rows[0]))
-        for cell in ws[1]:
-            cell.font = Font(bold=True)
-        for row in rows:
-            ws.append(list(row.values()))
-        ws.freeze_panes = "A2"
-        for i, key in enumerate(rows[0]):
-            ws.column_dimensions[chr(65 + i)].width = min(60, max(12, len(str(key)) + 4, *(len(str(r[key])) + 2 for r in rows[:60])))
-    wb.properties.created = wb.properties.modified = FIXED_TIME
-    target = OUT / "drive" / path
-    target.parent.mkdir(parents=True, exist_ok=True)
-    wb.save(target)
+# Who keeps each generated workbook, and when it was last touched (shown in the drive).
+FILE_META = {
+    "finance/bookings-export-2026-08.xlsx": ("Tomás Rivera", "2026-09-01"), "finance/bookings-export-2026-09.xlsx": ("Tomás Rivera", "2026-10-01"),
+    "finance/close/2026-09/revenue-pack-2026-09.xlsx": ("Tomás Rivera", "2026-10-01"), "finance/close/2026-10/deferred-revenue-2026-10.xlsx": ("Tomás Rivera", "2026-11-03"),
+    "finance/close/2026-10/close-checklist.xlsx": ("Chidi Eze", "2026-11-03"), "finance/budget-2027/budget-template.xlsx": ("Tomás Rivera", "2026-10-20"),
+    "finance/expenses/expense-reports-2026-09.xlsx": ("Hana Kobayashi", "2026-10-09"), "finance/ap/invoice-register-2026-10.xlsx": ("Beatrix Novak", "2026-11-02"),
+    "ops/crew/relief-crew-tombaugh-costing.xlsx": ("Andrei Popescu", "2026-10-27"), "ops/crew/venus-second-crew-costing.xlsx": ("Andrei Popescu", "2026-11-03"),
+    "ops/fleet/fleet-register.xlsx": ("Zainab Hussein", "2026-10-30"), "ops/schedule/scheduled-service-2026-27.xlsx": ("Yuki Tanaka", "2026-10-19"),
+    "ops/ground/tycho-turnarounds-2026-10.xlsx": ("Lucia Bianchi", "2026-10-30"), "sales/rate-card-2026.xlsx": ("Sinead Byrne", "2026-01-12"),
+    "legal/vendor-register.xlsx": ("Sam Whitlock", "2026-10-30"), "people/org/headcount-2026-10.xlsx": ("Dorothea Klein", "2026-10-30"),
+    "it/asset-register.xlsx": ("Ling Zhou", "2026-10-26"),
+}
+STATUS = {"status": {"on hold": office.WARN, "waiting": office.AMBER, "open": office.AMBER, "returned": office.AMBER, "not signed": office.WARN,
+                     "refit": office.AMBER, "under review": office.AMBER, "done": office.OK},
+          "over_target": {"yes": office.WARN}}
 
 
-def deck(path: str, title: str, subtitle: str, slides: list[tuple[str, list[str]]]) -> None:
-    prs = Presentation()
-    prs.core_properties.title = title
-    prs.core_properties.created = prs.core_properties.modified = FIXED_TIME
-    first = prs.slides.add_slide(prs.slide_layouts[0])
-    first.shapes.title.text, first.placeholders[1].text = title, subtitle
-    for heading, lines in slides:
-        slide = prs.slides.add_slide(prs.slide_layouts[1])
-        slide.shapes.title.text = heading
-        slide.placeholders[1].text = "\n".join(lines)
-        for paragraph in slide.placeholders[1].text_frame.paragraphs:
-            for run in paragraph.runs:
-                run.font.size = Pt(20)
-    target = OUT / "drive" / path
-    target.parent.mkdir(parents=True, exist_ok=True)
-    prs.save(target)
-
-
-def docx(path: str, title: str, sections: list[tuple[str, list[str]]]) -> None:
-    doc = Document()
-    doc.core_properties.created = doc.core_properties.modified = FIXED_TIME
-    doc.add_heading(title, 0)
-    for heading, paragraphs in sections:
-        doc.add_heading(heading, 1)
-        for text in paragraphs:
-            doc.add_paragraph(text)
-    target = OUT / "drive" / path
-    target.parent.mkdir(parents=True, exist_ok=True)
-    doc.save(target)
+def xlsx(path: str, sheets: dict[str, list[dict]], owner: str | None = None, modified: str | None = None, **options) -> None:
+    """A workbook in the drive. An export pulled from a system looks like one; everything else is in the house style."""
+    known = FILE_META.get(path, (None, None))
+    every = {name: {"status": STATUS, **options.get(name, {})} for name in sheets}
+    office.table_book(OUT / "drive" / path, sheets, plain=path.startswith("finance/bookings-export"),
+                      owner=owner or known[0], modified=modified or known[1], **every)
 
 
 def thread(slug: str, subject: str, labels: list[str], messages: list[tuple[str, str, str, str]], cc: str = "") -> None:
@@ -371,7 +344,7 @@ VENDORS = [
     ("Lagrange Catering", "billing@lagrangecatering.example", "LC", "Cabin catering", (60_000, 140_000)),
     ("Olympus Port Authority", "billing@olympusport.example", "OP", "Port and pad fees, Olympus", (180_000, 320_000)),
     ("Aphrodite Station Operations", "accounts@aphroditestation.example", "AS", "Berth fees, Aphrodite Station", (150_000, 260_000)),
-    ("Paylane", "invoices@paylane.example", "PL", "Payment processing fees", (20_000, 90_000)),
+    ("Ferrypay", "invoices@ferrypay.example", "FP", "Payment processing fees", (20_000, 90_000)),
     ("Cape Meridian Facilities", "billing@capemeridianfm.example", "CM", "Office cleaning and maintenance, Earth HQ", (30_000, 70_000)),
     ("Northlight Telecom", "billing@northlight.example", "NT", "Connectivity, three stations", (40_000, 60_000)),
     ("Tombaugh Station Cooperative", "treasury@tombaughcoop.example", "TS", "Berth and servicing, Tombaugh", (400_000, 700_000)),
@@ -597,7 +570,8 @@ def build_drive(d: Data) -> None:
                        {"measure": "Week", "value": f"{monday} to {monday + timedelta(days=6)}, by booking date"},
                        {"measure": "Source", "value": "Booking system, pulled the following Monday by Yuki Tanaka"}]
             xlsx(f"ops/weekly-reports/weekly-bookings-{monday.isocalendar().year}-W{monday.isocalendar().week:02d}.xlsx",
-                 {"Summary": summary, "By route": split(week, lambda b: d.route(b["flight_id"])), "By seat class": split(week, lambda b: b["seat_class"])})
+                 {"Summary": summary, "By route": split(week, lambda b: d.route(b["flight_id"])), "By seat class": split(week, lambda b: b["seat_class"])},
+                 owner="Yuki Tanaka", modified=str(monday + timedelta(days=7)))
         monday += timedelta(days=7)
 
     xlsx("ops/crew/relief-crew-tombaugh-costing.xlsx", {"Monthly cost": [
@@ -644,7 +618,7 @@ def build_drive(d: Data) -> None:
         {"vendor": "Tycho Ground Services", "service": "Ground handling, Luna", "contract_ends": "2026-12-31", "monthly_fee": 380000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewal draft received 30 October, under review"},
         {"vendor": "Helios Fuels", "service": "Fuel supply", "contract_ends": "2027-01-31", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Zainab Hussein", "status": "Renewal draft expected in November"},
         {"vendor": "Lagrange Catering", "service": "Cabin catering", "contract_ends": "2027-10-20", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewed 21 October"},
-        {"vendor": "Paylane", "service": "Payment processing", "contract_ends": "2027-06-30", "monthly_fee": "per transaction", "automatic_renewal": "yes, 12 months", "owner": "Marcus Lindqvist", "status": "Active"},
+        {"vendor": "Ferrypay", "service": "Payment processing", "contract_ends": "2027-06-30", "monthly_fee": "per transaction", "automatic_renewal": "yes, 12 months", "owner": "Marcus Lindqvist", "status": "Active"},
         {"vendor": "Olympus Port Authority", "service": "Port and pad fees, Mars", "contract_ends": "2027-06-30", "monthly_fee": 250000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
         {"vendor": "Aphrodite Station Operations", "service": "Berth, Venus", "contract_ends": "2027-03-31", "monthly_fee": 210000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
         {"vendor": "Tombaugh Station Cooperative", "service": "Berth and servicing, Pluto", "contract_ends": "2027-08-31", "monthly_fee": 540000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
@@ -661,35 +635,6 @@ def build_drive(d: Data) -> None:
          "purchased": f"{rng.choice([2021, 2022, 2023, 2024, 2025])}-{rng.randint(1, 12):02d}", "note": "Replacement ordered, delivery 5 November" if p["name"] in ("Andrei Popescu", "Hana Kobayashi") else ""}
         for i, p in enumerate(d.people)]})
 
-    deck("leadership/board/board-pack-2026-08.pptx", "Board pack, August 2026", "Galaxium Travels · Finance · 20 August 2026", [
-        ("Summary", ["Scheduled service on ten routes, one departure a month each.", "Pluto route added in the spring: fills steadily.", "Hold service on track for 1 October."]),
-        ("Revenue", ["Scheduled service: see the bookings export for August in finance/.", "Charter: see the CRM, closed deals.", "Source on every table, as the board asked."]),
-        ("Fleet", ["Five ships in service, Perihelion in refit until February 2027.", "Halcyon is the only outer-system hull until then."]),
-        ("Risks", ["One outer-system hull: no slack.", "Two price calculations after the hold service goes live: to be merged.", "Manual exports for finance and operations."]),
-        ("Decisions asked of the board", ["None this month."])])
-    deck("marketing/campaigns/winter-on-mars/briefing-deck.pptx", "Winter on Mars", "Campaign briefing · Marketing · October 2026", [
-        ("The idea", ["Mars has a winter. The dune lodges at Red Sands are at their best in it.", "We sell the trip, Red Sands sells the stay."]),
-        ("Dates", ["Launch: Tuesday 10 November 2026, 09:00.", "Runs until 28 February 2027."]),
-        ("The offer", ["Public site: no discount.", "Groups of eight or more, through Sales: 10% off, at most 40 seats a month."]),
-        ("If a customer asks before launch", ["\"Soon.\"", "Do not promise dates or prices. Do not say \"guaranteed aurora\"."])])
-    deck("sales/corporate-overview-deck.pptx", "Galaxium Travels for corporate travel", "Sales · 2026", [
-        ("Who we are", ["Six ships, ten routes, three stations with our own staff.", "Scheduled service and charter rotations."]),
-        ("What you get", ["Named account executive and customer success manager.", "Seat holds before you pay.", "Invoices the way your finance team wants them."]),
-        ("Where we fly", ["Earth, Luna, Mars, Venus, Jupiter, Europa, Pluto."]),
-        ("Next step", ["Tell us how often your crews rotate. We build the schedule around it."])])
-    docx("legal/templates/data-processing-addendum.docx", "Data processing addendum", [
-        ("1. Scope", ["This addendum applies whenever the Vendor processes personal data of Galaxium's customers or staff."]),
-        ("2. Instructions", ["The Vendor processes personal data only on Galaxium's documented instructions."]),
-        ("3. Sub-processors", ["The Vendor informs Galaxium at least 30 days before engaging a new sub-processor. Galaxium may object."]),
-        ("4. Security", ["The Vendor keeps appropriate technical and organisational measures and reports any incident within 24 hours."]),
-        ("5. Deletion", ["At the end of the contract the Vendor deletes all personal data within 30 days and confirms this in writing."]),
-        ("6. Audit", ["Galaxium may audit the Vendor once a year with 30 days' notice."])])
-    docx("people/handbook/station-guide-luna.docx", "Station guide: Luna office", [
-        ("Getting there", ["The office is on level 3 of the Tycho terminal, above the crew lounge. Badge access from 06:00 to 22:00."]),
-        ("Working hours", ["Core hours are 10:00 to 15:00 Luna time. Earth HQ is two hours ahead."]),
-        ("Lunch", ["There is no canteen. The lunch allowance is paid with your salary."]),
-        ("Who is here", ["Lena Fischer (Sales), Anneli Korhonen (Support), Lucia Bianchi and Zainab Hussein (Operations), Hana Kobayashi (Finance), Wren Abbott (Engineering)."])])
-
 
 def build() -> None:
     if OUT.exists():
@@ -700,6 +645,8 @@ def build() -> None:
     build_mail(data)
     build_calendar(data)
     build_drive(data)
+    documents.build(data)
+    office.write_index(OUT / "drive")
     print(f"routine: {sum(1 for p in OUT.rglob('*') if p.is_file())} files in content/generated")
 
 

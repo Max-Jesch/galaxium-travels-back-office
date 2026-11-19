@@ -6,6 +6,7 @@ import json
 from collections import Counter
 from pathlib import Path
 
+from starlette.concurrency import run_in_threadpool
 from starlette.requests import Request
 from starlette.responses import FileResponse, HTMLResponse, JSONResponse, Response
 
@@ -74,6 +75,15 @@ async def drive_preview(request: Request) -> Response:
         return Response(body, media_type="application/json")
     except ValueError as exc:
         return JSONResponse({"error": str(exc)}, status_code=404)
+
+
+@mcp.custom_route("/api/drive-pdf/{path:path}", methods=["GET"])
+async def drive_pdf(request: Request) -> Response:
+    """A deck or document as pages, for the preview. Rendering takes a few seconds the first time."""
+    pdf = await run_in_threadpool(store.drive_pdf, request.path_params["path"])
+    if not pdf:
+        return JSONResponse({"error": "no rendering available"}, status_code=404)
+    return FileResponse(pdf, media_type="application/pdf", content_disposition_type="inline")
 
 
 @mcp.custom_route("/api/ground-truth", methods=["GET"])

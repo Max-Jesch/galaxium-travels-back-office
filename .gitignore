@@ -4,3 +4,7 @@ __pycache__/
 *.pyc
 .DS_Store
 ~$*
+
+# Internal planning notes, not for the public repo
+Galaxium Back Office Repo Design.md
+.vscode/

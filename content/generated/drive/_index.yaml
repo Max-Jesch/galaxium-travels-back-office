@@ -1,0 +1,217 @@
+# Generated. Owner and last change of the generated files.
+engineering/architecture/hold-service-design.docx:
+  modified: '2026-09-18'
+  owner: Aditi Sharma
+engineering/architecture/hold-service-launch-readiness.pptx:
+  modified: '2026-09-24'
+  owner: Aditi Sharma
+engineering/postmortems/2026-10-13-payment-timeouts-review.pptx:
+  modified: '2026-10-16'
+  owner: Emeka Obi
+engineering/releases/release-4.12-test-matrix.xlsx:
+  modified: '2026-11-03'
+  owner: Clara Jensen
+engineering/roadmap/booking-roadmap-2027-q1.pptx:
+  modified: '2026-10-23'
+  owner: Maya Goldberg
+finance/ap/invoice-register-2026-10.xlsx:
+  modified: '2026-11-02'
+  owner: Beatrix Novak
+finance/ap/purchase-requests-2026-q4.xlsx:
+  modified: '2026-11-02'
+  owner: Beatrix Novak
+finance/ap/tycho-service-report-2026-09.docx:
+  modified: '2026-10-02'
+  owner: Beatrix Novak
+finance/audit/engagement-letter-2026.docx:
+  modified: '2026-09-16'
+  owner: Chidi Eze
+finance/bookings-export-2026-08.xlsx:
+  modified: '2026-09-01'
+  owner: Tomás Rivera
+finance/bookings-export-2026-09.xlsx:
+  modified: '2026-10-01'
+  owner: Tomás Rivera
+finance/budget-2027/budget-2027-kickoff.pptx:
+  modified: '2026-10-20'
+  owner: Ingrid Solberg
+finance/budget-2027/budget-template.xlsx:
+  modified: '2026-10-20'
+  owner: Tomás Rivera
+finance/close/2026-09/revenue-pack-2026-09.xlsx:
+  modified: '2026-10-01'
+  owner: Tomás Rivera
+finance/close/2026-10/close-checklist.xlsx:
+  modified: '2026-11-03'
+  owner: Chidi Eze
+finance/close/2026-10/deferred-revenue-2026-10.xlsx:
+  modified: '2026-11-03'
+  owner: Tomás Rivera
+finance/expenses/expense-reports-2026-09.xlsx:
+  modified: '2026-10-09'
+  owner: Hana Kobayashi
+it/asset-register.xlsx:
+  modified: '2026-10-26'
+  owner: Ling Zhou
+it/software-register.xlsx:
+  modified: '2026-10-26'
+  owner: Bruno Ferreira
+leadership/all-hands/all-hands-2026-10-01.pptx:
+  modified: '2026-10-01'
+  owner: Renata Castellanos
+leadership/board/board-minutes-2026-08-20.docx:
+  modified: '2026-08-27'
+  owner: Helena Vogt
+leadership/board/board-pack-2026-08.pptx:
+  modified: '2026-08-19'
+  owner: Ingrid Solberg
+legal/privacy/data-requests-2026.xlsx:
+  modified: '2026-10-27'
+  owner: Isaac Brandt
+legal/privacy/security-training-status-2026-10-30.xlsx:
+  modified: '2026-10-30'
+  owner: Isaac Brandt
+legal/templates/data-processing-addendum.docx:
+  modified: '2026-09-01'
+  owner: Isaac Brandt
+legal/vendor-register.xlsx:
+  modified: '2026-10-30'
+  owner: Sam Whitlock
+legal/vendors/lagrange-catering-agreement-2026.docx:
+  modified: '2026-10-21'
+  owner: Sam Whitlock
+legal/vendors/tycho/ground-handling-agreement-2025.docx:
+  modified: '2024-12-12'
+  owner: Sam Whitlock
+marketing/campaigns/winter-on-mars/briefing-deck.pptx:
+  modified: '2026-10-07'
+  owner: Elise Fontaine
+marketing/campaigns/winter-on-mars/media-plan.xlsx:
+  modified: '2026-11-03'
+  owner: Elise Fontaine
+marketing/events/travel-expo-briefing.pptx:
+  modified: '2026-10-28'
+  owner: Pilar Navarro
+marketing/events/travel-expo-budget.xlsx:
+  modified: '2026-10-28'
+  owner: Pilar Navarro
+marketing/press/press-release-seat-holds-2026-10-01.docx:
+  modified: '2026-09-30'
+  owner: Noor Rahimi
+ops/crew/relief-crew-tombaugh-costing.xlsx:
+  modified: '2026-10-27'
+  owner: Andrei Popescu
+ops/crew/venus-second-crew-costing.xlsx:
+  modified: '2026-11-03'
+  owner: Andrei Popescu
+ops/fleet/fleet-register.xlsx:
+  modified: '2026-10-30'
+  owner: Zainab Hussein
+ops/fleet/maintenance-plan-2026-q4.xlsx:
+  modified: '2026-10-30'
+  owner: Zainab Hussein
+ops/ground/turnaround-procedure-tycho.docx:
+  modified: '2026-10-20'
+  owner: Lucia Bianchi
+ops/ground/turnaround-scorecard-2026-q3.xlsx:
+  modified: '2026-10-06'
+  owner: Lucia Bianchi
+ops/ground/tycho-turnarounds-2026-10.xlsx:
+  modified: '2026-10-30'
+  owner: Lucia Bianchi
+ops/safety/safety-reports-2026.xlsx:
+  modified: '2026-10-30'
+  owner: Kwame Asante
+ops/safety/safety-review-2026-q3-pre-read.pptx:
+  modified: '2026-11-03'
+  owner: Kwame Asante
+ops/schedule/departure-plan-2026-11.xlsx:
+  modified: '2026-11-02'
+  owner: Andrei Popescu
+ops/schedule/scheduled-service-2026-27.xlsx:
+  modified: '2026-10-19'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W33.xlsx:
+  modified: '2026-08-17'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W34.xlsx:
+  modified: '2026-08-24'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W35.xlsx:
+  modified: '2026-08-31'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W36.xlsx:
+  modified: '2026-09-07'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W37.xlsx:
+  modified: '2026-09-14'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W38.xlsx:
+  modified: '2026-09-21'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W39.xlsx:
+  modified: '2026-09-28'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W40.xlsx:
+  modified: '2026-10-05'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W41.xlsx:
+  modified: '2026-10-12'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W42.xlsx:
+  modified: '2026-10-19'
+  owner: Yuki Tanaka
+ops/weekly-reports/weekly-bookings-2026-W43.xlsx:
+  modified: '2026-10-26'
+  owner: Yuki Tanaka
+people/benefits/benefits-2027-briefing.pptx:
+  modified: '2026-10-26'
+  owner: Dorothea Klein
+people/handbook/station-guide-luna.docx:
+  modified: '2026-10-20'
+  owner: Dorothea Klein
+people/handbook/station-guide-mars.docx:
+  modified: '2026-10-20'
+  owner: Dorothea Klein
+people/hiring/hiring-tracker.xlsx:
+  modified: '2026-11-03'
+  owner: Samir Chaudhry
+people/hiring/interview-scorecard-senior-engineer.docx:
+  modified: '2026-11-03'
+  owner: Samir Chaudhry
+people/hiring/job-description-route-analyst.docx:
+  modified: '2026-10-14'
+  owner: Samir Chaudhry
+people/onboarding/welcome-to-galaxium.pptx:
+  modified: '2026-10-02'
+  owner: Samir Chaudhry
+people/org/headcount-2026-10.xlsx:
+  modified: '2026-10-30'
+  owner: Dorothea Klein
+people/templates/offer-letter-template.docx:
+  modified: '2026-09-01'
+  owner: Dorothea Klein
+sales/case-studies/helix-mining-case-study.docx:
+  modified: '2026-10-14'
+  owner: Jamal Carter
+sales/contracts/vesta-shipwrights-charter-order-2027.docx:
+  modified: '2026-10-09'
+  owner: Dev Malhotra
+sales/corporate-overview-deck.pptx:
+  modified: '2026-10-05'
+  owner: Amara Okafor
+sales/forecast-2026-q4.xlsx:
+  modified: '2026-11-02'
+  owner: Sinead Byrne
+sales/pipeline-review-2026-11-03.pptx:
+  modified: '2026-11-02'
+  owner: Sinead Byrne
+sales/rate-card-2026.xlsx:
+  modified: '2026-01-12'
+  owner: Sinead Byrne
+support/support-numbers-2026-autumn.xlsx:
+  modified: '2026-11-03'
+  owner: Greta Olsen
+support/support-review-2026-10.pptx:
+  modified: '2026-11-02'
+  owner: Nadia Haddad

@@ -13,6 +13,9 @@ import json
 import os
 import re
 import shutil
+import subprocess
+import tempfile
+import threading
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Any
@@ -454,7 +457,54 @@ def drive_preview(path: str) -> dict:
     text = drive_text(path)["text"]
     if local.suffix.lower() == ".md":
         text = _frontmatter(text)[1]
-    return {**public, "kind": "markdown" if local.suffix.lower() in (".md", ".pptx") else "text", "text": text}
+    return {**public, "kind": "markdown" if local.suffix.lower() in (".md", ".pptx") else "text", "text": text,
+            "rendered": local.suffix.lower() in RENDERED_SUFFIXES and bool(_OFFICE or _stored_pdf(local))}
+
+
+RENDERED_SUFFIXES = {".pptx", ".docx"}
+_OFFICE = shutil.which("soffice") or next((c for c in ("/Applications/LibreOffice.app/Contents/MacOS/soffice", "/usr/bin/libreoffice") if Path(c).exists()), None)
+_RENDER_LOCK = threading.Lock()
+
+
+def _stored_pdf(local: Path) -> Path | None:
+    try:
+        root, rel = local.relative_to(CONTENT).as_posix().split("/drive/", 1)
+    except ValueError:
+        return None
+    pdf = CONTENT / "previews" / root / (rel + ".pdf")
+    return pdf if pdf.exists() else None
+
+
+def drive_pdf(path: str) -> Path | None:
+    """The file as it looks when opened. The pages of the files in the repo are stored under
+    content/previews by scripts/previews.py. Anything else is rendered by LibreOffice, if it
+    is installed, once per version of the file, and kept in the temp folder."""
+    entry = next((f for f in drive_files() if f["path"] == path.strip("/")), None)
+    if not entry or Path(entry["local_path"]).suffix.lower() not in RENDERED_SUFFIXES:
+        return None
+    local = Path(entry["local_path"])
+    if stored := _stored_pdf(local):
+        return stored
+    if not _OFFICE:
+        return None
+    stat = local.stat()
+    cache = Path(tempfile.gettempdir()) / "galaxium-backoffice-previews"
+    target = cache / (hashlib.sha1(f"{local}|{stat.st_size}|{stat.st_mtime_ns}".encode()).hexdigest() + ".pdf")
+    with _RENDER_LOCK:  # one conversion at a time: LibreOffice shares a profile
+        if not target.exists():
+            work = cache / "work"
+            shutil.rmtree(work, ignore_errors=True)
+            work.mkdir(parents=True)
+            try:
+                subprocess.run([_OFFICE, "--headless", f"-env:UserInstallation={(cache / 'profile').as_uri()}", "--convert-to", "pdf",
+                                "--outdir", str(work), str(local)], capture_output=True, timeout=90, check=False)
+            except (OSError, subprocess.TimeoutExpired):
+                return None
+            made = work / (local.stem + ".pdf")
+            if not made.exists():
+                return None
+            made.replace(target)
+    return target
 
 
 def drive_text(path: str, max_chars: int = 60000) -> dict:
@@ -475,17 +525,29 @@ def drive_text(path: str, max_chars: int = 60000) -> dict:
         text = "\n".join(parts)
     elif suffix == ".docx":
         from docx import Document
-        doc = Document(str(local))
-        parts = [p.text for p in doc.paragraphs if p.text.strip()]
-        for table in doc.tables:
-            parts += [" | ".join(c.text for c in row.cells) for row in table.rows]
+        parts = []
+        for block in Document(str(local)).iter_inner_content():  # paragraphs and tables in the order they appear
+            if hasattr(block, "rows"):
+                parts += [" | ".join(dict.fromkeys(c.text.strip() for c in row.cells)) for row in block.rows]
+            elif block.text.strip():
+                parts.append(block.text)
         text = "\n".join(parts)
     elif suffix == ".pptx":
         from pptx import Presentation
         parts = []
         for i, slide in enumerate(Presentation(str(local)).slides, 1):
             parts.append(f"## Slide {i} (layout: {slide.slide_layout.name})")
-            parts += [s.text_frame.text for s in slide.shapes if s.has_text_frame and s.text_frame.text.strip()]
+            for s in slide.shapes:
+                if s.has_text_frame and s.text_frame.text.strip():
+                    parts.append(s.text_frame.text)
+                elif getattr(s, "has_table", False) and s.has_table:
+                    rows = [[c.text.replace("\n", " ") for c in row.cells] for row in s.table.rows]
+                    parts += ["", "| " + " | ".join(rows[0]) + " |", "|" + " --- |" * len(rows[0])] + ["| " + " | ".join(r) + " |" for r in rows[1:]] + [""]
+                elif getattr(s, "has_chart", False) and s.has_chart:
+                    plot = s.chart.plots[0]
+                    cats = [str(c) for c in plot.categories]
+                    parts += ["", "| Chart | " + " | ".join(cats) + " |", "|" + " --- |" * (len(cats) + 1)]
+                    parts += ["| " + series.name + " | " + " | ".join(f"{v:,.0f}" if isinstance(v, (int, float)) else "" for v in series.values) + " |" for series in plot.series] + [""]
         text = "\n".join(parts)
     else:
         text = "(binary file, open it from local_path)"

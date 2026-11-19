@@ -18,11 +18,8 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 import yaml
-from docx import Document
-from openpyxl import Workbook
-from openpyxl.styles import Font
-from pptx import Presentation
-from pptx.util import Pt
+
+import office
 
 ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT = ROOT / "snapshot"
@@ -47,21 +44,8 @@ def write_csv(name: str, rows: list[dict]) -> None:
 
 
 def write_xlsx(path: Path, sheets: dict[str, list[dict]]) -> None:
-    wb = Workbook()
-    wb.remove(wb.active)
-    for title, rows in sheets.items():
-        ws = wb.create_sheet(title)
-        ws.append(list(rows[0]))
-        for cell in ws[1]:
-            cell.font = Font(bold=True)
-        for row in rows:
-            ws.append(list(row.values()))
-        ws.freeze_panes = "A2"
-        for i, key in enumerate(rows[0]):
-            ws.column_dimensions[chr(65 + i)].width = max(12, len(str(key)) + 4, *(len(str(r[key])) + 2 for r in rows[:50]))
-    wb.properties.created = wb.properties.modified = FIXED_TIME
-    path.parent.mkdir(parents=True, exist_ok=True)
-    wb.save(path)
+    """The exports and trackers of the packs: pulled or typed by hand, so plain."""
+    office.table_book(path, sheets, plain=True)
 
 
 # ---------------------------------------------------------------- snapshot
@@ -175,9 +159,8 @@ def build_snapshot() -> tuple[list[dict], list[dict], list[dict], list[dict]]:
 
 def build_templates() -> None:
     folder = COMPANY / "drive" / "templates"
-    deck = Presentation()
+    deck = office.new_presentation()
     deck.core_properties.title = "Galaxium Travels deck template"
-    deck.core_properties.created = deck.core_properties.modified = FIXED_TIME
     slides = [
         (0, "Title of the deck", "Department · Author · Date"),
         (1, "Summary", "The answer in one sentence.\nThe number that supports it, with its source.\nThe decision you are asking for."),
@@ -189,28 +172,21 @@ def build_templates() -> None:
         slide = deck.slides.add_slide(deck.slide_layouts[layout])
         slide.shapes.title.text = title
         slide.placeholders[1].text = body
-        for paragraph in slide.placeholders[1].text_frame.paragraphs:
-            for run in paragraph.runs:
-                run.font.size = Pt(20)
     deck.save(folder / "galaxium-deck-template.pptx")
+    office.normalize(folder / "galaxium-deck-template.pptx")
 
-    doc = Document()
-    doc.core_properties.created = doc.core_properties.modified = FIXED_TIME
-    doc.add_heading("Weekly bookings and cancellations report", 0)
-    doc.add_paragraph("Week: <Monday> to <Sunday>, by booking date. Prepared by: <name>. Source: booking system.")
-    doc.add_heading("Headline", 1)
-    table = doc.add_table(rows=4, cols=3, style="Light Grid Accent 1")
-    for i, row in enumerate([("Measure", "This week", "Previous week"), ("Bookings", "", ""), ("Cancellations", "", ""),
-                             ("Revenue excluding cancelled bookings (credits)", "", "")]):
-        for j, text in enumerate(row):
-            table.cell(i, j).text = text
-    doc.add_heading("Split by seat class", 1)
-    doc.add_paragraph("<bookings and revenue for economy, business and galaxium>")
-    doc.add_heading("Three strongest routes", 1)
-    doc.add_paragraph("<route, bookings, revenue>")
-    doc.add_heading("Anything unusual", 1)
-    doc.add_paragraph("<one line, or 'nothing unusual'>")
-    doc.save(folder / "weekly-bookings-report-template.docx")
+    doc = office.Doc(folder / "weekly-bookings-report-template.docx", "Weekly bookings and cancellations report", label="Finance · Weekly report")
+    doc.p("Week: <Monday> to <Sunday>, by booking date. Prepared by: <name>. Source: booking system.")
+    doc.h1("Headline")
+    doc.table(["Measure", "This week", "Previous week"], [["Bookings", "", ""], ["Cancellations", "", ""],
+                                                          ["Revenue excluding cancelled bookings (credits)", "", ""]], widths=[3, 1, 1])
+    doc.h1("Split by seat class")
+    doc.p("<bookings and revenue for economy, business and galaxium>")
+    doc.h1("Three strongest routes")
+    doc.p("<route, bookings, revenue>")
+    doc.h1("Anything unusual")
+    doc.p("<one line, or 'nothing unusual'>")
+    doc.save()
 
 
 # ---------------------------------------------------------------- pack: quote mismatch
@@ -384,6 +360,9 @@ def build_win_loss() -> None:
 
 # ---------------------------------------------------------------- pack: vendor contract
 
+TYCHO = office.Brand("TYCHO GROUND SERVICES LTD.", primary="1F3B4D", accent="3A8FA3", head="Arial", text="Arial",
+                     footer="Tycho Ground Services Ltd. · Tycho Spaceport, Luna · tychoground.example")
+
 CLAUSES = [
     ("1. Services", "Tycho Ground Services Ltd. (\"Vendor\") provides ground handling for Galaxium Travels (\"Customer\") departures and arrivals at Tycho Spaceport: docking, fuelling, baggage and passenger transfer."),
     ("2. Term and renewal", "This Agreement runs for an initial term of 36 months from 1 January 2027. It renews automatically for successive periods of 24 months unless either party gives written notice at least 180 days before the end of the current term."),
@@ -402,16 +381,14 @@ CLAUSES = [
 
 def build_vendor_contract() -> None:
     pack = PACKS / "vendor-contract"
-    doc = Document()
-    doc.core_properties.created = doc.core_properties.modified = FIXED_TIME
-    doc.add_heading("Ground Handling Agreement", 0)
-    doc.add_paragraph("between Tycho Ground Services Ltd. and Galaxium Travels. Draft of 30 October 2026, prepared by the Vendor.")
+    doc = office.Doc(pack / "drive" / "legal" / "tycho-ground-handling-agreement-draft.docx", "Ground Handling Agreement",
+                     subtitle="Tycho Spaceport, Luna", brand=TYCHO, label="DRAFT · 30 October 2026 · Subject to contract")
+    doc.p("between Tycho Ground Services Ltd. and Galaxium Travels. Draft of 30 October 2026, prepared by the Vendor.")
     for title, text in CLAUSES:
-        doc.add_heading(title, 2)
-        doc.add_paragraph(text)
-    target = pack / "drive" / "legal" / "tycho-ground-handling-agreement-draft.docx"
-    target.parent.mkdir(parents=True, exist_ok=True)
-    doc.save(target)
+        doc.h2(title)
+        doc.p(text, align="j")
+    doc.signatures([("For Tycho Ground Services Ltd.", "Rafael Ortega", "Account Director", ""), ("For Galaxium Travels", "", "", "")])
+    doc.save()
 
     (pack / "ground-truth.md").write_text("""# Ground truth: the Tycho ground handling agreement
 
@@ -468,4 +445,6 @@ if __name__ == "__main__":
     build_vendor_contract()
     import routine  # the everyday volume: feeds, invoices, tickets, calendar, registers
     routine.build()
+    import previews  # pages of the decks and documents for the web view
+    previews.build()
     print(f"snapshot: {len(data[0])} users, {len(data[1])} flights, {len(data[2])} bookings, {len(data[3])} quotes")
