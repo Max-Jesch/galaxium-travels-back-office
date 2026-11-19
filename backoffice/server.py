@@ -421,3 +421,77 @@ def bookings_search_quotes(user_id: int = 0, flight_id: int = 0, seat_class: str
             and (not seat_class or q["seat_class"] == seat_class) and (not status or q["status"] == status)
             and (not booking_id or q["booking_id"] == booking_id)]
     return _page(rows, limit, offset)
+
+
+@_read("bookings")
+def bookings_quote_mismatches(limit: int = 50, offset: int = 0) -> dict:
+    """Join converted quotes to their bookings and count price mismatches."""
+    bookings = store.snapshot("bookings")
+    quotes = store.snapshot("quotes")
+    by_booking = {b["booking_id"]: b for b in bookings}
+
+    mismatches = []
+    charged_more_count = 0
+    charged_more_total_diff = 0
+    charged_less_count = 0
+    charged_less_total_diff = 0
+    matching_count = 0
+    matched_bookings_count = 0
+
+    for q in quotes:
+        if q["status"] == "converted":
+            bid = q["booking_id"]
+            if bid in by_booking:
+                matched_bookings_count += 1
+                b = by_booking[bid]
+                diff = b["price_paid"] - q["quoted_price"]
+                if diff > 0:
+                    charged_more_count += 1
+                    charged_more_total_diff += diff
+                    mismatches.append({
+                        "booking_id": b["booking_id"],
+                        "quote_id": q["quote_id"],
+                        "user_id": b["user_id"],
+                        "flight_id": b["flight_id"],
+                        "seat_class": b["seat_class"],
+                        "quoted_price": q["quoted_price"],
+                        "price_paid": b["price_paid"],
+                        "difference": diff
+                    })
+                elif diff < 0:
+                    charged_less_count += 1
+                    charged_less_total_diff += abs(diff)
+                    mismatches.append({
+                        "booking_id": b["booking_id"],
+                        "quote_id": q["quote_id"],
+                        "user_id": b["user_id"],
+                        "flight_id": b["flight_id"],
+                        "seat_class": b["seat_class"],
+                        "quoted_price": q["quoted_price"],
+                        "price_paid": b["price_paid"],
+                        "difference": diff
+                    })
+                else:
+                    matching_count += 1
+
+    summary = {
+        "total_bookings": len(bookings),
+        "converted_quotes": sum(1 for q in quotes if q["status"] == "converted"),
+        "matched_bookings": matched_bookings_count,
+        "total_mismatches": len(mismatches),
+        "charged_more": {
+            "count": charged_more_count,
+            "total_difference": charged_more_total_diff
+        },
+        "charged_less": {
+            "count": charged_less_count,
+            "total_difference": charged_less_total_diff
+        },
+        "matching_count": matching_count
+    }
+
+    paged = _page(mismatches, limit, offset)
+    return {
+        "summary": summary,
+        "mismatches": paged
+    }
