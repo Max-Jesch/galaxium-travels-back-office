@@ -1,10 +1,11 @@
 """House style for the office files in the drive: workbooks, decks and documents.
 
-`scripts/build.py`, `scripts/routine.py` and `scripts/documents.py` write every .xlsx,
+`scripts/build.py`, `scripts/routine.py`, `scripts/documents.py` and `scripts/worldbook.py` write every .xlsx,
 .pptx and .docx through this module, so that they look like they came from one company:
 
     Book   a workbook (XlsxWriter): styled tables, totals as real formulas, charts
-    Deck   a 16:9 deck on the Galaxium master: bullets, tables, charts, figures, timelines
+    Deck   a 16:9 deck on the Galaxium master: bullets, tables, charts, figures, timelines,
+           cabin plans and route maps
     Doc    a document: title block, header and footer, tables, clauses, signatures
 
 Colours and voice follow marketing/brand/brand-guidelines.md. Documents that come from
@@ -36,7 +37,7 @@ from pptx import Presentation
 from pptx.chart.data import CategoryChartData
 from pptx.dml.color import RGBColor
 from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION, XL_LEGEND_POSITION
-from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.opc.constants import RELATIONSHIP_TYPE as RT
 from pptx.oxml import parse_xml
@@ -715,6 +716,83 @@ class Deck:
         _box(slide, LEFT + Inches(0.4), BODY_TOP + Inches(0.45), Inches(10.8), Inches(2.5), [(sentence, {"size": 36, "colour": NIGHT, "font": HEAD})], anchor=MSO_ANCHOR.MIDDLE)
         if detail:
             _box(slide, LEFT + Inches(0.4), BODY_TOP + Inches(3.3), Inches(10.8), Inches(1.5), [(detail, {"size": 19, "colour": MUTED})])
+        self._foot(slide, source)
+        return slide
+
+    def plan(self, title: str, rows: list[tuple[str, list]], kinds: dict[str, tuple[str, str]], *, fore: str = "Flight deck", aft: str = "Galley",
+             aside: tuple[str, list[str]] | None = None, source: str | None = None):
+        """A cabin plan seen from above, nose to the left. Each row is (label, slots) with one or two slots across the
+        cabin; a slot is (text, kind) or None, and a single slot spans the cabin. `kinds` maps kind to (legend, fill);
+        a kind with an empty fill is drawn as an outline."""
+        slide = self._slide(title)
+        x, y, w, h = LEFT, BODY_TOP + Inches(0.35), (Inches(7.7) if aside else RIGHT - LEFT), Inches(3.3)
+        hull = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, int(x), int(y), int(w), int(h))
+        hull.adjustments[0] = 0.28
+        _paint(hull, PALE, LINE, 1.25)
+        end, pad = Inches(1.15), Inches(0.22)
+        for k, text in enumerate((fore, aft)):
+            _box(slide, x + (0 if k == 0 else w - end), y, end, h, [(text.upper(), {"size": 10, "colour": MUTED, "bold": True, "align": "c", "spacing": 100})], anchor=MSO_ANCHOR.MIDDLE)
+        step = (w - 2 * end) // len(rows)
+        seat_w, seat_h, aisle = step - Inches(0.16), (h - 2 * pad - Inches(0.5)) // 2, Inches(0.5)
+        for k, (label, slots) in enumerate(rows):
+            sx = x + end + k * step + Inches(0.08)
+            for j, slot in enumerate(slots):
+                if not slot:
+                    continue
+                text, kind = slot
+                whole = len(slots) == 1
+                seat = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, int(sx), int(y + pad + j * (seat_h + aisle)), int(seat_w), int(2 * seat_h + aisle if whole else seat_h))
+                seat.adjustments[0] = 0.12
+                fill = kinds[kind][1]
+                _paint(seat, fill or "FFFFFF", None if fill else MUTED)
+                tf = seat.text_frame
+                tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+                tf.paragraphs[0].alignment = PP_ALIGN.CENTER
+                _runs(tf.paragraphs[0], text, size=15 if fill else 10, colour="FFFFFF" if fill else MUTED, bold=bool(fill))
+            _box(slide, sx, y + h + Inches(0.08), seat_w, Inches(0.3), [(label, {"size": 11, "colour": MUTED, "align": "c"})])
+        lx = x
+        for legend, fill in kinds.values():
+            _paint(slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, int(lx), int(y + h + Inches(0.72)), Inches(0.2), Inches(0.2)), fill or "FFFFFF", None if fill else MUTED)
+            _box(slide, lx + Inches(0.3), y + h + Inches(0.66), Inches(1.5), Inches(0.32), [(legend, {"size": 13, "colour": INK})], anchor=MSO_ANCHOR.MIDDLE)
+            lx += Inches(1.75)
+        if aside:
+            self._panel(slide, Inches(8.6), BODY_TOP + Inches(0.1), Inches(4.13), Inches(4.6), *aside)
+        self._foot(slide, source)
+        return slide
+
+    def network(self, title: str, nodes: dict[str, tuple], links: list[tuple[str, str, str, bool]], *, source: str | None = None,
+                note: str | None = None):
+        """A route map. `nodes` maps a key to (x, y, name, caption, label above the node) with x and y from 0 to 1
+        across the drawing area. `links` are (from, to, label, both ways): an arrow, or a plain heavier line for a
+        route flown both ways."""
+        slide = self._slide(title)
+        x0, y0, w, h = LEFT + Inches(0.5), BODY_TOP + Inches(0.3), RIGHT - LEFT - Inches(1.2), Inches(4.0)
+        at = lambda key: (int(x0 + nodes[key][0] * w), int(y0 + nodes[key][1] * h))  # noqa: E731
+        r = Inches(0.17)
+        for a, b, label, both in links:
+            (ax, ay), (bx, by) = at(a), at(b)
+            reach = ((bx - ax) ** 2 + (by - ay) ** 2) ** 0.5
+            ux, uy = (bx - ax) / reach, (by - ay) / reach  # stop at the rim of the node, so that the arrowhead shows
+            ax, ay, bx, by = int(ax + ux * r * 1.25), int(ay + uy * r * 1.25), int(bx - ux * r * 1.25), int(by - uy * r * 1.25)
+            line = slide.shapes.add_connector(MSO_CONNECTOR.STRAIGHT, ax, ay, bx, by)
+            line.line.color.rgb = rgb(NIGHT if both else "8A88B5")
+            line.line.width = Pt(2.5 if both else 1.5)
+            if not both:
+                line.line._get_or_add_ln().append(parse_xml(f'<a:tailEnd {NSMAP} type="triangle" w="lg" len="lg"/>'))
+            half = Inches(0.12 + 0.042 * len(label))
+            lift = Inches(0.24) if 2 * half > 0.7 * reach else 0  # a label as long as its line sits above it
+            tag = _box(slide, (ax + bx) // 2 - half, (ay + by) // 2 - Inches(0.13) - lift, 2 * half, Inches(0.26),
+                       [(label, {"size": 11, "colour": INK, "align": "c"})], anchor=MSO_ANCHOR.MIDDLE, fill="FFFFFF")
+            tag.text_frame.word_wrap = False
+        for key, (_, _, name, caption, *above) in nodes.items():
+            cx, cy = at(key)
+            _paint(slide.shapes.add_shape(MSO_SHAPE.OVAL, cx - r, cy - r, 2 * r, 2 * r), ORANGE, "FFFFFF", 2)
+            up = bool(above and above[0])
+            _box(slide, cx - Inches(1.2), cy - Inches(0.82) if up else cy + Inches(0.2), Inches(2.4), Inches(0.6),
+                 [(name, {"size": 15, "colour": NIGHT, "font": HEAD, "align": "c"}), (caption, {"size": 10.5, "colour": MUTED, "align": "c"})],
+                 anchor=MSO_ANCHOR.BOTTOM if up else MSO_ANCHOR.TOP)
+        if note:
+            _box(slide, LEFT, Inches(6.3), RIGHT - LEFT, Inches(0.5), [(note, {"size": 13, "colour": MUTED})])
         self._foot(slide, source)
         return slide
 

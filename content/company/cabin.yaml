@@ -1,0 +1,51 @@
+# The three seat classes and what a traveller is told before flying.
+#
+# Source for the cabin class guide and the traveller guide in the drive
+# (scripts/worldbook.py). `promise` is the wording of the public booking site and is
+# repeated exactly. Factors are those of policies/pricing-policy.md, the baggage rule
+# is the one Support gives in its replies.
+
+classes:
+  - id: economy
+    name: Economy
+    factor: 1
+    seats: "4A to 6B"
+    promise: [Standard seating, In-flight entertainment, Complimentary snacks]
+    detail:
+      - "Rows 4 to 6, two seats to a row."
+      - "Screen at every seat. The library is loaded before departure, there is no live connection in the corridor."
+      - "Snacks and drinks on every leg. A hot meal on legs of eight hours and more."
+      - "On the Halcyon class every traveller has a bunk on the rest deck, in economy too."
+  - id: business
+    name: Business
+    factor: 2.5
+    seats: "2A, 2B and 3A"
+    promise: [Premium seating, Priority boarding, Gourmet meals, Extra legroom]
+    detail:
+      - "Rows 2 and 3. Wider seats that recline flat."
+      - "Boards after the galaxium traveller and before economy."
+      - "A plated meal on every leg, two on the Pluto leg."
+  - id: galaxium
+    name: Galaxium
+    factor: 5
+    seats: "1A"
+    promise: [Luxury pods, VIP lounge access, Personal concierge, Zero-G experience]
+    detail:
+      - "One pod on every ship, across the full width of row 1, with a door."
+      - "Lounge before departure at Cape Meridian and at Tycho."
+      - "One named person at the departure port, from booking until the traveller is on board."
+      - "The supervised float in the observation area during turnover, with the cabin lead."
+
+for_everyone:
+  baggage: "Two checked bags of up to 23 kg each and one cabin bag, in every seat class. Equipment above that travels as cargo and is arranged through Support with dimensions and weight."
+  meals: "Special meals are ordered in advance through Support and show on the confirmation."
+  medical: "Medical equipment is noted on the booking and the crew is told."
+  assistance: "Assistance on arrival is booked through Support and passed to the ground handler, at the latest 48 hours before arrival."
+  holds: "A seat is held for fifteen minutes at the price shown. Paying inside the hold books it."
+
+before_you_fly:
+  - {when: When you book, what: "Tell us about special meals, medical equipment and assistance on arrival."}
+  - {when: The day before, what: "Pack heavy items in checked bags. In the cabin, heavy items go under the seat."}
+  - {when: At the port, what: "Bags are weighed. Galaxium travellers are met at the lounge."}
+  - {when: On board, what: "Seated and strapped in for the departure burn, for turnover and from the approach call."}
+  - {when: On arrival, what: "Follow the port's rules on suits, gravity and screening. They differ at every destination."}

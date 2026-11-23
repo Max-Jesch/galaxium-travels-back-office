@@ -2,7 +2,9 @@
 registers, plans, contracts, guides.
 
 `routine.build()` calls `build()` after its own drive files. Everything lands in
-`content/generated/drive/`. The rules for what may be said here:
+`content/generated/drive/`. The documents about the ships, the ports and the cabin are
+in `worldbook.py`, written from `content/company/fleet.yaml`, `ports.yaml` and
+`cabin.yaml`; the same rules apply there. The rules for what may be said here:
 
 - Bookings, quotes and flights are read from the snapshot, deals from the CRM file.
   Nothing about them is typed in.
@@ -22,6 +24,7 @@ from pathlib import Path
 
 import yaml
 
+import worldbook
 from office import AMBER, OK, WARN, Book, Brand, Deck, Doc, F
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -420,17 +423,16 @@ def workbooks(w: World) -> None:
     d = w.d
 
     # ---- Departure plan, November
-    ship = {1: "Kestrel", 2: "Solstice", 3: "Kestrel", 4: "Meridian", 5: "Halcyon", 6: "Meridian", 7: "Solstice", 8: "Aurora", 9: "Halcyon", 0: "Halcyon"}
-    crew = {1: "Inner A", 2: "Inner B", 3: "Inner A", 4: "Inner C", 5: "Outer A", 6: "Inner C", 7: "Inner B", 8: "Outer B", 9: "Outer A", 0: "Outer C"}
+    rotation = {(r["origin"], r["destination"]): r for r in yaml.safe_load((COMPANY / "fleet.yaml").read_text(encoding="utf-8"))["rotations"]}
     handler = {"Earth": "Own staff, Cape Meridian", "Moon": "Tycho Ground Services", "Mars": "Olympus Port Authority", "Venus": "Aphrodite Station Operations",
                "Jupiter": "Outer Belt Port Services", "Europa": "Europa Research Trust"}
     note = {21: "Sold out.", 28: "Olympus pad 2 is closed 16 to 20 November.", 30: "Halcyon back in service since 29 October.", 26: "Last 07:00 departure. From 13 December: 08:30."}
     rows = []
     for f in w.flights.values():
         if f["departure_time"].startswith("2026-11"):
-            k, sold = f["flight_id"] % 10, w.sold(f["flight_id"], "2026-11-02")
+            flown, sold = rotation[f["origin"], f["destination"]], w.sold(f["flight_id"], "2026-11-02")
             rows.append({"flight": d.gx(f["flight_id"]), "route": d.route(f["flight_id"]), "departure_utc": f["departure_time"].replace("T", " ")[:16],
-                         "arrival_utc": f["arrival_time"].replace("T", " ")[:16], "hours": w.hours(f), "ship": ship[k], "crew": crew[k], "seats": 10, "sold": sold,
+                         "arrival_utc": f["arrival_time"].replace("T", " ")[:16], "hours": w.hours(f), "ship": flown["ship"], "crew": flown["crew"], "seats": 10, "sold": sold,
                          "free": F("=H{r}-I{r}", 10 - sold), "handler_at_origin": handler[f["origin"]], "note": note.get(f["flight_id"], "")})
     book = Book(path("ops/schedule/departure-plan-2026-11.xlsx"), owner="Andrei Popescu", modified="2026-11-02")
     book.sheet("November departures", rows, title="Scheduled service: departure plan, November 2026",
@@ -934,4 +936,5 @@ def build(d) -> None:
     decks(w)
     workbooks(w)
     documents(w)
+    worldbook.build(d)
     print(f"documents: {sum(1 for _ in DRIVE.rglob('*.pptx'))} decks, {sum(1 for _ in DRIVE.rglob('*.docx'))} documents, {sum(1 for _ in DRIVE.rglob('*.xlsx'))} workbooks in the generated drive")

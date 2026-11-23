@@ -1,0 +1,180 @@
+# The fleet: three classes, six ships, six crews and the cabin they share.
+#
+# This file is the source for the fleet documents in the drive (scripts/worldbook.py),
+# for the fleet register (scripts/routine.py) and for the ships and crews of the
+# departure plan (scripts/documents.py). Change a fact here, then run scripts/build.py.
+#
+# What is fixed elsewhere and must stay as it is: ten seats per ship (6 economy,
+# 3 business, 1 galaxium), who is certified to where, the Kestrel class latch
+# bulletin, the Halcyon valve repair and the Perihelion refit.
+
+# The cabin is the same on every ship, so that a seat number means the same everywhere.
+cabin:
+  seats: 10
+  rows:
+    - {row: 1, seats: [{id: 1A, class: galaxium}], note: "One pod across the full width of the cabin."}
+    - {row: 2, seats: [{id: 2A, class: business}, {id: 2B, class: business}]}
+    - {row: 3, seats: [{id: 3A, class: business}], note: "The cabin lead's seat is opposite 3A."}
+    - {row: 4, seats: [{id: 4A, class: economy}, {id: 4B, class: economy}]}
+    - {row: 5, seats: [{id: 5A, class: economy}, {id: 5B, class: economy}]}
+    - {row: 6, seats: [{id: 6A, class: economy}, {id: 6B, class: economy}]}
+  overhead: "Twelve overhead bins, one above each side of each row. Each bin closes with two restraint latches, 24 on a ship."
+  aft: "Galley and lavatory behind row 6. The hold is below the cabin floor."
+
+# How a scheduled leg is flown. The words are the ones crews and bulletins use.
+flight:
+  - {phase: Departure burn, about: "20 minutes", what: "Everyone seated and strapped in, bins latched, nothing loose. The hardest acceleration of the flight."}
+  - {phase: Climb to the corridor, about: "30 to 60 minutes", what: "Seat belts on. Cabin service starts when the captain releases the cabin."}
+  - {phase: Corridor cruise, about: "most of the flight", what: "Steady thrust: the cabin floor is down and travellers weigh about a third of what they do on Earth. Meals are served here."}
+  - {phase: Turnover, about: "20 minutes at the midpoint", what: "Thrust is cut while the ship turns to slow down. The cabin is weightless and everyone is seated. The galaxium traveller is offered the supervised float in the observation area."}
+  - {phase: Approach and docking, about: "40 to 90 minutes", what: "Seated from the approach call. At Venus the radiation shielding procedure is run on approach."}
+flight_notes:
+  - "Block times are fixed per route and held all year. The ship flies a harder or an easier profile depending on where the planets are, which is also how a late departure is recovered en route."
+  - "The four hour hops (Earth to Luna, Jupiter to Europa) have no turnover. The float is offered in the coast before the approach."
+
+classes:
+  - id: kestrel
+    name: Kestrel class
+    role: Inner system
+    certified_to: Mars and Venus
+    builder: Hadley Yards
+    length_m: 34
+    crew: 3
+    crew_roles: "Captain, first officer, cabin lead"
+    hold_kg: 1200
+    life_support_hours: 36
+    coolant_loops: 2
+    observation: "Forward viewport, standing room for two"
+    rest: "None. No leg is longer than ten hours."
+    summary: "The inner-system ship. Small, quick to turn round, built for the four to ten hour legs between Earth, Luna, Mars and Venus."
+    fittings:
+      - "Galley with one service cart."
+      - "One lavatory."
+      - "Forward viewport, used for the galaxium float."
+      - "Hold for two checked bags per traveller, with room left for cargo booked ahead."
+    limits:
+      - "Not certified beyond Mars. The hull is not shielded for Jupiter's radiation belts."
+      - "Venus needs the radiation shielding procedure on approach, which is why a Venus leg counts as outer-system for crew rest."
+    open_items:
+      - "Safety bulletin 2026-07: two overhead restraint latches opened during the departure burn on Kestrel in September (rows 2 and 5). Cabin crew check every latch by hand on Kestrel and Meridian. 48 replacement latches are due on 14 November, Kestrel first, then Meridian. Until then heavy items go under the seat."
+      - "Solstice was built with the later latch and is not covered by the bulletin."
+  - id: aurora
+    name: Aurora class
+    role: Mars and Jupiter
+    certified_to: Jupiter
+    builder: Hadley Yards
+    length_m: 41
+    crew: 4
+    crew_roles: "Captain, first officer, flight engineer, cabin lead"
+    hold_kg: 2000
+    life_support_hours: 60
+    coolant_loops: 2
+    observation: "Observation deck aft of the cabin, six seats"
+    rest: "None. Seats recline for the ten hour leg."
+    summary: "The Jupiter ship. A shielded hull and a fourth crew member for the long leg from Mars, and a hold large enough for the equipment that site rotations bring."
+    fittings:
+      - "Shielded hull, certified for Jupiter's radiation belts as far as Ganymede."
+      - "Observation deck aft of the cabin, open during the corridor cruise."
+      - "Galley with two service carts, two lavatories."
+      - "A hold two thirds larger than the Kestrel class has: charter customers use it for site equipment."
+    limits:
+      - "Not certified beyond Jupiter. Europa and Pluto need the outer-system package of the Halcyon class."
+      - "One ship of the class. When Aurora is in a check, the Mars to Jupiter leg has no cover."
+    open_items: []
+  - id: halcyon
+    name: Halcyon class
+    role: Outer system
+    certified_to: Pluto, with the outer-system package
+    builder: Hadley Yards
+    length_m: 47
+    crew: 4
+    crew_roles: "Captain, first officer, flight engineer, cabin lead"
+    hold_kg: 2400
+    life_support_hours: 120
+    coolant_loops: 3
+    observation: "Observation deck aft of the cabin, six seats"
+    rest: "Rest deck with ten bunks, one for each traveller"
+    summary: "The outer-system ship. Built for the twenty-four hour leg to Pluto: a third coolant loop, five days of life support and a bunk for every traveller."
+    fittings:
+      - "Rest deck below the cabin with ten bunks. Every traveller has one, in every seat class."
+      - "Observation deck aft of the cabin."
+      - "Galley for three meal services, two lavatories and a washroom."
+      - "Hold with heated and unheated sections, for instruments that must not freeze and samples that must."
+    package:
+      - "Additional shielding for Europa's orbit, where Jupiter's radiation is strongest."
+      - "Cold-soak insulation and seals rated for Pluto."
+      - "A third coolant loop."
+      - "Navigation and systems that do not depend on Earth: at Pluto a message takes more than four hours each way."
+    limits:
+      - "Only a hull with the outer-system package flies beyond Jupiter. Today that is Halcyon alone."
+    open_items:
+      - "Halcyon: the number 2 coolant valve assembly was replaced from 26 to 29 October 2026, after wear was found at the routine inspection. Pressure tested for 12 hours and signed off on 29 October. Cost 640,000 credits, charged to the maintenance reserve."
+      - "Perihelion: in refit since 1 June 2026 to receive the outer-system package. Back in service in February 2027 as the second outer-system hull."
+
+# register: the rows of ops/fleet/fleet-register.xlsx, kept by Zainab Hussein.
+ships:
+  - name: Kestrel
+    class: kestrel
+    in_service_since: 2021
+    home_port: Cape Meridian
+    flies: "Earth to Mars and back"
+    note: "First ship of the fleet and the one the class is named after."
+    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars, Venus", status: In service, next_check: "2026-11-14 (baggage latches)"}
+  - name: Meridian
+    class: kestrel
+    in_service_since: 2022
+    home_port: Cape Meridian
+    flies: "Earth to Venus and back"
+    note: "The Venus ship. Docks at berth 3 of Aphrodite Station."
+    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars, Venus", status: In service, next_check: "2026-11-21"}
+  - name: Solstice
+    class: kestrel
+    in_service_since: 2023
+    home_port: Cape Meridian
+    flies: "Earth to Luna, and Luna to Mars"
+    note: "Newest of the class, built with the later overhead latch."
+    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars", status: In service, next_check: "2026-12-05"}
+  - name: Aurora
+    class: aurora
+    in_service_since: 2023
+    home_port: Olympus Port
+    flies: "Mars to Jupiter"
+    note: "Based on Mars. Her routine checks are done at Olympus Port."
+    register: {certified_to: Jupiter, routes: "Mars, Jupiter", status: In service, next_check: "2026-12-12"}
+  - name: Halcyon
+    class: halcyon
+    in_service_since: 2024
+    home_port: Cape Meridian
+    flies: "Jupiter to Europa, Europa to Earth, and Earth to Pluto"
+    note: "The only hull certified beyond Jupiter until Perihelion returns."
+    register: {certified_to: Pluto, routes: "Jupiter, Europa, Pluto", status: In service (valve assembly replaced 29 October), next_check: "2026-11-25"}
+  - name: Perihelion
+    class: halcyon
+    in_service_since: 2023
+    home_port: Cape Meridian
+    flies: ""
+    note: "First hull of the class, delivered without the outer-system package. Flew charter rotations as far as Jupiter until the refit began."
+    register: {certified_to: Pluto after refit, routes: "", status: Refit until February 2027, next_check: ""}
+
+# The six crews of the roster of 20 October 2026, kept by Andrei Popescu.
+crews:
+  - {name: Inner A, size: 3, captain: Ileana Dragomir}
+  - {name: Inner B, size: 3, captain: Tobias Achterberg}
+  - {name: Inner C, size: 3, captain: Nkechi Adebayo}
+  - {name: Outer A, size: 4, captain: Sunniva Dahl}
+  - {name: Outer B, size: 4, captain: Raúl Mendieta}
+  - {name: Outer C, size: 4, captain: Kaito Fujimori}
+
+# Which ship and crew fly each scheduled route. Origin and destination are the
+# booking system's names. Block hours are not here: they are read from the snapshot.
+rotations:
+  - {origin: Earth, destination: Mars, ship: Kestrel, crew: Inner A}
+  - {origin: Earth, destination: Moon, ship: Solstice, crew: Inner B}
+  - {origin: Mars, destination: Earth, ship: Kestrel, crew: Inner A}
+  - {origin: Venus, destination: Earth, ship: Meridian, crew: Inner C}
+  - {origin: Jupiter, destination: Europa, ship: Halcyon, crew: Outer A}
+  - {origin: Earth, destination: Venus, ship: Meridian, crew: Inner C}
+  - {origin: Moon, destination: Mars, ship: Solstice, crew: Inner B}
+  - {origin: Mars, destination: Jupiter, ship: Aurora, crew: Outer B}
+  - {origin: Europa, destination: Earth, ship: Halcyon, crew: Outer A}
+  - {origin: Earth, destination: Pluto, ship: Halcyon, crew: Outer C}

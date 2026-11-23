@@ -98,18 +98,63 @@ marketing/events/travel-expo-budget.xlsx:
 marketing/press/press-release-seat-holds-2026-10-01.docx:
   modified: '2026-09-30'
   owner: Noor Rahimi
+marketing/product/cabin-class-guide.docx:
+  modified: '2026-10-08'
+  owner: Noor Rahimi
 ops/crew/relief-crew-tombaugh-costing.xlsx:
   modified: '2026-10-27'
   owner: Andrei Popescu
 ops/crew/venus-second-crew-costing.xlsx:
   modified: '2026-11-03'
   owner: Andrei Popescu
+ops/fleet/data-sheets/aurora-class.docx:
+  modified: '2026-10-30'
+  owner: Zainab Hussein
+ops/fleet/data-sheets/halcyon-class.docx:
+  modified: '2026-10-30'
+  owner: Zainab Hussein
+ops/fleet/data-sheets/kestrel-class.docx:
+  modified: '2026-10-30'
+  owner: Zainab Hussein
+ops/fleet/fleet-guide.pptx:
+  modified: '2026-11-02'
+  owner: Priya Raman
 ops/fleet/fleet-register.xlsx:
+  modified: '2026-10-30'
+  owner: Zainab Hussein
+ops/fleet/fleet-specifications.xlsx:
   modified: '2026-10-30'
   owner: Zainab Hussein
 ops/fleet/maintenance-plan-2026-q4.xlsx:
   modified: '2026-10-30'
   owner: Zainab Hussein
+ops/ground/port-briefs/port-brief-aphrodite-station.docx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/port-briefs/port-brief-cape-meridian.docx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/port-briefs/port-brief-ganymede-gate.docx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/port-briefs/port-brief-icebreaker.docx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/port-briefs/port-brief-olympus-port.docx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/port-briefs/port-brief-tombaugh-station.docx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/port-briefs/port-brief-tycho.docx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/port-directory.xlsx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
+ops/ground/ports-and-destinations.pptx:
+  modified: '2026-11-02'
+  owner: Lucia Bianchi
 ops/ground/turnaround-procedure-tycho.docx:
   modified: '2026-10-20'
   owner: Lucia Bianchi
@@ -209,6 +254,9 @@ sales/pipeline-review-2026-11-03.pptx:
 sales/rate-card-2026.xlsx:
   modified: '2026-01-12'
   owner: Sinead Byrne
+support/knowledge-base/before-you-fly.docx:
+  modified: '2026-10-22'
+  owner: Greta Olsen
 support/support-numbers-2026-autumn.xlsx:
   modified: '2026-11-03'
   owner: Greta Olsen

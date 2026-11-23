@@ -588,13 +588,11 @@ def build_drive(d: Data) -> None:
         {"item": "Rotation travel", "credits_per_month": 150000},
         {"item": "Total", "credits_per_month": 1700000}],
         "Assumptions": [{"note": "Prepared by Andrei Popescu, 3 November 2026."}]})
+    fleet = yaml.safe_load((COMPANY / "fleet.yaml").read_text(encoding="utf-8"))
+    class_name = {c["id"]: c["name"].removesuffix(" class") for c in fleet["classes"]}
     xlsx("ops/fleet/fleet-register.xlsx", {"Fleet": [
-        {"ship": "Kestrel", "class": "Kestrel", "seats": 10, "certified_to": "Mars and Venus", "routes": "Earth, Luna, Mars, Venus", "status": "In service", "next_check": "2026-11-14 (baggage latches)"},
-        {"ship": "Meridian", "class": "Kestrel", "seats": 10, "certified_to": "Mars and Venus", "routes": "Earth, Luna, Mars, Venus", "status": "In service", "next_check": "2026-11-21"},
-        {"ship": "Solstice", "class": "Kestrel", "seats": 10, "certified_to": "Mars and Venus", "routes": "Earth, Luna, Mars", "status": "In service", "next_check": "2026-12-05"},
-        {"ship": "Aurora", "class": "Aurora", "seats": 10, "certified_to": "Jupiter", "routes": "Mars, Jupiter", "status": "In service", "next_check": "2026-12-12"},
-        {"ship": "Halcyon", "class": "Halcyon", "seats": 10, "certified_to": "Pluto", "routes": "Jupiter, Europa, Pluto", "status": "In service (valve assembly replaced 29 October)", "next_check": "2026-11-25"},
-        {"ship": "Perihelion", "class": "Halcyon", "seats": 10, "certified_to": "Pluto after refit", "routes": "", "status": "Refit until February 2027", "next_check": ""}]})
+        {"ship": s["name"], "class": class_name[s["class"]], "seats": fleet["cabin"]["seats"], "certified_to": s["register"]["certified_to"], "routes": s["register"]["routes"],
+         "status": s["register"]["status"], "next_check": s["register"]["next_check"]} for s in fleet["ships"]]})
     xlsx("ops/schedule/scheduled-service-2026-27.xlsx", {"Scheduled service": [
         {"flight": d.gx(f["flight_id"]), "origin": f["origin"], "destination": f["destination"], "departure_utc": f["departure_time"].replace("T", " ")[:16],
          "arrival_utc": f["arrival_time"].replace("T", " ")[:16], "economy_seats": f["economy_seats"], "business_seats": f["business_seats"], "galaxium_seats": f["galaxium_seats"]}

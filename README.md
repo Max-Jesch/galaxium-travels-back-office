@@ -91,6 +91,9 @@ content/
     people.yaml          the cast: 48 employees in ten departments
     customers.yaml       the ten travellers from the booking app's seed data
     channels.yaml        channels by sidebar section, and the direct messages
+    fleet.yaml           the six ships, their classes, crews and the cabin plan
+    ports.yaml           the seven ports, and the destination beyond each
+    cabin.yaml           the three seat classes and what travellers are told
     mail/*.md            one file per thread
     chat/<channel>/*.md  one file per day, or one file with several days
     calendar/*.yaml      meetings and deadlines

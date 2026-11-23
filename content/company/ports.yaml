@@ -1,0 +1,208 @@
+# The seven ports of the scheduled service, and what lies beyond each.
+#
+# This file is the source for the port briefs, the network deck and the port directory
+# in the drive (scripts/worldbook.py).
+#
+# Two sets of names are in use and both are right. The booking system and the public
+# site name the body (Moon, Mars) and describe where the traveller is going (Olympus
+# Base, Cloud City). Operations names the port our ship docks at (Olympus Port,
+# Aphrodite Station). `body` is the booking system's name, `port` is ours, and
+# `beyond` is the public site's.
+#
+# Handlers, contract dates and the notes on pads, berths and gantries repeat
+# ops/ground/station-contacts.md and the mails and bulletins they come from.
+
+- slug: cape-meridian
+  body: Earth
+  called: Earth
+  port: Cape Meridian
+  kind: Surface spaceport on the equator
+  handler: Own staff
+  contract_ends: ""
+  contact: Lucia Bianchi
+  our_presence: "Earth HQ, operations control, the maintenance base and our own ground staff."
+  gravity: "9.81 m/s²"
+  local_time: "Earth HQ time. Luna runs two hours behind."
+  facilities:
+    - "Two stands and the maintenance hangar. Halcyon, Perihelion and the Kestrel class ships have their checks here."
+    - "Galaxium lounge in the departures building, for galaxium travellers."
+    - "Cabin catering is loaded here by Lagrange Catering."
+  beyond:
+    - {name: Earth, what: "Home port. Travellers arrive from, and leave for, everywhere else by ordinary transport."}
+  transfer: "None. The terminal is the destination."
+  travellers:
+    - "Customs and biosecurity screening for every interplanetary arrival."
+    - "Weather can delay a re-entry at an equatorial spaceport."
+  operations:
+    - "Approach corridors in low Earth orbit are strict and busy."
+    - "All unscheduled maintenance is done here if the ship can reach it."
+  known: []
+
+- slug: tycho
+  body: Moon
+  called: Luna
+  port: Tycho Spaceport
+  kind: Surface spaceport in the Lunar Free Port
+  handler: Tycho Ground Services
+  contract_ends: "2026-12-31"
+  contact: Rafael Ortega
+  our_presence: "The Luna Station office on level 3 of the terminal, and the Luna desk of Support."
+  gravity: "1.62 m/s²"
+  local_time: "Luna time, two hours behind Earth HQ."
+  facilities:
+    - "We use stand 4. Its fuelling gantry is shared with a second operator on some days since October. A second gantry is commissioned for January."
+    - "Terminal: clinic on level 1, crew lounge below our office on level 3, and the Tycho lounge."
+    - "Cabin catering is loaded here by Lagrange Catering."
+  beyond:
+    - {name: Artemis Base Camp, what: "The habitat cluster at the south pole, on the rim of Shackleton crater."}
+    - {name: Lunar Gateway Station, what: "The orbital station above Luna."}
+  transfer: "Surface shuttle to Artemis Base Camp and the station tender to the Lunar Gateway. Both are run by the port and are not part of our ticket."
+  travellers:
+    - "No atmosphere: nobody leaves the pressurised zones without a suit."
+    - "Lunar dust is abrasive. Shoes and bags are cleaned at the airlock."
+    - "A sixth of Earth's weight: most people need a day to walk normally."
+  operations:
+    - "A turnaround is complete within 90 minutes of docking. Fuelling is on the critical path."
+    - "About fourteen turnarounds a month: one scheduled Earth to Moon, the rest shuttles and charters."
+    - "Assistance requests go to assistance@tychoground.example, read daily since 20 October."
+  known:
+    - "The ground handling agreement ends on 31 December 2026. The renewal is under review by Legal."
+    - "Three turnarounds in October ran over 90 minutes, all because of the shared gantry."
+
+- slug: olympus-port
+  body: Mars
+  called: Mars
+  port: Olympus Port
+  kind: Surface spaceport
+  handler: Olympus Port Authority
+  contract_ends: "2027-06-30"
+  contact: Port operations desk
+  our_presence: "The Mars office in the operations building, and the Galaxium desk in the arrivals hall, open 06:00 to 22:00 local time."
+  gravity: "3.72 m/s²"
+  local_time: "Mars office time. A Mars day is 39 minutes longer than an Earth day."
+  facilities:
+    - "Three pads. Pad 2 is closed for resurfacing from 16 to 20 November; arrivals use pad 3, with about ten minutes more taxi time."
+    - "Arrivals hall with the Galaxium desk, where lost property from our flights is kept."
+    - "Port clinic."
+    - "Aurora is based here and has her routine checks here."
+  beyond:
+    - {name: Olympus Base, what: "The pressurised habitats. Rover excursions to Valles Marineris start here."}
+  transfer: "Pressurised transit from the arrivals hall to Olympus Base, run by the port."
+  travellers:
+    - "A suit is needed at all times outside the pressurised zones."
+    - "Most travellers need 48 to 72 hours to adjust to the gravity."
+    - "The soil is toxic. Gloves stay on outdoors."
+  operations:
+    - "Dust storms can stop surface operations for weeks. The port issues notices to operators; they go to operations control."
+  known:
+    - "Pad 2 closed 16 to 20 November 2026."
+
+- slug: aphrodite-station
+  body: Venus
+  called: Venus
+  port: Aphrodite Station
+  kind: Docking ring of the Cloud City aerostat, 50 km above the surface
+  handler: Aphrodite Station Operations
+  contract_ends: "2027-03-31"
+  contact: Station operations
+  our_presence: "No office. A berth under contract."
+  gravity: "8.87 m/s²"
+  local_time: "Station time."
+  facilities:
+    - "We dock at berth 3."
+    - "Arrivals level of the aerostat, directly below the docking ring."
+  beyond:
+    - {name: Cloud City, what: "The floating habitats. At this height temperature and pressure are close to Earth's."}
+  transfer: "None. The arrivals level is part of Cloud City."
+  travellers:
+    - "Expect a rough arrival: the approach through the upper atmosphere is turbulent."
+    - "Nobody goes to the surface. The habitat stays in the air."
+    - "Outside the habitat the clouds are sulphuric acid. There are no excursions without the station's suits."
+  operations:
+    - "The radiation shielding procedure is run on every approach. A Venus leg therefore counts as outer-system for crew rest: 26 hours."
+    - "The station needs two weeks' written notice of any change of timing."
+    - "Solar weather advisories for the Earth to Venus corridor go to operations control."
+  known:
+    - "From the departure of 13 December 2026 the Earth to Venus service leaves Earth at 08:30 instead of 07:00. Written notice was given on 19 October."
+    - "Pressure seal warning at berth 3 on 23 September, cleared after the seal was reseated (SR-2026-038)."
+
+- slug: ganymede-gate
+  body: Jupiter
+  called: Jupiter
+  port: Ganymede Gate
+  kind: Orbital port at Ganymede
+  handler: Outer Belt Port Services
+  contract_ends: "2027-12-31"
+  contact: ""
+  our_presence: "No office."
+  gravity: "Station spin, about a third of Earth's"
+  local_time: "Station time."
+  facilities:
+    - "Docking arms for ships of our size, fuelling and servicing."
+    - "Transit hall for travellers going on to Galileo Station or down to Ganymede."
+  beyond:
+    - {name: Galileo Station, what: "The research and observation platform in orbit above the Great Red Spot."}
+    - {name: Ganymede, what: "Surface sites, where several of our charter customers work."}
+  transfer: "Galileo Station's own shielded tender, and the operators' landers to the surface. Neither is part of our ticket."
+  travellers:
+    - "Ganymede Gate is as close as an ordinary ship goes. Jupiter's radiation belts are the strongest in the system."
+    - "There is no surface at Jupiter. Galileo Station is an orbital platform."
+  operations:
+    - "Aurora's hull is certified for the belts as far as Ganymede."
+    - "The leg from here to Europa is flown by Halcyon, not Aurora."
+  known: []
+
+- slug: icebreaker
+  body: Europa
+  called: Europa
+  port: Icebreaker landing field
+  kind: Landing field of Research Station Icebreaker, on the ice
+  handler: Europa Research Trust (shared facility)
+  contract_ends: rolling
+  contact: Programme Office
+  our_presence: "No office. We are a guest of the research programme."
+  gravity: "1.315 m/s²"
+  local_time: "Programme time, set by the Trust."
+  facilities:
+    - "One landing pad anchored in the ice, shared with the Trust's supply flights."
+    - "No terminal. Travellers walk a covered way from the pad to the station."
+  beyond:
+    - {name: Research Station Icebreaker, what: "The surface station and its drill array. Drilling missions descend toward the ocean below the ice."}
+  transfer: "None. The station is at the pad."
+  travellers:
+    - "Almost everyone on this route is a researcher or works for one."
+    - "Time outside is limited to one hour because of Jupiter's radiation."
+    - "No surface material leaves containment. Bags are inspected on departure."
+  operations:
+    - "Only a hull with the outer-system package lands here."
+    - "Ice-quakes can crack the pad anchorings. The Trust inspects them before every arrival and may close the pad at short notice."
+    - "Plumes vent without warning near the fracture lines. No work outside near them."
+  known: []
+
+- slug: tombaugh-station
+  body: Pluto
+  called: Pluto
+  port: Tombaugh Station
+  kind: Surface port at the edge of the nitrogen plains of Tombaugh Regio
+  handler: Tombaugh Station Cooperative
+  contract_ends: "2027-08-31"
+  contact: ""
+  our_presence: "No office and no crew housing under contract today."
+  gravity: "0.62 m/s²"
+  local_time: "Station time."
+  facilities:
+    - "One berth with servicing. Halcyon's inspection after a Pluto leg can be done here."
+    - "No lounge. The cooperative's common room is open to arriving travellers."
+  beyond:
+    - {name: Sputnik Base, what: "The most remote inhabited outpost there is. Observing teams work from here."}
+  transfer: "Heated crawler from the berth to Sputnik Base, run by the cooperative."
+  travellers:
+    - "Locomotion training before arrival: at a sixteenth of Earth's weight people fall."
+    - "Methane frost makes pads and walkways slippery."
+    - "A message to Earth takes more than four hours each way. Nobody can be called for help."
+  operations:
+    - "One scheduled departure a month, flown by Halcyon."
+    - "Crew rest after a Pluto leg is 26 hours, and 48 hours before the next Pluto leg."
+    - "The station is self-reliant in an emergency, and so is the ship."
+  known:
+    - "No crew housing under contract. The cooperative's quote for four units is valid until 31 December 2026."
