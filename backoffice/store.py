@@ -550,7 +550,7 @@ def drive_text(path: str, max_chars: int = 60000) -> dict:
                     parts += ["| " + series.name + " | " + " | ".join(f"{v:,.0f}" if isinstance(v, (int, float)) else "" for v in series.values) + " |" for series in plot.series] + [""]
         text = "\n".join(parts)
     else:
-        text = "(binary file, open it from local_path)"
+        text = "(binary file, fetch it with drive_download)"
     return {**entry, "text": text[:max_chars], "truncated": len(text) > max_chars}
 
 
@@ -562,6 +562,42 @@ def drive_write(path: str, content: str) -> dict:
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(content, encoding="utf-8")
     return {"path": rel.as_posix(), "size": target.stat().st_size, "local_path": str(target)}
+
+
+UPLOAD_SUFFIXES = TEXT_SUFFIXES | {".pptx", ".xlsx", ".docx", ".pdf", ".png", ".jpg", ".jpeg", ".svg", ".html"}
+UPLOAD_LIMIT = 50 * 1024 * 1024
+
+
+def drive_download(path: str, to_folder: str) -> dict:
+    """Copy the original of a drive file into a folder of the agent's choosing."""
+    rel = path.strip("/")
+    entry = next((f for f in drive_files() if f["path"] == rel), None)
+    if not entry:
+        raise ValueError(f"No file at {path} in the drive")
+    folder = Path(to_folder).expanduser()
+    if not folder.is_absolute() or not folder.is_dir():
+        raise ValueError("to_folder must be the absolute path of an existing folder")
+    target = folder / Path(rel).name
+    shutil.copyfile(entry["local_path"], target)
+    return {"path": rel, "saved_to": str(target), "size": target.stat().st_size}
+
+
+def drive_upload(local_file: str, path: str) -> dict:
+    """Copy a file from the computer into the writable part of the drive."""
+    source = Path(local_file).expanduser()
+    rel = Path(path.strip("/"))
+    if not source.is_absolute() or not source.is_file():
+        raise ValueError("local_file must be the absolute path of an existing file")
+    if rel.is_absolute() or ".." in rel.parts or rel.suffix.lower() not in UPLOAD_SUFFIXES:
+        raise ValueError("Path must stay inside the drive and end in a suffix such as .pptx, .xlsx, .docx or .md")
+    if rel.suffix.lower() != source.suffix.lower():
+        raise ValueError("The drive path must have the same suffix as the local file")
+    if source.stat().st_size > UPLOAD_LIMIT:
+        raise ValueError("File is larger than 50 MB")
+    target = STATE / "drive" / rel
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, target)
+    return {"path": rel.as_posix(), "size": target.stat().st_size}
 
 
 # ---------- booking snapshot ----------

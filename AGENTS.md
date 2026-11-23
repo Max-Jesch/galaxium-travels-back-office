@@ -8,6 +8,7 @@ You reach it through the `galaxium-back-office` MCP server. You are working at o
 
 - Call `backoffice_info` first. It tells you today's date in the story (not the real date), whose desk you are at and which systems you may write to.
 - Use the MCP tools for mail, chat, the calendar, CRM, tickets, the drive and bookings. Do not read `content/`, `snapshot/` or `state/` from disk instead, and never open a `ground-truth.md`: those are the presenter's answer keys.
+- To build on a drive file such as the deck template, copy it into your working folder with `drive_download`, work on the copy and put the result on the drive with `drive_upload`. Do not look for drive files on disk.
 - Amounts are in credits. Do not round them.
 - The booking system is the system of record for bookings and quotes, the CRM for deals. Spreadsheets in the drive are copies made by hand; check them before relying on them.
 - Give the source of every figure, and list what you assumed or could not verify.

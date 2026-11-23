@@ -76,6 +76,11 @@ def _matches(record: Any, query: str) -> bool:
     return all(word in str(record).lower() for word in query.lower().split())
 
 
+def _public(entry: dict) -> dict:
+    """A drive entry without its place on disk: agents fetch the file with drive_download."""
+    return {k: v for k, v in entry.items() if k != "local_path"}
+
+
 def _all(items: list) -> dict:
     """Lists are wrapped in an object, so that every client shows the whole result."""
     return {"total": len(items), "items": items}
@@ -313,15 +318,15 @@ def crm_add_account_note(account_id: str, note: str) -> dict:
 
 @_read("drive")
 def drive_list(folder: str = "") -> dict:
-    """List files in the shared drive, optionally under one folder. local_path is where the real file sits on this computer."""
+    """List files in the shared drive, optionally under one folder. To work on a file itself, fetch a copy with drive_download."""
     folder = folder.strip("/")
-    return _all([f for f in store.drive_files() if not folder or f["path"].startswith(folder + "/")])
+    return _all([_public(f) for f in store.drive_files() if not folder or f["path"].startswith(folder + "/")])
 
 
 @_read("drive")
 def drive_read(path: str) -> dict:
-    """Read a drive file as text. Spreadsheets, documents and decks are converted to text; open local_path for the original."""
-    return store.drive_text(path)
+    """Read a drive file as text. Spreadsheets, documents and decks are converted to text. For the file itself, for example a deck template to build on, use drive_download."""
+    return _public(store.drive_text(path))
 
 
 @_read("drive")
@@ -330,14 +335,27 @@ def drive_search(query: str) -> dict:
     hits = []
     for f in store.drive_files():
         if _matches(f["path"], query) or _matches(store.drive_text(f["path"])["text"], query):
-            hits.append(f)
+            hits.append(_public(f))
     return _all(hits)
+
+
+@_read("drive")
+def drive_download(path: str, to_folder: str) -> dict:
+    """Copy a drive file in its original format (.pptx, .xlsx, .docx, ...) into a folder on this computer, such as your working folder. Returns saved_to, the path of the copy. Work on the copy; the drive itself only changes through drive_upload."""
+    return store.drive_download(path, to_folder)
+
+
+@_write("drive")
+def drive_upload(local_file: str, path: str) -> dict:
+    """Put a file from this computer on the shared drive, for example a finished deck as sales/q3-review.pptx. local_file is the absolute path of the file; path is where it goes in the drive."""
+    saved = store.drive_upload(local_file, path)
+    return _linked(saved, "drive", saved["path"])
 
 
 @_write("drive")
 def drive_write_text(path: str, content: str) -> dict:
     """Save a text file (.md, .csv, .txt) to the shared drive, for example a memo under finance/ or a report under reports/."""
-    saved = store.drive_write(path, content)
+    saved = _public(store.drive_write(path, content))
     return _linked(saved, "drive", saved["path"])
 
 
@@ -424,74 +442,34 @@ def bookings_search_quotes(user_id: int = 0, flight_id: int = 0, seat_class: str
 
 
 @_read("bookings")
-def bookings_quote_mismatches(limit: int = 50, offset: int = 0) -> dict:
-    """Join converted quotes to their bookings and count price mismatches."""
-    bookings = store.snapshot("bookings")
-    quotes = store.snapshot("quotes")
-    by_booking = {b["booking_id"]: b for b in bookings}
-
-    mismatches = []
-    charged_more_count = 0
-    charged_more_total_diff = 0
-    charged_less_count = 0
-    charged_less_total_diff = 0
-    matching_count = 0
-    matched_bookings_count = 0
-
-    for q in quotes:
-        if q["status"] == "converted":
-            bid = q["booking_id"]
-            if bid in by_booking:
-                matched_bookings_count += 1
-                b = by_booking[bid]
-                diff = b["price_paid"] - q["quoted_price"]
-                if diff > 0:
-                    charged_more_count += 1
-                    charged_more_total_diff += diff
-                    mismatches.append({
-                        "booking_id": b["booking_id"],
-                        "quote_id": q["quote_id"],
-                        "user_id": b["user_id"],
-                        "flight_id": b["flight_id"],
-                        "seat_class": b["seat_class"],
-                        "quoted_price": q["quoted_price"],
-                        "price_paid": b["price_paid"],
-                        "difference": diff
-                    })
-                elif diff < 0:
-                    charged_less_count += 1
-                    charged_less_total_diff += abs(diff)
-                    mismatches.append({
-                        "booking_id": b["booking_id"],
-                        "quote_id": q["quote_id"],
-                        "user_id": b["user_id"],
-                        "flight_id": b["flight_id"],
-                        "seat_class": b["seat_class"],
-                        "quoted_price": q["quoted_price"],
-                        "price_paid": b["price_paid"],
-                        "difference": diff
-                    })
-                else:
-                    matching_count += 1
-
+def bookings_quote_mismatches(user_id: int = 0, flight_id: int = 0, seat_class: str = "", mismatch_only: bool = True,
+                              limit: int = 50, offset: int = 0) -> dict:
+    """Join converted quotes to their bookings and compare quoted_price with price_paid. difference is price_paid minus quoted_price: positive means the customer was charged more than quoted. summary covers every pair matching the filters; items are the pairs (only those with a difference when mismatch_only is true), largest overcharge first."""
+    flights = _route_lookup()
+    bookings = {b["booking_id"]: b for b in store.snapshot("bookings")}
+    pairs = []
+    for q in store.snapshot("quotes"):
+        b = bookings.get(q["booking_id"]) if q["status"] == "converted" else None
+        if not b:
+            continue
+        if ((user_id and b["user_id"] != user_id) or (flight_id and b["flight_id"] != flight_id)
+                or (seat_class and b["seat_class"] != seat_class)):
+            continue
+        f = flights[b["flight_id"]]
+        pairs.append({"booking_id": b["booking_id"], "quote_id": q["quote_id"], "user_id": b["user_id"],
+                      "flight_id": b["flight_id"], "route": f"{f['origin']} to {f['destination']}",
+                      "seat_class": b["seat_class"], "booking_status": b["status"],
+                      "quoted_price": q["quoted_price"], "price_paid": b["price_paid"],
+                      "difference": b["price_paid"] - q["quoted_price"]})
+    more = [p for p in pairs if p["difference"] > 0]
+    less = [p for p in pairs if p["difference"] < 0]
     summary = {
-        "total_bookings": len(bookings),
-        "converted_quotes": sum(1 for q in quotes if q["status"] == "converted"),
-        "matched_bookings": matched_bookings_count,
-        "total_mismatches": len(mismatches),
-        "charged_more": {
-            "count": charged_more_count,
-            "total_difference": charged_more_total_diff
-        },
-        "charged_less": {
-            "count": charged_less_count,
-            "total_difference": charged_less_total_diff
-        },
-        "matching_count": matching_count
+        "pairs": len(pairs),
+        "mismatches": len(more) + len(less),
+        "matching": len(pairs) - len(more) - len(less),
+        "charged_more": {"count": len(more), "total_difference": sum(p["difference"] for p in more)},
+        "charged_less": {"count": len(less), "total_difference": sum(p["difference"] for p in less)},
     }
-
-    paged = _page(mismatches, limit, offset)
-    return {
-        "summary": summary,
-        "mismatches": paged
-    }
+    items = [p for p in pairs if p["difference"]] if mismatch_only else pairs
+    items.sort(key=lambda p: (-p["difference"], p["booking_id"]))
+    return {"summary": summary, **_page(items, limit, offset)}

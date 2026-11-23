@@ -64,7 +64,7 @@ The company content alone (choose *Company only*) supports two more jobs without
 
 ## What the agent can do
 
-29 tools, named by system. Reading is open. The eight writing tools are marked as such, can be switched off per system on the *Permissions* tab or in `permissions.yaml`, and every call to one is logged on the *Activity* tab with its arguments and outcome, including calls that were refused.
+33 tools, named by system. Reading is open. The nine writing tools are marked as such, can be switched off per system on the *Permissions* tab or in `permissions.yaml`, and every call to one is logged on the *Activity* tab with its arguments and outcome, including calls that were refused.
 
 | System | Read | Write |
 | --- | --- | --- |
@@ -73,13 +73,13 @@ The company content alone (choose *Company only*) supports two more jobs without
 | Calendar | `calendar_list_events` | `calendar_create_event` |
 | Tickets | `tickets_list`, `tickets_get` | `tickets_create`, `tickets_update` |
 | CRM | `crm_list_accounts`, `crm_list_deals`, `crm_get_deal` | `crm_update_deal`, `crm_add_account_note` |
-| Drive | `drive_list`, `drive_read`, `drive_search` | `drive_write_text` |
-| Bookings | `bookings_list_flights`, `bookings_find_customers`, `bookings_search`, `bookings_summary`, `bookings_search_quotes` | none |
+| Drive | `drive_list`, `drive_read`, `drive_search`, `drive_download` | `drive_write_text`, `drive_upload` |
+| Bookings | `bookings_list_flights`, `bookings_find_customers`, `bookings_search`, `bookings_summary`, `bookings_search_quotes`, `bookings_quote_mismatches` | none |
 | Directory | `backoffice_info`, `directory_list_people` | none |
 
 Mail is never really sent. Writes go to the `state/` folder and nowhere else.
 
-The drive holds real `.xlsx`, `.docx` and `.pptx` files. `drive_read` returns them as text, and `local_path` in the result is the file itself for agents that can open office files.
+The drive holds real `.xlsx`, `.docx` and `.pptx` files. `drive_read` returns them as text. `drive_download` copies the file itself into a folder the agent names, such as its working folder, and `drive_upload` puts a finished file back on the drive as a logged write.
 
 ## Add your own content
 
