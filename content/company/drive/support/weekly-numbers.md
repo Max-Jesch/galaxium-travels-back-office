@@ -1,8 +1,8 @@
 ---
 owner: Greta Olsen
-modified: 2026-11-03
+modified: 2099-11-03
 ---
-# Support: weekly numbers, autumn 2026
+# Support: weekly numbers, autumn 2099
 
 Contacts are everything that reaches us: phone, chat and mail. Only contacts that need follow-up become tickets.
 

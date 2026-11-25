@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Galaxium Travels: the company</title>
+<!-- Written by scripts/companybook.py from content/company/finance.yaml, company.yaml, people.yaml, fleet.yaml and the snapshot.
+     Do not edit this page: change the yaml and run .venv/bin/python scripts/build.py -->
+<style>
+  :root {
+    color-scheme: light dark;
+    --fg: var(--foreground, CanvasText);
+    --dim: var(--muted-foreground, color-mix(in srgb, CanvasText 60%, transparent));
+    --line: var(--border, color-mix(in srgb, CanvasText 18%, transparent));
+    --box: var(--card, color-mix(in srgb, CanvasText 4%, transparent));
+    --bar: var(--chart-1, #4f6bd8);
+    --track: color-mix(in srgb, var(--fg) 8%, transparent);
+    --r: var(--radius, 8px);
+  }
+  body { margin: 0; font: 13px/1.45 var(--font-sans, system-ui, sans-serif); color: var(--fg); }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  .premise { font-size: 15px; margin: 0 0 6px; }
+  h2 { font-size: 14px; margin: 28px 0 4px; }
+  .note { margin: 0 0 10px; color: var(--dim); }
+  .cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px 28px; }
+  .cap { font-size: 11px; font-weight: 600; color: var(--dim); text-transform: uppercase; letter-spacing: .04em; margin: 0 0 6px; }
+  .row { display: grid; grid-template-columns: minmax(120px, 44%) 1fr 64px; gap: 8px; align-items: center; padding: 3px 0; }
+  .row .name { line-height: 1.25; }
+  .row .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .track { height: 10px; background: var(--track); border-radius: 4px; }
+  .fill { height: 10px; background: var(--bar); border-radius: 4px; min-width: 2px; }
+  .sum { border-top: 1px solid var(--line); margin-top: 4px; padding-top: 5px; font-weight: 600; }
+  table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  th { text-align: right; font-size: 11px; font-weight: 600; color: var(--dim); padding: 4px 6px; border-bottom: 1px solid var(--line); }
+  td { text-align: right; padding: 5px 6px; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child, td.t, th.t { text-align: left; }
+  td.t { color: var(--dim); font-size: 12px; }
+  .scroll { overflow-x: auto; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+  .card { border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; }
+  .card b { display: block; }
+  .card .who { color: var(--dim); font-size: 11.5px; display: block; }
+  .card p { margin: 5px 0 0; font-size: 12px; }
+  .card span.i { display: block; font-size: 12px; }
+  .own { display: flex; height: 12px; gap: 2px; margin: 4px 0 8px; }
+  .own div { background: var(--bar); border-radius: 3px; }
+  .own div:nth-child(2) { opacity: .7; } .own div:nth-child(3) { opacity: .45; }
+  .tl { display: grid; grid-template-columns: 48px 1fr; gap: 4px 10px; }
+  .tl b { font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="premise">A scheduled carrier with six leased ships of ten seats. It sells seats to travellers on 10 routes from Earth to Pluto and flies charter rotations for companies. It flies and maintains the ships; it does not build them and does not own the ports.</p>
+<p class="note">Until the 2090s a seat to Mars was bought by contract, through an agent, weeks ahead, on a ship built for a hundred. In 2091 Hadley Yards showed the Kestrel class: ten seats, a crew of three, turned round in 90 minutes. Galaxium was founded the next year to fly it on a timetable and sell each seat the way a train ticket is sold: one price, one page, one traveller at a time.</p>
+<h2>Where a dollar comes from and where it goes (2098, $ million)</h2><p class="note">Revenue 2,652, costs 2,530, result 122: 4.6% of revenue.</p>
+<div class="cols"><div><p class="cap">Who pays us</p><div class="row"><span class="name">Scheduled service</span><div class="track"><div class="fill" style="width:100.0%"></div></div><span class="num">2,202</span></div><div class="row"><span class="name">Charter rotations</span><div class="track"><div class="fill" style="width:18.6%"></div></div><span class="num">410</span></div><div class="row"><span class="name">Cargo and other</span><div class="track"><div class="fill" style="width:1.8%"></div></div><span class="num">40</span></div><div class="row sum"><span class="name">Revenue</span><span></span><span class="num">2,652</span></div></div><div><p class="cap">Whom we pay</p><div class="row"><span class="name">Ship leases</span><div class="track"><div class="fill" style="width:43.6%"></div></div><span class="num">960</span></div><div class="row"><span class="name">Traffic control charges</span><div class="track"><div class="fill" style="width:20.9%"></div></div><span class="num">460</span></div><div class="row"><span class="name">Fuel</span><div class="track"><div class="fill" style="width:9.8%"></div></div><span class="num">215</span></div><div class="row"><span class="name">Ports and ground handling</span><div class="track"><div class="fill" style="width:8.6%"></div></div><span class="num">190</span></div><div class="row"><span class="name">Maintenance</span><div class="track"><div class="fill" style="width:9.1%"></div></div><span class="num">200</span></div><div class="row"><span class="name">Insurance</span><div class="track"><div class="fill" style="width:7.7%"></div></div><span class="num">170</span></div><div class="row"><span class="name">Flight crew</span><div class="track"><div class="fill" style="width:4.3%"></div></div><span class="num">95</span></div><div class="row"><span class="name">Staff, non-crew</span><div class="track"><div class="fill" style="width:3.4%"></div></div><span class="num">75</span></div><div class="row"><span class="name">Sales, marketing and payment fees</span><div class="track"><div class="fill" style="width:5.0%"></div></div><span class="num">110</span></div><div class="row"><span class="name">Catering and cabin</span><div class="track"><div class="fill" style="width:1.6%"></div></div><span class="num">35</span></div><div class="row"><span class="name">Software, offices and other</span><div class="track"><div class="fill" style="width:0.9%"></div></div><span class="num">20</span></div><div class="row sum"><span class="name">Costs</span><span></span><span class="num">2,530</span></div></div></div>
+<h2>What one sale is worth</h2><p class="note">A seat costs the route&#x27;s base price times the class factor: economy 1, business 2.5, galaxium 5. A whole ship on charter is ten business seats less 20%.</p>
+<div class="grid"><div class="card"><b>$500,000</b><span class="who">Earth to Moon, economy seat</span></div><div class="card"><b>$18,500,000</b><span class="who">Earth to Mars, full departure</span></div><div class="card"><b>$20,000,000</b><span class="who">Earth to Mars, whole ship on charter</span></div><div class="card"><b>$92,500,000</b><span class="who">Earth to Pluto, full departure</span></div></div>
+<h2>What it depends on</h2><p class="note">Almost everything except the flying, the maintenance and the selling belongs to somebody else.</p>
+<div class="grid"><div class="card"><b>The ships</b><span class="who">Lowell Ship Finance</span><p>All six are leased, for twelve years from delivery. The lease runs whether a ship flies or not. The largest cost we have.</p></div><div class="card"><b>The way between the ports</b><span class="who">System Traffic Control</span><p>A charge for every flight, by distance, paid from a prepaid account.</p></div><div class="card"><b>Building and heavy work</b><span class="who">Hadley Yards</span><p>Built all six. Does refits and supplies parts. Routine checks are our own, at Cape Meridian.</p></div><div class="card"><b>The ports</b><span class="who">Seven port operators</span><p>A fee for every turnaround. Our own staff handle the ships on Earth, a contracted handler elsewhere.</p></div><div class="card"><b>Fuel</b><span class="who">Helios Fuels</span><p>Delivered at Cape Meridian and bought at the ports.</p></div></div>
+<h2>The years ($ million)</h2><p class="note">The last year is the forecast made at the August close.</p>
+<div class="scroll"><table><tr><th>Year</th><th>Routes</th><th>Ships</th><th>Seats sold</th><th>Of offered</th><th>Revenue</th><th>Result</th><th class="t"></th></tr>
+<tr><td>2094</td><td>4</td><td>1</td><td>212</td><td>53%</td><td>318</td><td>-113</td><td class="t">First departures in March, with one ship.</td></tr>
+<tr><td>2095</td><td>6</td><td>2</td><td>446</td><td>62%</td><td>809</td><td>-5</td><td class="t">Venus. First corporate account.</td></tr>
+<tr><td>2096</td><td>7</td><td>5</td><td>563</td><td>67%</td><td>1,359</td><td>-168</td><td class="t">Three ships delivered in one year. Jupiter. The fleet is ahead of the network.</td></tr>
+<tr><td>2097</td><td>9</td><td>6</td><td>672</td><td>70%</td><td>1,936</td><td>-217</td><td class="t">Halcyon and Europa. The longest routes, and a year to fill them.</td></tr>
+<tr><td>2098</td><td>9</td><td>6</td><td>832</td><td>77%</td><td>2,652</td><td>+122</td><td class="t">No new route. Fuller ships. The first year with a profit.</td></tr>
+<tr><td>2099 forecast</td><td>10</td><td>6</td><td>878</td><td>75%</td><td>3,200</td><td>+186</td><td class="t">Forecast at the August close. Pluto from April. Perihelion in refit from June: its lease runs, its charter flying stops, and the refit work is paid for.</td></tr>
+</table></div>
+<h2>How a year of flying is made up</h2><p class="note">The ports give out departure slots by timetable period: March to August and September to February. We hold one scheduled slot a month on each of our ten routes. A charter or a shuttle flies on a slot asked for one at a time. A ship flies about one leg a week, so inside Jupiter the fleet has room: growth there is a question of demand and slots. Beyond Jupiter it is a question of hulls, because one ship is certified.</p>
+<div class="cols"><div><p class="cap">Legs flown, 2099 forecast</p><div class="row"><span class="name">Scheduled legs</span><div class="track"><div class="fill" style="width:100.0%"></div></div><span class="num">117</span></div><div class="row"><span class="name">Charter legs</span><div class="track"><div class="fill" style="width:37.6%"></div></div><span class="num">44</span></div><div class="row"><span class="name">Shuttle legs, not sold</span><div class="track"><div class="fill" style="width:82.1%"></div></div><span class="num">96</span></div></div><div><p class="cap">Why the booking system starts on 10 August</p><p class="note">Seats are sold from one sales book per timetable period. The book for September 2099 to February 2100 opened on 10 August 2099, and it is the one the booking system holds. Seats on the September and October departures that were sold before 10 August are in the closed spring book. Finance keeps the totals of closed books; the booking system does not.</p></div></div>
+<h2>Who owns it</h2><p class="note">An independent chair, two directors named by the investors and the Chief Executive. Quarterly, and in December for the budget. Raised $920 million in three rounds: 2092 $140m, 2095 $320m, 2097 $460m.</p>
+<div class="own"><div style="width:36%"></div><div style="width:40%"></div><div style="width:24%"></div></div>
+<div class="grid"><div class="card"><b>36%</b><span class="who">Founders and staff</span><p>The founding team of 2092 and the staff share plan.</p></div><div class="card"><b>40%</b><span class="who">Ceres Capital Partners</span><p>Growth investor. Led the rounds of 2095 and 2097. Two seats on the board.</p></div><div class="card"><b>24%</b><span class="who">Lowell Ship Finance</span><p>Lessor of all six ships. Took its stake in 2097, in place of part of the lease on Halcyon.</p></div></div>
+<h2>How it is organised</h2><p class="note">48 staff: Earth HQ (38), Luna Station office (6), Mars office (4). 21 flight crew in 6 crews. Two companies: Galaxium Travels Ltd. (Cape Meridian, Earth) and Galaxium Travels Luna Ltd. (Lunar Free Port, Luna).</p>
+<div class="grid"><div class="card"><span class="who">Flying</span><span class="i">Operations 8</span><span class="i">Flight crew 21</span></div><div class="card"><span class="who">Commercial</span><span class="i">Sales 6</span><span class="i">Marketing 4</span><span class="i">Support 6</span></div><div class="card"><span class="who">Digital</span><span class="i">Engineering 8</span><span class="i">IT 2</span></div><div class="card"><span class="who">Corporate</span><span class="i">Leadership 3</span><span class="i">Finance 5</span><span class="i">Legal 3</span><span class="i">People 3</span></div></div>
+<h2>Where it stands</h2><p class="note">The smallest of the four scheduled carriers, and the only one that sells a single seat to Pluto on a public site at a price that holds.</p>
+<div class="grid"><div class="card"><b>Orbitway</b><span class="who">The largest on the inner routes. Sells frequency.</span><p>We: Fly beyond Jupiter. They do not.</p></div><div class="card"><b>NovaTransit</b><span class="who">Low fares on Earth, Luna and Mars.</span><p>We: Fly beyond Mars, and keep to the schedule.</p></div><div class="card"><b>Stellar Lines</b><span class="who">The widest outer-system network, at 10% to 20% above our fares.</span><p>We: Cost less, and are booked in minutes instead of by contract.</p></div></div>
+<h2>History</h2>
+<div class="tl"><b>2092</b><span>Founded at Cape Meridian. Three Kestrel class ships ordered from Hadley Yards.</span><b>2094</b><span>Kestrel enters service. First scheduled departures: Earth, Luna and Mars.</span><b>2095</b><span>Meridian enters service. Venus. The first corporate account.</span><b>2096</b><span>Solstice, Aurora and Perihelion. Jupiter. Offices on Luna and Mars.</span><b>2097</b><span>Halcyon enters service with the outer-system package. Europa.</span><b>2098</b><span>No new route. The first year with a profit.</span><b>2099</b><span>Pluto from the spring. Perihelion into refit in June. Seat holds on the public site from October.</span></div>
+<p class="note" style="margin-top:28px">Written by the build from content/company/finance.yaml. To change a fact, change it there and run the build.</p>
+</div>
+</body>
+</html>

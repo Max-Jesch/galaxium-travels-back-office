@@ -6,7 +6,7 @@ attachments: [marketing/campaigns/winter-on-mars/launch-checklist.md, marketing/
 From: Elise Fontaine <elise.fontaine@galaxium.example>
 To: Marketing <marketing@galaxium.example>
 Cc: Amara Okafor <amara.okafor@galaxium.example>, Nadia Haddad <nadia.haddad@galaxium.example>
-Date: 2026-11-03 11:15
+Date: 2099-11-03 11:15
 
 Team,
 

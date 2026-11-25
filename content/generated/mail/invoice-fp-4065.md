@@ -6,12 +6,12 @@ labels:
 ---
 From: Ferrypay <invoices@ferrypay.example>
 To: Invoices <invoices@galaxium.example>
-Date: 2026-10-20 14:57
+Date: 2099-10-20 14:57
 
 Dear customer,
 
 Please find attached invoice FP-4065 for payment processing fees.
 
-Amount due: 67,000 credits. Payment terms as agreed.
+Amount due: $67,000. Payment terms as agreed.
 
 Ferrypay

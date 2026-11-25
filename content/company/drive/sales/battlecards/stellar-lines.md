@@ -1,6 +1,6 @@
 ---
 owner: Jamal Carter
-modified: 2026-09-15
+modified: 2099-09-15
 ---
 # Battlecard: Stellar Lines
 
@@ -14,4 +14,4 @@ modified: 2026-09-15
 
 **Where we lose.** Customers who need Pluto more than once a month, or destinations we do not fly.
 
-**Coming.** Two new outer-system hulls ordered for 2028.
+**Coming.** Two new outer-system hulls ordered for 2101.

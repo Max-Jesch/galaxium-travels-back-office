@@ -44,7 +44,7 @@
   port: Tycho Spaceport
   kind: Surface spaceport in the Lunar Free Port
   handler: Tycho Ground Services
-  contract_ends: "2026-12-31"
+  contract_ends: "2099-12-31"
   contact: Rafael Ortega
   our_presence: "The Luna Station office on level 3 of the terminal, and the Luna desk of Support."
   gravity: "1.62 m/s²"
@@ -66,7 +66,7 @@
     - "About fourteen turnarounds a month: one scheduled Earth to Moon, the rest shuttles and charters."
     - "Assistance requests go to assistance@tychoground.example, read daily since 20 October."
   known:
-    - "The ground handling agreement ends on 31 December 2026. The renewal is under review by Legal."
+    - "The ground handling agreement ends on 31 December 2099. The renewal is under review by Legal."
     - "Three turnarounds in October ran over 90 minutes, all because of the shared gantry."
 
 - slug: olympus-port
@@ -75,7 +75,7 @@
   port: Olympus Port
   kind: Surface spaceport
   handler: Olympus Port Authority
-  contract_ends: "2027-06-30"
+  contract_ends: "2100-06-30"
   contact: Port operations desk
   our_presence: "The Mars office in the operations building, and the Galaxium desk in the arrivals hall, open 06:00 to 22:00 local time."
   gravity: "3.72 m/s²"
@@ -95,7 +95,7 @@
   operations:
     - "Dust storms can stop surface operations for weeks. The port issues notices to operators; they go to operations control."
   known:
-    - "Pad 2 closed 16 to 20 November 2026."
+    - "Pad 2 closed 16 to 20 November 2099."
 
 - slug: aphrodite-station
   body: Venus
@@ -103,7 +103,7 @@
   port: Aphrodite Station
   kind: Docking ring of the Cloud City aerostat, 50 km above the surface
   handler: Aphrodite Station Operations
-  contract_ends: "2027-03-31"
+  contract_ends: "2100-03-31"
   contact: Station operations
   our_presence: "No office. A berth under contract."
   gravity: "8.87 m/s²"
@@ -123,8 +123,8 @@
     - "The station needs two weeks' written notice of any change of timing."
     - "Solar weather advisories for the Earth to Venus corridor go to operations control."
   known:
-    - "From the departure of 13 December 2026 the Earth to Venus service leaves Earth at 08:30 instead of 07:00. Written notice was given on 19 October."
-    - "Pressure seal warning at berth 3 on 23 September, cleared after the seal was reseated (SR-2026-038)."
+    - "From the departure of 13 December 2099 the Earth to Venus service leaves Earth at 08:30 instead of 07:00. Written notice was given on 19 October."
+    - "Pressure seal warning at berth 3 on 23 September, cleared after the seal was reseated (SR-2099-038)."
 
 - slug: ganymede-gate
   body: Jupiter
@@ -132,7 +132,7 @@
   port: Ganymede Gate
   kind: Orbital port at Ganymede
   handler: Outer Belt Port Services
-  contract_ends: "2027-12-31"
+  contract_ends: "2100-12-31"
   contact: ""
   our_presence: "No office."
   gravity: "Station spin, about a third of Earth's"
@@ -185,7 +185,7 @@
   port: Tombaugh Station
   kind: Surface port at the edge of the nitrogen plains of Tombaugh Regio
   handler: Tombaugh Station Cooperative
-  contract_ends: "2027-08-31"
+  contract_ends: "2100-08-31"
   contact: ""
   our_presence: "No office and no crew housing under contract today."
   gravity: "0.62 m/s²"
@@ -205,4 +205,4 @@
     - "Crew rest after a Pluto leg is 26 hours, and 48 hours before the next Pluto leg."
     - "The station is self-reliant in an emergency, and so is the ship."
   known:
-    - "No crew housing under contract. The cooperative's quote for four units is valid until 31 December 2026."
+    - "No crew housing under contract. The cooperative's quote for four units is valid until 31 December 2099."

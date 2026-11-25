@@ -1,14 +1,14 @@
 ---
-subject: "Advisory 2026-118: elevated solar activity, Venus corridor, 28 October"
+subject: "Advisory 2099-118: elevated solar activity, Venus corridor, 28 October"
 labels: [operations, advisory]
 ---
 From: Space Weather Service <advisories@innerweather.example>
 To: Operations Control <opscontrol@galaxium.example>
-Date: 2026-10-26 14:05
+Date: 2099-10-26 14:05
 
-ADVISORY 2026-118
+ADVISORY 2099-118
 Region: Earth to Venus corridor
-Period: 28 October 2026, 06:00 to 18:00 UTC
+Period: 28 October 2099, 06:00 to 18:00 UTC
 Level: 2 of 5 (elevated)
 Operators should review shielding procedures. No restriction on departures at this level.
 
@@ -16,6 +16,6 @@ Operators should review shielding procedures. No restriction on departures at th
 
 From: Space Weather Service <advisories@innerweather.example>
 To: Operations Control <opscontrol@galaxium.example>
-Date: 2026-10-26 19:30
+Date: 2099-10-26 19:30
 
-ADVISORY 2026-118 is withdrawn. Activity has returned to level 1.
+ADVISORY 2099-118 is withdrawn. Activity has returned to level 1.

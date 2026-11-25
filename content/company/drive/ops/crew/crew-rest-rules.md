@@ -1,6 +1,6 @@
 ---
 owner: Kwame Asante
-modified: 2026-06-02
+modified: 2099-06-02
 ---
 # Crew rest rules
 

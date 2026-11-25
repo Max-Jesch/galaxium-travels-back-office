@@ -4,7 +4,7 @@ labels: [people, hiring, engineering]
 ---
 From: Samir Chaudhry <samir.chaudhry@galaxium.example>
 To: Marcus Lindqvist <marcus.lindqvist@galaxium.example>, Aditi Sharma <aditi.sharma@galaxium.example>, Maya Goldberg <maya.goldberg@galaxium.example>
-Date: 2026-11-03 09:35
+Date: 2099-11-03 09:35
 
 Hello,
 

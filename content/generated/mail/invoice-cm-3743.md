@@ -6,12 +6,12 @@ labels:
 ---
 From: Cape Meridian Facilities <billing@capemeridianfm.example>
 To: Invoices <invoices@galaxium.example>
-Date: 2026-10-22 16:18
+Date: 2099-10-22 16:18
 
 Dear customer,
 
 Please find attached invoice CM-3743 for office cleaning and maintenance, earth hq.
 
-Amount due: 33,500 credits. Payment terms as agreed.
+Amount due: $33,500. Payment terms as agreed.
 
 Cape Meridian Facilities

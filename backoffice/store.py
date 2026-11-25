@@ -37,7 +37,7 @@ TEXT_SUFFIXES = {".md", ".txt", ".csv", ".yaml", ".yml", ".json"}
 # ---------- small file helpers ----------
 
 def _plain(value: Any) -> Any:
-    """YAML turns 2026-11-04 into a date object. Keep dates as the text the author wrote."""
+    """YAML turns 2099-11-04 into a date object. Keep dates as the text the author wrote."""
     if isinstance(value, dict):
         return {k: _plain(v) for k, v in value.items()}
     if isinstance(value, list):
@@ -249,7 +249,7 @@ def send_mail(to: str, subject: str, body: str, cc: str = "", thread_id: str = "
 # ---------- chat ----------
 #
 # A channel is a folder of markdown files. Inside a file:
-#   ## 2026-10-26                 starts a new day (or give `date:` in the frontmatter)
+#   ## 2099-10-26                 starts a new day (or give `date:` in the frontmatter)
 #   [10:02] Name: text            a message; following plain lines continue it
 #       [10:05] Name: text        indented: a reply in the thread of the message above
 #       + 👍 3, 🎉 1               indented, starting with +: reactions to the message above
@@ -399,7 +399,7 @@ def _drive_roots() -> list[tuple[str, Path]]:
     return [(s, r / "drive") for s, r in _roots()] + [("agent", STATE / "drive")]
 
 
-_DATED = re.compile(r"(20\d{2})-(0[1-9]|1[0-2])(?:-(0[1-9]|[12]\d|3[01]))?(?!\d)")
+_DATED = re.compile(r"(2[01]\d{2})-(0[1-9]|1[0-2])(?:-(0[1-9]|[12]\d|3[01]))?(?!\d)")
 
 
 def _drive_meta(path: Path, rel: str, source: str, index: dict, owners: dict) -> dict:

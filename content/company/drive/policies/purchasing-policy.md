@@ -1,10 +1,10 @@
 ---
 owner: Ingrid Solberg
-modified: 2026-10-07
+modified: 2099-10-07
 ---
 # Purchasing policy
 
-| Amount in credits | Who approves |
+| Amount in dollars | Who approves |
 | --- | --- |
 | Up to 50,000 | Your manager |
 | 50,000 to 250,000 | Department head |
@@ -13,5 +13,5 @@ modified: 2026-10-07
 
 - A purchase request comes before the order, not after the invoice.
 - Contracts longer than twelve months, or with automatic renewal, go to Legal first.
-- Three quotes for anything above 500,000 credits unless there is only one supplier, in which case say so.
+- Three quotes for anything above $500,000 unless there is only one supplier, in which case say so.
 - Invoices go to invoices@galaxium.example with the purchase request number.

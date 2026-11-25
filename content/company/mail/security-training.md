@@ -4,7 +4,7 @@ labels: [compliance, all-staff]
 ---
 From: Isaac Brandt <isaac.brandt@galaxium.example>
 To: All Staff <all@galaxium.example>
-Date: 2026-10-20 12:00
+Date: 2099-10-20 12:00
 
 Dear all,
 
@@ -19,6 +19,6 @@ Compliance and Privacy Officer
 
 From: Isaac Brandt <isaac.brandt@galaxium.example>
 To: All Staff <all@galaxium.example>
-Date: 2026-10-30 16:00
+Date: 2099-10-30 16:00
 
 Status after ten days: 44% complete. By department: Legal 100%, Finance 80%, Support 67%, Operations 38%, Engineering 38%, Sales 33%, Marketing 25%.

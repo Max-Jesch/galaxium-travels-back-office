@@ -4,7 +4,7 @@ labels: [support, lost-property]
 ---
 From: Ivan <ivan@asteroidbelt.com>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-10-30 07:15
+Date: 2099-10-30 07:15
 
 Hi, I think I left a grey tablet in the seat pocket, Earth to Mars yesterday, seat 4B. Is there a lost property desk?
 
@@ -12,7 +12,7 @@ Hi, I think I left a grey tablet in the seat pocket, Earth to Mars yesterday, se
 
 From: Mateo Vargas <mateo.vargas@galaxium.example>
 To: Ivan <ivan@asteroidbelt.com>
-Date: 2026-10-30 09:40
+Date: 2099-10-30 09:40
 
 Hello Ivan,
 

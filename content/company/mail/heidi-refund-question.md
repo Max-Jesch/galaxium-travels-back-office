@@ -4,7 +4,7 @@ labels: [support, refund]
 ---
 From: Heidi <heidi@europa.com>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-11-03 19:02
+Date: 2099-11-03 19:02
 
 Hello,
 
@@ -16,7 +16,7 @@ Heidi
 
 From: Kofi Mensah <kofi.mensah@galaxium.example>
 To: Heidi <heidi@europa.com>
-Date: 2026-11-04 08:30
+Date: 2099-11-04 08:30
 
 Hello Heidi,
 

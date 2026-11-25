@@ -4,7 +4,7 @@ labels: [support, groups]
 ---
 From: Marguerite Lowell <m.lowell@riversideschool.example>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-11-02 14:20
+Date: 2099-11-02 14:20
 
 Good afternoon,
 
@@ -17,7 +17,7 @@ Marguerite Lowell
 From: Thandi Dlamini <thandi.dlamini@galaxium.example>
 To: Marguerite Lowell <m.lowell@riversideschool.example>
 Cc: Lena Fischer <lena.fischer@galaxium.example>
-Date: 2026-11-03 08:50
+Date: 2099-11-03 08:50
 
 Dear Ms Lowell,
 

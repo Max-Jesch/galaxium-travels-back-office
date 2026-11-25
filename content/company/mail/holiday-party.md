@@ -4,7 +4,7 @@ labels: [all-staff]
 ---
 From: Agnes Wójcik <agnes.wojcik@galaxium.example>
 To: All Staff <all@galaxium.example>
-Date: 2026-11-03 10:15
+Date: 2099-11-03 10:15
 
 Dear all,
 

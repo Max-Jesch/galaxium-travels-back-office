@@ -85,6 +85,8 @@ The drive holds real `.xlsx`, `.docx` and `.pptx` files. `drive_read` returns th
 
 Everything the back office shows is a plain file under `content/`. Add a file and it appears on the next click; no restart and no code.
 
+To see how the company works before you add to it, open [docs/company.html](docs/company.html): how it earns, what it costs, who owns it and how it flies, on one page. Its facts are in `content/company/finance.yaml`.
+
 ```
 content/
   company/               always loaded
@@ -114,7 +116,7 @@ labels: [support, refund]
 ---
 From: Heidi <heidi@europa.com>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-11-03 19:02
+Date: 2099-11-03 19:02
 
 Hello, I may have to cancel my trip.
 ```
@@ -124,7 +126,7 @@ A mail thread may also name `attachments: [path/in/the/drive.xlsx]` and `flagged
 A chat file holds one or more days. An indented message is a reply in the thread of the message above it, and an indented line starting with `+` gives reactions:
 
 ```markdown
-## 2026-11-02
+## 2099-11-02
 [09:30] Bruno Ferreira: Multi-factor sign-in becomes mandatory on Monday.
     [09:44] Hana Kobayashi: Does that include the payroll system?
     + 👍 4
@@ -140,15 +142,15 @@ About 180 mail threads, 500 chat messages in 32 channels, 200 tickets, 140 drive
 
 `content/company/drive/ops/how-we-fly.md` explains how the small booking snapshot (one scheduled departure per route per month) fits a company with deals worth tens of millions: charter flying is sold through the CRM and is not in the booking system.
 
-In the story, today is always **Wednesday 4 November 2026** (`content/company/company.yaml`). Write dates relative to that.
+In the story, today is always **Wednesday 4 November 2099** (`content/company/company.yaml`). Write dates relative to that.
 
 ## How it fits the booking app
 
 The back office does not need the booking app to run. It carries its own fixed snapshot, so that the numbers in mails, tickets and reports always agree:
 
-- 60 flights: the ten routes and base prices of the booking app's seed data, with one departure a month from September 2026 to February 2027. Flight ids 1 to 10 are the seed's routes in the seed's order.
+- 60 flights: the ten routes and base prices of the booking app's seed data, with one departure a month from September 2099 to February 2100. Flight ids 1 to 10 are the seed's routes in the seed's order.
 - 60 travellers: the seed's ten (Alice to Judy, same ids) and fifty more.
-- 340 bookings from August to October 2026, and 238 price quotes from October, when the hold service went live.
+- 340 bookings from August to October 2099, and 238 price quotes from October, when the hold service went live.
 
 The quote mismatch is real behaviour of the booking app, not an invention: its Java hold service prices a quote from its own table and ignores the route, and the Python backend charges base price times seat class factor at booking. The snapshot applies both rules exactly as the code does.
 

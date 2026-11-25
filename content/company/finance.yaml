@@ -1,0 +1,110 @@
+# The company as a business: who owns it, how it earns and what it costs.
+#
+# This file is the source for leadership/company-profile.docx and
+# finance/annual/financial-summary-2094-2099.xlsx (scripts/companybook.py), and for the
+# money section of ops/how-we-fly.md. Everything here is made up, but it has to hold
+# together and agree with the rest of the repo:
+#
+#   - Fares are the base prices of the snapshot times the seat class factors. A full
+#     departure earns 18.5 times the economy fare (6 x 1 + 3 x 2.5 + 1 x 5).
+#   - Charter revenue is in line with the won deals of the CRM (about 240 million
+#     dollars from April to October 2099).
+#   - Fuel, ports and catering are in line with the invoice register of October 2099.
+#   - Cash and payables are those of the August board pack.
+#
+# Amounts are in millions of dollars. 2099 is the forecast made at the August close,
+# so it says nothing about October. The build checks that every year adds up.
+
+owners:
+  - {name: Founders and staff, share: 36, note: "The founding team of 2092 and the staff share plan."}
+  - {name: Ceres Capital Partners, share: 40, note: "Growth investor. Led the rounds of 2095 and 2097. Two seats on the board."}
+  - {name: Lowell Ship Finance, share: 24, note: "Lessor of all six ships. Took its stake in 2097, in place of part of the lease on Halcyon."}
+
+funding:
+  - {year: 2092, raised: 140, what: "Founding round. Deposits on three inner-system ships."}
+  - {year: 2095, raised: 320, what: "Second round, led by Ceres Capital Partners. Solstice, Aurora and the Jupiter route."}
+  - {year: 2097, raised: 460, what: "Third round. Halcyon, the outer-system package and the routes beyond Jupiter."}
+
+board:
+  seats: "An independent chair, two directors named by the investors and the Chief Executive."
+  meets: "Quarterly, and in December for the budget."
+
+entities:
+  - {name: Galaxium Travels Ltd., where: "Cape Meridian, Earth", what: "The operator. Holds the operating licence, the leases, the contracts and the staff on Earth and Mars."}
+  - {name: Galaxium Travels Luna Ltd., where: "Lunar Free Port, Luna", what: "Employs the Luna staff and rents the office at Tycho. Recharges its costs to the parent each month."}
+
+# What the company does not own, and whom it pays for it.
+depends_on:
+  - {what: The ships, who: Lowell Ship Finance, how: "All six are leased, for twelve years from delivery. The lease runs whether a ship flies or not. The largest cost we have."}
+  - {what: The way between the ports, who: System Traffic Control, how: "A charge for every flight, by distance, paid from a prepaid account."}
+  - {what: Building and heavy work, who: Hadley Yards, how: "Built all six. Does refits and supplies parts. Routine checks are our own, at Cape Meridian."}
+  - {what: The ports, who: Seven port operators, how: "A fee for every turnaround. Our own staff handle the ships on Earth, a contracted handler elsewhere."}
+  - {what: Fuel, who: Helios Fuels, how: "Delivered at Cape Meridian and bought at the ports."}
+
+# How a year of flying is made up. A leg is one flight from port to port.
+slots:
+  rule: "The ports give out departure slots by timetable period: March to August and September to February. We hold one scheduled slot a month on each of our ten routes. A charter or a shuttle flies on a slot asked for one at a time."
+  why_it_matters: "A ship flies about one leg a week, so inside Jupiter the fleet has room: growth there is a question of demand and slots. Beyond Jupiter it is a question of hulls, because one ship is certified."
+flying:
+  - {year: 2094, routes: 4,  scheduled: 40,  charter: 0,  shuttle: 30, ships: 1}
+  - {year: 2095, routes: 6,  scheduled: 72,  charter: 6,  shuttle: 60, ships: 2}
+  - {year: 2096, routes: 7,  scheduled: 84,  charter: 20, shuttle: 80, ships: 5}
+  - {year: 2097, routes: 9,  scheduled: 96,  charter: 34, shuttle: 90, ships: 6}
+  - {year: 2098, routes: 9,  scheduled: 108, charter: 48, shuttle: 96, ships: 6}
+  - {year: 2099, routes: 10, scheduled: 117, charter: 44, shuttle: 96, ships: 6}
+
+# Why the booking system starts on 10 August.
+books:
+  rule: "Seats are sold from one sales book per timetable period. The book for September 2099 to February 2100 opened on 10 August 2099, and it is the one the booking system holds."
+  follows: "Seats on the September and October departures that were sold before 10 August are in the closed spring book. Finance keeps the totals of closed books; the booking system does not."
+
+revenue_lines: [Scheduled service, Charter rotations, Cargo and other]
+cost_lines: [Ship leases, Traffic control charges, Fuel, Ports and ground handling, Maintenance, Insurance, Flight crew, "Staff, non-crew", "Sales, marketing and payment fees", Catering and cabin, "Software, offices and other"]
+
+years:
+  - year: 2094
+    note: "First departures in March, with one ship."
+    seats_offered: 400
+    seats_sold: 212
+    revenue: [313, 0, 5]
+    costs: [160, 60, 30, 30, 25, 30, 15, 30, 35, 4, 12]
+  - year: 2095
+    note: "Venus. First corporate account."
+    seats_offered: 720
+    seats_sold: 446
+    revenue: [752, 45, 12]
+    costs: [320, 120, 65, 60, 50, 55, 30, 40, 50, 10, 14]
+  - year: 2096
+    note: "Three ships delivered in one year. Jupiter. The fleet is ahead of the network."
+    seats_offered: 840
+    seats_sold: 563
+    revenue: [1179, 160, 20]
+    costs: [640, 230, 105, 95, 110, 120, 70, 55, 70, 16, 16]
+  - year: 2097
+    note: "Halcyon and Europa. The longest routes, and a year to fill them."
+    seats_offered: 960
+    seats_sold: 672
+    revenue: [1616, 290, 30]
+    costs: [900, 320, 165, 150, 170, 160, 90, 65, 90, 25, 18]
+  - year: 2098
+    note: "No new route. Fuller ships. The first year with a profit."
+    seats_offered: 1080
+    seats_sold: 832
+    revenue: [2202, 410, 40]
+    costs: [960, 460, 215, 190, 200, 170, 95, 75, 110, 35, 20]
+  - year: 2099
+    forecast: true
+    note: "Forecast at the August close. Pluto from April. Perihelion in refit from June: its lease runs, its charter flying stops, and the refit work is paid for."
+    seats_offered: 1170
+    seats_sold: 878
+    revenue: [2759, 395, 46]
+    costs: [960, 560, 290, 235, 360, 200, 105, 82, 150, 42, 30]
+
+position:
+  what: "The smallest of the four scheduled carriers, and the only one that sells a single seat to Pluto on a public site at a price that holds."
+  against:
+    - {name: Orbitway, they: "The largest on the inner routes. Sells frequency.", we: "Fly beyond Jupiter. They do not."}
+    - {name: NovaTransit, they: "Low fares on Earth, Luna and Mars.", we: "Fly beyond Mars, and keep to the schedule."}
+    - {name: Stellar Lines, they: "The widest outer-system network, at 10% to 20% above our fares.", we: "Cost less, and are booked in minutes instead of by contract."}
+
+why_founded: "Until the 2090s a seat to Mars was bought by contract, through an agent, weeks ahead, on a ship built for a hundred. In 2091 Hadley Yards showed the Kestrel class: ten seats, a crew of three, turned round in 90 minutes. Galaxium was founded the next year to fly it on a timetable and sell each seat the way a train ticket is sold: one price, one page, one traveller at a time."

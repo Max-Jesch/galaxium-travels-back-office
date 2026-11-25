@@ -5,7 +5,7 @@ attachments: [marketing/events/travel-expo-plan.md]
 ---
 From: Pilar Navarro <pilar.navarro@galaxium.example>
 To: Sales <sales@galaxium.example>, Marketing <marketing@galaxium.example>
-Date: 2026-10-28 09:30
+Date: 2099-10-28 09:30
 
 Hello both teams,
 

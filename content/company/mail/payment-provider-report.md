@@ -4,7 +4,7 @@ labels: [engineering, vendor, incident]
 ---
 From: Status <status@ferrypay.example>
 To: Emeka Obi <emeka.obi@galaxium.example>
-Date: 2026-10-15 09:00
+Date: 2099-10-15 09:00
 
 Dear customer,
 

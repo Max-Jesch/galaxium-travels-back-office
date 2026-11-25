@@ -1,11 +1,11 @@
 ---
 owner: Elise Fontaine
-modified: 2026-10-07
+modified: 2099-10-07
 ---
 # Campaign brief: Winter on Mars
 
-**Launch.** Tuesday 10 November 2026, 09:00.
-**Runs until.** 28 February 2027.
+**Launch.** Tuesday 10 November 2099, 09:00.
+**Runs until.** 28 February 2100.
 
 **Idea.** Mars has a winter, and the dune lodges at Red Sands are at their best in it. We sell the trip, Red Sands sells the stay.
 

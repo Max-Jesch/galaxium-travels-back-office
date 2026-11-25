@@ -1,12 +1,12 @@
 ---
 owner: Jamal Carter
-modified: 2026-10-29
+modified: 2099-10-29
 ---
 # Battlecard: Orbitway
 
 **Who they are.** The largest carrier on the inner routes. No outer-system service beyond Jupiter.
 
-**Their pitch.** Frequency. Twice daily Earth to Mars from March 2027, weekly Jupiter. "Book the departure, not the fare."
+**Their pitch.** Frequency. Twice daily Earth to Mars from March 2100, weekly Jupiter. "Book the departure, not the fare."
 
 **Prices.** About level with ours on Mars, higher on Jupiter.
 

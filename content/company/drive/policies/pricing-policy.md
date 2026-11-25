@@ -1,8 +1,8 @@
 # Pricing policy
 
-Owner: Finance. Last reviewed 1 September 2026.
+Owner: Finance. Last reviewed 1 September 2099.
 
-Every flight has a base price in credits. The fare a traveller pays is the base price of that flight multiplied by the seat class factor.
+Every flight has a base price in dollars. The fare a traveller pays is the base price of that flight multiplied by the seat class factor.
 
 | Seat class | Factor |
 | --- | --- |

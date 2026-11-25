@@ -6,12 +6,12 @@ labels:
 ---
 From: Lagrange Catering <billing@lagrangecatering.example>
 To: Invoices <invoices@galaxium.example>
-Date: 2026-10-05 16:38
+Date: 2099-10-05 16:38
 
 Dear customer,
 
 Please find attached invoice LC-3345 for cabin catering.
 
-Amount due: 128,500 credits. Payment terms as agreed.
+Amount due: $128,500. Payment terms as agreed.
 
 Lagrange Catering

@@ -1,10 +1,10 @@
 ---
 owner: Ling Zhou
-modified: 2026-10-30
+modified: 2099-10-30
 ---
 # Setting up a second factor
 
-Mandatory from Monday 9 November 2026 for mail, chat, the drive and the CRM.
+Mandatory from Monday 9 November 2099 for mail, chat, the drive and the CRM.
 
 1. On your laptop, open your account page and choose "Security".
 2. Choose "Add a device" and pick the authenticator app or a hardware key.

@@ -1,6 +1,6 @@
 ---
 owner: Marcus Lindqvist
-modified: 2026-10-02
+modified: 2099-10-02
 ---
 # Booking platform: overview
 
@@ -15,7 +15,7 @@ modified: 2026-10-02
 | --- | --- | --- |
 | Web frontend | Search, quote, pay, manage a booking | Wren Abbott |
 | Booking API | System of record for users, flights and bookings. Calculates the price of a booking when it is made. Applies the refund policy on cancellation. | Jonas Keller |
-| Hold service | Since 1 October 2026. Issues a price quote and holds the seat for 15 minutes. | Aditi Sharma |
+| Hold service | Since 1 October 2099. Issues a price quote and holds the seat for 15 minutes. | Aditi Sharma |
 | Warehouse | Nightly copy of users, flights, bookings and quotes for reporting | Felix Braun |
 
 ## Things people get wrong
