@@ -5,7 +5,7 @@ labels:
 ---
 From: Timo <timo@beltpost.example>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-10-21 12:05
+Date: 2099-10-21 12:05
 
 Hello,
 
@@ -17,7 +17,7 @@ Timo
 
 From: Anneli Korhonen <anneli.korhonen@galaxium.example>
 To: Timo <timo@beltpost.example>
-Date: 2026-10-21 14:00
+Date: 2099-10-21 14:00
 
 Hello Timo,
 

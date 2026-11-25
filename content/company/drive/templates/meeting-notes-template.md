@@ -1,6 +1,6 @@
 ---
 owner: Agnes Wójcik
-modified: 2026-02-10
+modified: 2099-02-10
 ---
 # [Meeting], [weekday date]
 

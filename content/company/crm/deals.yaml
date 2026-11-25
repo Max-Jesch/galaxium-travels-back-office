@@ -1,55 +1,55 @@
 # Open pipeline. Closed deals from the third quarter live in the win-loss scenario pack.
 - id: D-2101
-  name: Europa Research Trust, Pluto field season 2027
+  name: Europa Research Trust, Pluto field season 2100
   account_id: A-106
   owner: Lena Fischer
   stage: proposal
   amount: 38000000
-  close_date: 2026-12-15
+  close_date: 2099-12-15
   next_step: Send revised proposal once a second monthly Pluto departure is confirmed or ruled out.
   notes:
-    - {author: Lena Fischer, date: 2026-10-21, text: "Call with Dr. Aydin. They need two Pluto departures a month from March to June. One departure does not work for crew rotation."}
+    - {author: Lena Fischer, date: 2099-10-21, text: "Call with Dr. Aydin. They need two Pluto departures a month from March to June. One departure does not work for crew rotation."}
 - id: D-2102
   name: Outer Belt Logistics, crew rotation renewal
   account_id: A-104
   owner: Dev Malhotra
   stage: negotiation
   amount: 52000000
-  close_date: 2026-11-28
+  close_date: 2099-11-28
   next_step: Legal to return the redlined master agreement.
   notes:
-    - {author: Dev Malhotra, date: 2026-10-29, text: "Imani wants holds extended beyond 15 minutes for group bookings. Told her I would ask engineering."}
+    - {author: Dev Malhotra, date: 2099-10-29, text: "Imani wants holds extended beyond 15 minutes for group bookings. Told her I would ask engineering."}
 
 # Closed in October (the fourth quarter). The third quarter's closed deals are in the win-loss pack.
-- {id: D-2019, name: "Vesta Shipwrights, yard crew rotation 2027", account_id: A-112, owner: Dev Malhotra, stage: won, amount: 14500000, close_date: 2026-10-09, notes: [{author: Dev Malhotra, date: 2026-10-09, text: "Signed for twelve months. 8% discount against payment by quarter in advance, approved in the deal desk. Tariq: 'We only need one departure a month now that the yard is on a monthly cycle.'"}]}
-- {id: D-2020, name: "Lunar Polytechnic Institute, spring field trips", account_id: A-107, owner: Lena Fischer, stage: won, amount: 6200000, close_date: 2026-10-23, notes: [{author: Lena Fischer, date: 2026-10-23, text: "Signed. Travel credit instead of refunds made the difference for their finance officer."}]}
-- {id: D-2021, name: "Kepler Media Group, Winter on Mars production", account_id: A-110, owner: Dev Malhotra, stage: won, amount: 9800000, close_date: 2026-10-30, notes: [{author: Dev Malhotra, date: 2026-10-30, text: "Signed. Flexible dates handled with travel credit valid twelve months. Co-marketing agreed in principle."}]}
-- {id: D-2022, name: "Aurora Biolabs, sample courier seats", account_id: A-108, owner: Lena Fischer, stage: lost, amount: 4100000, close_date: 2026-10-16, loss_reason: Refund terms, competitor: NovaTransit, notes: [{author: Lena Fischer, date: 2026-10-16, text: "Mei: experiments slip, and they need to cancel a day before without losing the fare. NovaTransit's flexible tariff does that."}]}
-- {id: D-2023, name: "Ceres Agritech, harvest crews 2027", account_id: A-102, owner: Dev Malhotra, stage: lost, amount: 22000000, close_date: 2026-10-27, loss_reason: Schedule frequency, competitor: Orbitway, notes: [{author: Dev Malhotra, date: 2026-10-27, text: "Luis went with Orbitway for the second time. They need a departure every week in harvest season."}]}
+- {id: D-2019, name: "Vesta Shipwrights, yard crew rotation 2100", account_id: A-112, owner: Dev Malhotra, stage: won, amount: 14500000, close_date: 2099-10-09, notes: [{author: Dev Malhotra, date: 2099-10-09, text: "Signed for twelve months. 8% discount against payment by quarter in advance, approved in the deal desk. Tariq: 'We only need one departure a month now that the yard is on a monthly cycle.'"}]}
+- {id: D-2020, name: "Lunar Polytechnic Institute, spring field trips", account_id: A-107, owner: Lena Fischer, stage: won, amount: 6200000, close_date: 2099-10-23, notes: [{author: Lena Fischer, date: 2099-10-23, text: "Signed. Travel credit instead of refunds made the difference for their finance officer."}]}
+- {id: D-2021, name: "Kepler Media Group, Winter on Mars production", account_id: A-110, owner: Dev Malhotra, stage: won, amount: 9800000, close_date: 2099-10-30, notes: [{author: Dev Malhotra, date: 2099-10-30, text: "Signed. Flexible dates handled with travel credit valid twelve months. Co-marketing agreed in principle."}]}
+- {id: D-2022, name: "Aurora Biolabs, sample courier seats", account_id: A-108, owner: Lena Fischer, stage: lost, amount: 4100000, close_date: 2099-10-16, loss_reason: Refund terms, competitor: NovaTransit, notes: [{author: Lena Fischer, date: 2099-10-16, text: "Mei: experiments slip, and they need to cancel a day before without losing the fare. NovaTransit's flexible tariff does that."}]}
+- {id: D-2023, name: "Ceres Agritech, harvest crews 2100", account_id: A-102, owner: Dev Malhotra, stage: lost, amount: 22000000, close_date: 2099-10-27, loss_reason: Schedule frequency, competitor: Orbitway, notes: [{author: Dev Malhotra, date: 2099-10-27, text: "Luis went with Orbitway for the second time. They need a departure every week in harvest season."}]}
 
 # Closed in the second quarter.
-- {id: D-1941, name: "Helix Mining Cooperative, rotation charter 2026", account_id: A-101, owner: Dev Malhotra, stage: won, amount: 41000000, close_date: 2026-04-17, notes: [{author: Dev Malhotra, date: 2026-04-17, text: Renewal of the rotation charter.}]}
-- {id: D-1944, name: "Tombaugh Observatory Consortium, observer travel", account_id: A-120, owner: Lena Fischer, stage: won, amount: 17500000, close_date: 2026-05-06, notes: [{author: Lena Fischer, date: 2026-05-06, text: "Signed for the year. They plan observing runs around our one monthly departure."}]}
-- {id: D-1947, name: "Meridian Parcel Network, courier seats", account_id: A-116, owner: Dev Malhotra, stage: lost, amount: 9000000, close_date: 2026-05-22, loss_reason: Price, competitor: NovaTransit, notes: [{author: Dev Malhotra, date: 2026-05-22, text: "Lost on fare for Earth to Luna."}]}
-- {id: D-1952, name: "Venus Atmospheric Institute, field season", account_id: A-122, owner: Lena Fischer, stage: won, amount: 8300000, close_date: 2026-06-11, notes: [{author: Lena Fischer, date: 2026-06-11, text: Signed.}]}
-- {id: D-1955, name: "Olympus Summit Tours, guest allotment", account_id: A-123, owner: Lena Fischer, stage: won, amount: 5400000, close_date: 2026-06-26, notes: [{author: Lena Fischer, date: 2026-06-26, text: Allotment of four seats a month on Earth to Mars.}]}
+- {id: D-1941, name: "Helix Mining Cooperative, rotation charter 2099", account_id: A-101, owner: Dev Malhotra, stage: won, amount: 41000000, close_date: 2099-04-17, notes: [{author: Dev Malhotra, date: 2099-04-17, text: Renewal of the rotation charter.}]}
+- {id: D-1944, name: "Tombaugh Observatory Consortium, observer travel", account_id: A-120, owner: Lena Fischer, stage: won, amount: 17500000, close_date: 2099-05-06, notes: [{author: Lena Fischer, date: 2099-05-06, text: "Signed for the year. They plan observing runs around our one monthly departure."}]}
+- {id: D-1947, name: "Meridian Parcel Network, courier seats", account_id: A-116, owner: Dev Malhotra, stage: lost, amount: 9000000, close_date: 2099-05-22, loss_reason: Price, competitor: NovaTransit, notes: [{author: Dev Malhotra, date: 2099-05-22, text: "Lost on fare for Earth to Luna."}]}
+- {id: D-1952, name: "Venus Atmospheric Institute, field season", account_id: A-122, owner: Lena Fischer, stage: won, amount: 8300000, close_date: 2099-06-11, notes: [{author: Lena Fischer, date: 2099-06-11, text: Signed.}]}
+- {id: D-1955, name: "Olympus Summit Tours, guest allotment", account_id: A-123, owner: Lena Fischer, stage: won, amount: 5400000, close_date: 2099-06-26, notes: [{author: Lena Fischer, date: 2099-06-26, text: Allotment of four seats a month on Earth to Mars.}]}
 
 # More open pipeline.
-- {id: D-2103, name: "Tharsis Engineering, Ganymede site rotations 2027", account_id: A-103, owner: Bastien Moreau, stage: proposal, amount: 64000000, close_date: 2026-12-18, next_step: "Send the quote by 6 November. Operations to confirm Aurora's dates.", notes: [{author: Bastien Moreau, date: 2026-10-20, text: "40 return rotations Mars to Jupiter, groups of 6 to 10. They ask for longer group holds and late names."}]}
-- {id: D-2104, name: "Nimbus Freight, renewal 2027", account_id: A-105, owner: Dev Malhotra, stage: negotiation, amount: 11000000, close_date: 2027-01-31, next_step: "Call with Peter Lindholm and Amara in the first week of November.", notes: [{author: Jamal Carter, date: 2026-10-27, text: "Usage down 30%. Customer says departure times, not price."}]}
-- {id: D-2105, name: "Tombaugh Observatory Consortium, 2027 observing runs", account_id: A-120, owner: Lena Fischer, stage: proposal, amount: 19000000, close_date: 2026-12-10, next_step: "Revised proposal after the decision on a second Pluto departure.", notes: [{author: Lena Fischer, date: 2026-10-14, text: "Dr. Brooks would add a second observing team if there were two departures a month."}]}
-- {id: D-2106, name: "Ganymede Deepcore, shift travel", account_id: A-113, owner: Bastien Moreau, stage: prospect, amount: 26000000, close_date: 2027-02-15, next_step: "Site visit on Ganymede, 24 November.", notes: []}
-- {id: D-2107, name: "Riverside School Trust, Moon trip in May", account_id: A-121, owner: Lena Fischer, stage: prospect, amount: 1900000, close_date: 2027-01-20, next_step: "Call Ms Lowell this week; 27 travellers need three departures.", notes: []}
-- {id: D-2108, name: "Red Sands Hospitality, Winter on Mars group allotment", account_id: A-109, owner: Lena Fischer, stage: negotiation, amount: 13200000, close_date: 2026-11-13, next_step: "Sign the group rate sheet approved on 3 November.", notes: [{author: Pilar Navarro, date: 2026-11-03, text: "Approved in the deal desk with a cap of 40 seats a month."}]}
-- {id: D-2109, name: "Callisto Cold Chain, technician rotations", account_id: A-117, owner: Bastien Moreau, stage: prospect, amount: 8700000, close_date: 2027-03-01, next_step: "First call booked for 12 November.", notes: []}
-- {id: D-2110, name: "University of New Lagos, graduate field school", account_id: A-119, owner: Lena Fischer, stage: proposal, amount: 3600000, close_date: 2026-12-04, next_step: "They compare with NovaTransit on refund terms. Offer travel credit.", notes: []}
-- {id: D-2111, name: "Meridian Parcel Network, Mars courier seats", account_id: A-116, owner: Dev Malhotra, stage: proposal, amount: 7400000, close_date: 2026-12-15, next_step: "Proposal sent 30 October, follow up on 10 November.", notes: []}
-- {id: D-2112, name: "Farside Films, feature shoot on Luna", account_id: A-124, owner: Dev Malhotra, stage: prospect, amount: 5200000, close_date: 2027-02-01, next_step: "Waiting for their shooting schedule.", notes: []}
-- {id: D-2113, name: "Cloudtop Hotels, guest packages", account_id: A-125, owner: Lena Fischer, stage: negotiation, amount: 9900000, close_date: 2026-11-27, next_step: "They want the later Venus departure in the contract. Confirmed by Operations from 13 December.", notes: []}
-- {id: D-2114, name: "Interplanetary Games Committee, team travel 2027", account_id: A-126, owner: Dev Malhotra, stage: prospect, amount: 31000000, close_date: 2027-04-30, next_step: "Tender expected in January.", notes: []}
-- {id: D-2115, name: "Hellas Water Works, plant crew", account_id: A-127, owner: Bastien Moreau, stage: proposal, amount: 6800000, close_date: 2026-12-11, next_step: "Bastien to present on site on 19 November.", notes: []}
-- {id: D-2116, name: "Lagrange Medical Relief, deployment framework", account_id: A-128, owner: Lena Fischer, stage: negotiation, amount: 15500000, close_date: 2026-12-01, next_step: "Legal reviewing their standard terms.", notes: []}
-- {id: D-2117, name: "Belt Rare Metals, survey teams", account_id: A-115, owner: Dev Malhotra, stage: prospect, amount: 12500000, close_date: 2027-03-15, next_step: "Introduced at the Expo, meeting on 25 November.", notes: []}
-- {id: D-2118, name: "Phobos Aggregates, quarterly rotations", account_id: A-114, owner: Bastien Moreau, stage: proposal, amount: 4300000, close_date: 2026-11-30, next_step: "Waiting for their board on 18 November.", notes: []}
-- {id: D-2119, name: "Selene Resorts, new year packages", account_id: A-111, owner: Lena Fischer, stage: negotiation, amount: 7700000, close_date: 2026-11-20, next_step: "Contract with their counsel.", notes: []}
-- {id: D-2120, name: "Tranquility Freight Forwarders, crew shuttle seats", account_id: A-118, owner: Lena Fischer, stage: prospect, amount: 2800000, close_date: 2027-01-15, next_step: "Send rate card.", notes: []}
+- {id: D-2103, name: "Tharsis Engineering, Ganymede site rotations 2100", account_id: A-103, owner: Bastien Moreau, stage: proposal, amount: 64000000, close_date: 2099-12-18, next_step: "Send the quote by 6 November. Operations to confirm Aurora's dates.", notes: [{author: Bastien Moreau, date: 2099-10-20, text: "40 return rotations Mars to Jupiter, groups of 6 to 10. They ask for longer group holds and late names."}]}
+- {id: D-2104, name: "Nimbus Freight, renewal 2100", account_id: A-105, owner: Dev Malhotra, stage: negotiation, amount: 11000000, close_date: 2100-01-31, next_step: "Call with Peter Lindholm and Amara in the first week of November.", notes: [{author: Jamal Carter, date: 2099-10-27, text: "Usage down 30%. Customer says departure times, not price."}]}
+- {id: D-2105, name: "Tombaugh Observatory Consortium, 2100 observing runs", account_id: A-120, owner: Lena Fischer, stage: proposal, amount: 19000000, close_date: 2099-12-10, next_step: "Revised proposal after the decision on a second Pluto departure.", notes: [{author: Lena Fischer, date: 2099-10-14, text: "Dr. Brooks would add a second observing team if there were two departures a month."}]}
+- {id: D-2106, name: "Ganymede Deepcore, shift travel", account_id: A-113, owner: Bastien Moreau, stage: prospect, amount: 26000000, close_date: 2100-02-15, next_step: "Site visit on Ganymede, 24 November.", notes: []}
+- {id: D-2107, name: "Riverside School Trust, Moon trip in May", account_id: A-121, owner: Lena Fischer, stage: prospect, amount: 1900000, close_date: 2100-01-20, next_step: "Call Ms Lowell this week; 27 travellers need three departures.", notes: []}
+- {id: D-2108, name: "Red Sands Hospitality, Winter on Mars group allotment", account_id: A-109, owner: Lena Fischer, stage: negotiation, amount: 13200000, close_date: 2099-11-13, next_step: "Sign the group rate sheet approved on 3 November.", notes: [{author: Pilar Navarro, date: 2099-11-03, text: "Approved in the deal desk with a cap of 40 seats a month."}]}
+- {id: D-2109, name: "Callisto Cold Chain, technician rotations", account_id: A-117, owner: Bastien Moreau, stage: prospect, amount: 8700000, close_date: 2100-03-01, next_step: "First call booked for 12 November.", notes: []}
+- {id: D-2110, name: "University of New Lagos, graduate field school", account_id: A-119, owner: Lena Fischer, stage: proposal, amount: 3600000, close_date: 2099-12-04, next_step: "They compare with NovaTransit on refund terms. Offer travel credit.", notes: []}
+- {id: D-2111, name: "Meridian Parcel Network, Mars courier seats", account_id: A-116, owner: Dev Malhotra, stage: proposal, amount: 7400000, close_date: 2099-12-15, next_step: "Proposal sent 30 October, follow up on 10 November.", notes: []}
+- {id: D-2112, name: "Farside Films, feature shoot on Luna", account_id: A-124, owner: Dev Malhotra, stage: prospect, amount: 5200000, close_date: 2100-02-01, next_step: "Waiting for their shooting schedule.", notes: []}
+- {id: D-2113, name: "Cloudtop Hotels, guest packages", account_id: A-125, owner: Lena Fischer, stage: negotiation, amount: 9900000, close_date: 2099-11-27, next_step: "They want the later Venus departure in the contract. Confirmed by Operations from 13 December.", notes: []}
+- {id: D-2114, name: "Interplanetary Games Committee, team travel 2100", account_id: A-126, owner: Dev Malhotra, stage: prospect, amount: 31000000, close_date: 2100-04-30, next_step: "Tender expected in January.", notes: []}
+- {id: D-2115, name: "Hellas Water Works, plant crew", account_id: A-127, owner: Bastien Moreau, stage: proposal, amount: 6800000, close_date: 2099-12-11, next_step: "Bastien to present on site on 19 November.", notes: []}
+- {id: D-2116, name: "Lagrange Medical Relief, deployment framework", account_id: A-128, owner: Lena Fischer, stage: negotiation, amount: 15500000, close_date: 2099-12-01, next_step: "Legal reviewing their standard terms.", notes: []}
+- {id: D-2117, name: "Belt Rare Metals, survey teams", account_id: A-115, owner: Dev Malhotra, stage: prospect, amount: 12500000, close_date: 2100-03-15, next_step: "Introduced at the Expo, meeting on 25 November.", notes: []}
+- {id: D-2118, name: "Phobos Aggregates, quarterly rotations", account_id: A-114, owner: Bastien Moreau, stage: proposal, amount: 4300000, close_date: 2099-11-30, next_step: "Waiting for their board on 18 November.", notes: []}
+- {id: D-2119, name: "Selene Resorts, new year packages", account_id: A-111, owner: Lena Fischer, stage: negotiation, amount: 7700000, close_date: 2099-11-20, next_step: "Contract with their counsel.", notes: []}
+- {id: D-2120, name: "Tranquility Freight Forwarders, crew shuttle seats", account_id: A-118, owner: Lena Fischer, stage: prospect, amount: 2800000, close_date: 2100-01-15, next_step: "Send rate card.", notes: []}

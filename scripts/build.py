@@ -25,9 +25,9 @@ ROOT = Path(__file__).resolve().parent.parent
 SNAPSHOT = ROOT / "snapshot"
 COMPANY = ROOT / "content" / "company"
 PACKS = ROOT / "content" / "packs"
-TODAY = datetime(2026, 11, 4)
-HOLD_SERVICE_LIVE = datetime(2026, 10, 1)
-FIXED_TIME = datetime(2026, 11, 4, 9, 0)
+TODAY = datetime(2099, 11, 4)
+HOLD_SERVICE_LIVE = datetime(2099, 10, 1)
+FIXED_TIME = datetime(2099, 11, 4, 9, 0)
 rng = random.Random(2026)
 
 
@@ -57,7 +57,7 @@ ROUTES = [
     ("Moon", "Mars", 11, 8, 800000, 6), ("Mars", "Jupiter", 13, 10, 2500000, 4), ("Europa", "Earth", 9, 12, 3000000, 2),
     ("Earth", "Pluto", 6, 24, 5000000, 3),
 ]  # origin, destination, departure hour, duration in hours, base price, popularity weight
-MONTHS = [(2026, 9), (2026, 10), (2026, 11), (2026, 12), (2027, 1), (2027, 2)]
+MONTHS = [(2099, 9), (2099, 10), (2099, 11), (2099, 12), (2100, 1), (2100, 2)]
 CLASS_FACTOR = {"economy": 1, "business": 2.5, "galaxium": 5}
 SEATS = {"economy": 6, "business": 3, "galaxium": 1}
 JAVA_TABLE = {"economy": 500000, "business": 2500000, "first": 5000000}  # PricingService.java
@@ -101,10 +101,10 @@ def build_snapshot() -> tuple[list[dict], list[dict], list[dict], list[dict]]:
 
     # Bookings the stories refer to by name. They are placed first so their seats are free.
     fixed = [
-        (3, 31, "economy", datetime(2026, 10, 22, 18, 5), "booked"),    # Charlie: quoted 550,000, charged 1,000,000
-        (5, 31, "galaxium", datetime(2026, 10, 27, 19, 42), "booked"),  # Eve: quoted 550,000, charged 5,000,000
-        (7, 31, "business", datetime(2026, 10, 29, 12, 16), "booked"),  # Grace: quoted 2,750,000, charged 2,500,000
-        (8, 29, "business", datetime(2026, 9, 18, 10, 31), "booked"),   # Heidi: the refund question
+        (3, 31, "economy", datetime(2099, 10, 22, 18, 5), "booked"),    # Charlie: quoted 550,000, charged 1,000,000
+        (5, 31, "galaxium", datetime(2099, 10, 27, 19, 42), "booked"),  # Eve: quoted 550,000, charged 5,000,000
+        (7, 31, "business", datetime(2099, 10, 29, 12, 16), "booked"),  # Grace: quoted 2,750,000, charged 2,500,000
+        (8, 29, "business", datetime(2099, 9, 18, 10, 31), "booked"),   # Heidi: the refund question
     ]
     taken: Counter = Counter()
     raw = []
@@ -112,7 +112,7 @@ def build_snapshot() -> tuple[list[dict], list[dict], list[dict], list[dict]]:
         taken[(flight_id, seat_class)] += 1
         raw.append((when, user_id, flight_id, seat_class, status))
 
-    start = datetime(2026, 8, 1)
+    start = datetime(2099, 8, 1)
     while len(raw) < 340:
         when = start + timedelta(days=int(rng.triangular(0, 92, 80)), hours=rng.randint(6, 22), minutes=rng.randint(0, 59))
         open_flights = [f for f in flights if departs[f["flight_id"]] > when + timedelta(days=2)]
@@ -179,7 +179,7 @@ def build_templates() -> None:
     doc.p("Week: <Monday> to <Sunday>, by booking date. Prepared by: <name>. Source: booking system.")
     doc.h1("Headline")
     doc.table(["Measure", "This week", "Previous week"], [["Bookings", "", ""], ["Cancellations", "", ""],
-                                                          ["Revenue excluding cancelled bookings (credits)", "", ""]], widths=[3, 1, 1])
+                                                          ["Revenue excluding cancelled bookings (dollars)", "", ""]], widths=[3, 1, 1])
     doc.h1("Split by seat class")
     doc.p("<bookings and revenue for economy, business and galaxium>")
     doc.h1("Three strongest routes")
@@ -197,17 +197,17 @@ def build_quote_mismatch(users: list[dict], flights: list[dict], bookings: list[
     name = {u["user_id"]: u["name"] for u in users}
     route = lambda fid: f"{by_flight[fid]['origin']} to {by_flight[fid]['destination']}"  # noqa: E731
 
-    october = [b for b in bookings if b["booking_time"].startswith("2026-10")]
+    october = [b for b in bookings if b["booking_time"].startswith("2099-10")]
     export = [{**b, "customer": name[b["user_id"]], "route": route(b["flight_id"])} for b in october]
     # The planted error: one booking appears twice in the finance export.
-    dup = next(b for b in export if b["booking_time"] >= "2026-10-15" and b["seat_class"] == "business" and b["status"] == "booked")
+    dup = next(b for b in export if b["booking_time"] >= "2099-10-15" and b["seat_class"] == "business" and b["status"] == "booked")
     with_dup = []
     for row in export:
         with_dup.append(row)
         if row is dup:
             with_dup.append(dict(row))
-    write_xlsx(pack / "drive" / "finance" / "bookings-export-2026-10.xlsx", {"Bookings October 2026": with_dup})
-    write_xlsx(pack / "drive" / "finance" / "quotes-export-2026-10.xlsx", {"Quotes October 2026": quotes})
+    write_xlsx(pack / "drive" / "finance" / "bookings-export-2099-10.xlsx", {"Bookings October 2099": with_dup})
+    write_xlsx(pack / "drive" / "finance" / "quotes-export-2099-10.xlsx", {"Quotes October 2099": quotes})
 
     by_booking = {b["booking_id"]: b for b in bookings}
     pairs = [(q, by_booking[q["booking_id"]]) for q in quotes if q["status"] == "converted"]
@@ -230,13 +230,13 @@ def build_quote_mismatch(users: list[dict], flights: list[dict], bookings: list[
         "# Ground truth: the quote mismatch", "",
         "Generated by `scripts/build.py` from the snapshot. Do not edit by hand.", "",
         "## The short answer", "",
-        f"- Between 1 and 31 October 2026 the hold service issued **{len(quotes)} quotes**. "
+        f"- Between 1 and 31 October 2099 the hold service issued **{len(quotes)} quotes**. "
         f"**{len(pairs)}** became bookings and {len(quotes) - len(pairs)} expired.",
         f"- Only **{len(equal)} of {len(pairs)}** booked quotes match the amount charged.",
-        f"- Customers were charged **more** than quoted on **{len(more)}** bookings (total {money(sum(d[0] for d in more))} credits) "
-        f"and **less** than quoted on **{len(less)}** bookings (total {money(-sum(d[0] for d in less))} credits).",
+        f"- Customers were charged **more** than quoted on **{len(more)}** bookings (total ${money(sum(d[0] for d in more))}) "
+        f"and **less** than quoted on **{len(less)}** bookings (total ${money(-sum(d[0] for d in less))}).",
         f"- Total quoted {money(sum(q['quoted_price'] for q, _ in pairs))}, total charged {money(sum(b['price_paid'] for _, b in pairs))}, "
-        f"net difference **{money(sum(d[0] for d in diffs))} credits** charged above quote.",
+        f"net difference **${money(sum(d[0] for d in diffs))}** charged above quote.",
         f"- {len(cancelled)} of the {len(pairs)} bookings were cancelled later. The figures above include them.", "",
         "## By seat class", "",
         "| Seat class | Booked quotes | Quoted | Charged | Charged minus quoted | Matching |", "| --- | ---: | ---: | ---: | ---: | ---: |",
@@ -252,7 +252,7 @@ def build_quote_mismatch(users: list[dict], flights: list[dict], bookings: list[
         f"- The hold service does not know the galaxium class. All {sum(q['seat_class'] == 'galaxium' for q in quotes)} galaxium quotes equal the economy quote for the same flight.",
         "- So the charged amount is the correct one under the policy, and the quote is wrong. All three seat classes are affected.", "",
         "## The three cases named in mail and tickets", "",
-        "All three are on flight 31, Earth to Mars, departing 3 December 2026.", "",
+        "All three are on flight 31, Earth to Mars, departing 3 December 2099.", "",
         "| Customer | Booking | Quote | Seat class | Quoted | Charged | Difference |", "| --- | --- | --- | --- | ---: | ---: | ---: |",
         case(3), case(5), case(7), "",
         "## Largest differences", "",
@@ -263,7 +263,7 @@ def build_quote_mismatch(users: list[dict], flights: list[dict], bookings: list[
                      f"{money(q['quoted_price'])} | {money(b['price_paid'])} | {d:+,} |")
     lines += [
         "", "## The planted error", "",
-        f"`finance/bookings-export-2026-10.xlsx` lists **booking {dup['booking_id']} twice** ({dup['customer']}, {dup['route']}, "
+        f"`finance/bookings-export-2099-10.xlsx` lists **booking {dup['booking_id']} twice** ({dup['customer']}, {dup['route']}, "
         f"{dup['seat_class']}, {money(dup['price_paid'])}).", "",
         f"- Rows in the export: {len(with_dup)}. Bookings in October: **{len(october)}**.",
         f"- Sum of `price_paid` in the export as it is: {money(sum(r['price_paid'] for r in with_dup))}.",
@@ -298,7 +298,7 @@ def build_win_loss() -> None:
         "Loss reason": "" if d["id"] == flipped else d.get("loss_reason", ""),
         "Competitor": "" if d["id"] == flipped else d.get("competitor", ""),
     } for d in deals]
-    write_xlsx(pack / "drive" / "sales" / "pipeline-tracker-q3-2026.xlsx", {"Closed deals Q3 2026": tracker})
+    write_xlsx(pack / "drive" / "sales" / "pipeline-tracker-q3-2099.xlsx", {"Closed deals Q3 2099": tracker})
 
     won = [d for d in deals if d["stage"] == "won"]
     lost = [d for d in deals if d["stage"] == "lost"]
@@ -309,9 +309,9 @@ def build_win_loss() -> None:
         "# Ground truth: third quarter win-loss", "",
         "Generated by `scripts/build.py` from the CRM deals of this pack. Do not edit by hand.", "",
         "## The short answer", "",
-        f"- **{len(deals)} deals** closed between 1 July and 30 September 2026: **{len(won)} won, {len(lost)} lost**.",
+        f"- **{len(deals)} deals** closed between 1 July and 30 September 2099: **{len(won)} won, {len(lost)} lost**.",
         f"- Win rate by count: **{pct(len(won), len(deals))}**. Win rate by value: **{pct(total(won), total(deals))}**.",
-        f"- Won value {money(total(won))} credits. Lost value {money(total(lost))} credits.",
+        f"- Won value ${money(total(won))}. Lost value ${money(total(lost))}.",
         f"- Average won deal {money(total(won) // len(won))}. Average lost deal {money(total(lost) // len(lost))}. We lose the larger deals.", "",
         "## Why we lose", "",
         "| Loss reason | Deals | Value | Share of lost value |", "| --- | ---: | ---: | ---: |",
@@ -341,7 +341,7 @@ def build_win_loss() -> None:
         lines.append(f"| {owner} | {w} | {lo} | {pct(w, w + lo)} |")
     lines += [
         "", "## The planted error", "",
-        f"`sales/pipeline-tracker-q3-2026.xlsx` still lists **{flipped} ({bad['name']}, {money(bad['amount'])})** as Won. "
+        f"`sales/pipeline-tracker-q3-2099.xlsx` still lists **{flipped} ({bad['name']}, {money(bad['amount'])})** as Won. "
         "The CRM says lost, and the call note of 11 September explains why. The CRM is the system of record.", "",
         f"- Tracker as it is: {len(won) + 1} won, {len(lost) - 1} lost, win rate {pct(len(won) + 1, len(deals))}, "
         f"won value {money(total(won) + bad['amount'])}.",
@@ -365,8 +365,8 @@ TYCHO = office.Brand("TYCHO GROUND SERVICES LTD.", primary="1F3B4D", accent="3A8
 
 CLAUSES = [
     ("1. Services", "Tycho Ground Services Ltd. (\"Vendor\") provides ground handling for Galaxium Travels (\"Customer\") departures and arrivals at Tycho Spaceport: docking, fuelling, baggage and passenger transfer."),
-    ("2. Term and renewal", "This Agreement runs for an initial term of 36 months from 1 January 2027. It renews automatically for successive periods of 24 months unless either party gives written notice at least 180 days before the end of the current term."),
-    ("3. Fees", "The Customer pays a monthly fee of 420,000 credits for up to 16 turnarounds per month. Each further turnaround is charged at 30,000 credits."),
+    ("2. Term and renewal", "This Agreement runs for an initial term of 36 months from 1 January 2100. It renews automatically for successive periods of 24 months unless either party gives written notice at least 180 days before the end of the current term."),
+    ("3. Fees", "The Customer pays a monthly fee of $420,000 for up to 16 turnarounds per month. Each further turnaround is charged at $30,000."),
     ("4. Price adjustment", "The Vendor may increase all fees once per contract year by up to 5%."),
     ("5. Payment", "Invoices are issued monthly in advance and are payable within 15 days of the invoice date."),
     ("6. Service levels", "The Vendor will use reasonable efforts to complete each turnaround within 120 minutes of docking. Failure to meet this target does not entitle the Customer to any credit, refund or other remedy."),
@@ -375,15 +375,15 @@ CLAUSES = [
     ("9. Termination", "Either party may terminate this Agreement for material breach that is not remedied within 30 days of written notice. The Vendor may terminate this Agreement for convenience with 60 days' written notice."),
     ("10. Incident notification", "The Vendor notifies the Customer of any safety or data incident affecting the Customer's passengers or operations within 48 hours of becoming aware of it."),
     ("11. Governing law", "This Agreement is governed by the law of the Lunar Free Port."),
-    ("12. Entire agreement", "This Agreement replaces the Ground Handling Agreement of 1 January 2025 between the parties."),
+    ("12. Entire agreement", "This Agreement replaces the Ground Handling Agreement of 1 January 2098 between the parties."),
 ]
 
 
 def build_vendor_contract() -> None:
     pack = PACKS / "vendor-contract"
     doc = office.Doc(pack / "drive" / "legal" / "tycho-ground-handling-agreement-draft.docx", "Ground Handling Agreement",
-                     subtitle="Tycho Spaceport, Luna", brand=TYCHO, label="DRAFT · 30 October 2026 · Subject to contract")
-    doc.p("between Tycho Ground Services Ltd. and Galaxium Travels. Draft of 30 October 2026, prepared by the Vendor.")
+                     subtitle="Tycho Spaceport, Luna", brand=TYCHO, label="DRAFT · 30 October 2099 · Subject to contract")
+    doc.p("between Tycho Ground Services Ltd. and Galaxium Travels. Draft of 30 October 2099, prepared by the Vendor.")
     for title, text in CLAUSES:
         doc.h2(title)
         doc.p(text, align="j")
@@ -426,7 +426,7 @@ In October, 3 of 14 turnarounds at Tycho were later than 90 minutes (2, 9 and 21
 
 ## The other proposal
 
-Clavius Port Services offers 395,000 credits a month, a 24 month term without automatic renewal, 90 minute turnarounds with 5% credits, and a liability cap of 12 months. Clavius relies on the shared fuelling gantry until July 2027, while Tycho's second gantry is due in January. Clavius meets the playbook on every topic it mentions; payment terms and termination are not stated and must be asked.
+Clavius Port Services offers $395,000 a month, a 24 month term without automatic renewal, 90 minute turnarounds with 5% credits, and a liability cap of 12 months. Clavius relies on the shared fuelling gantry until July 2100, while Tycho's second gantry is due in January. Clavius meets the playbook on every topic it mentions; payment terms and termination are not stated and must be asked.
 
 ## What a good result contains
 

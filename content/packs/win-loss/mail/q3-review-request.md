@@ -5,7 +5,7 @@ labels: [sales, leadership]
 From: Ingrid Solberg <ingrid.solberg@galaxium.example>
 To: Amara Okafor <amara.okafor@galaxium.example>
 Cc: Priya Raman <priya.raman@galaxium.example>
-Date: 2026-11-02 09:30
+Date: 2099-11-02 09:30
 
 Amara,
 
@@ -20,6 +20,6 @@ Ingrid
 From: Amara Okafor <amara.okafor@galaxium.example>
 To: Ingrid Solberg <ingrid.solberg@galaxium.example>
 Cc: Priya Raman <priya.raman@galaxium.example>
-Date: 2026-11-02 11:12
+Date: 2099-11-02 11:12
 
 Will do. The CRM has all 18 closed deals with call notes. Dev also keeps a tracker spreadsheet, which I will check against the CRM first.

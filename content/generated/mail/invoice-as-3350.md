@@ -6,12 +6,12 @@ labels:
 ---
 From: Aphrodite Station Operations <accounts@aphroditestation.example>
 To: Invoices <invoices@galaxium.example>
-Date: 2026-10-10 16:34
+Date: 2099-10-10 16:34
 
 Dear customer,
 
 Please find attached invoice AS-3350 for berth fees, aphrodite station.
 
-Amount due: 245,500 credits. Payment terms as agreed.
+Amount due: $245,500. Payment terms as agreed.
 
 Aphrodite Station Operations

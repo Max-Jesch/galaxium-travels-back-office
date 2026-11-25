@@ -4,7 +4,7 @@ labels: [support, complaint, accessibility]
 ---
 From: Judy <judy@pluto.com>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-10-18 21:30
+Date: 2099-10-18 21:30
 
 Hello,
 
@@ -16,7 +16,7 @@ Judy
 
 From: Anneli Korhonen <anneli.korhonen@galaxium.example>
 To: Judy <judy@pluto.com>
-Date: 2026-10-19 09:10
+Date: 2099-10-19 09:10
 
 Dear Judy,
 
@@ -28,10 +28,10 @@ Anneli, Galaxium Support (Luna)
 
 From: Anneli Korhonen <anneli.korhonen@galaxium.example>
 To: Judy <judy@pluto.com>
-Date: 2026-10-21 15:25
+Date: 2099-10-21 15:25
 
 Dear Judy,
 
-An update: the handler's assistance requests were going to a mailbox that was not read at weekends. They have changed this as of yesterday. As an apology we have added a travel credit of 100,000 credits to your account.
+An update: the handler's assistance requests were going to a mailbox that was not read at weekends. They have changed this as of yesterday. As an apology we have added a travel credit of $100,000 to your account.
 
 Anneli

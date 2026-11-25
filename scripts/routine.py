@@ -29,8 +29,8 @@ import office
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "content" / "generated"
 COMPANY = ROOT / "content" / "company"
-TODAY = date(2026, 11, 4)
-FIXED_TIME = datetime(2026, 11, 4, 9, 0)
+TODAY = date(2099, 11, 4)
+FIXED_TIME = datetime(2099, 11, 4, 9, 0)
 PACK_BOOKINGS = {265, 309, 335, 338}  # named in the scenario packs: leave them out of invented cases
 rng = random.Random(4711)
 
@@ -71,15 +71,15 @@ def write(path: str, text: str) -> None:
 
 # Who keeps each generated workbook, and when it was last touched (shown in the drive).
 FILE_META = {
-    "finance/bookings-export-2026-08.xlsx": ("Tomás Rivera", "2026-09-01"), "finance/bookings-export-2026-09.xlsx": ("Tomás Rivera", "2026-10-01"),
-    "finance/close/2026-09/revenue-pack-2026-09.xlsx": ("Tomás Rivera", "2026-10-01"), "finance/close/2026-10/deferred-revenue-2026-10.xlsx": ("Tomás Rivera", "2026-11-03"),
-    "finance/close/2026-10/close-checklist.xlsx": ("Chidi Eze", "2026-11-03"), "finance/budget-2027/budget-template.xlsx": ("Tomás Rivera", "2026-10-20"),
-    "finance/expenses/expense-reports-2026-09.xlsx": ("Hana Kobayashi", "2026-10-09"), "finance/ap/invoice-register-2026-10.xlsx": ("Beatrix Novak", "2026-11-02"),
-    "ops/crew/relief-crew-tombaugh-costing.xlsx": ("Andrei Popescu", "2026-10-27"), "ops/crew/venus-second-crew-costing.xlsx": ("Andrei Popescu", "2026-11-03"),
-    "ops/fleet/fleet-register.xlsx": ("Zainab Hussein", "2026-10-30"), "ops/schedule/scheduled-service-2026-27.xlsx": ("Yuki Tanaka", "2026-10-19"),
-    "ops/ground/tycho-turnarounds-2026-10.xlsx": ("Lucia Bianchi", "2026-10-30"), "sales/rate-card-2026.xlsx": ("Sinead Byrne", "2026-01-12"),
-    "legal/vendor-register.xlsx": ("Sam Whitlock", "2026-10-30"), "people/org/headcount-2026-10.xlsx": ("Dorothea Klein", "2026-10-30"),
-    "it/asset-register.xlsx": ("Ling Zhou", "2026-10-26"),
+    "finance/bookings-export-2099-08.xlsx": ("Tomás Rivera", "2099-09-01"), "finance/bookings-export-2099-09.xlsx": ("Tomás Rivera", "2099-10-01"),
+    "finance/close/2099-09/revenue-pack-2099-09.xlsx": ("Tomás Rivera", "2099-10-01"), "finance/close/2099-10/deferred-revenue-2099-10.xlsx": ("Tomás Rivera", "2099-11-03"),
+    "finance/close/2099-10/close-checklist.xlsx": ("Chidi Eze", "2099-11-03"), "finance/budget-2100/budget-template.xlsx": ("Tomás Rivera", "2099-10-20"),
+    "finance/expenses/expense-reports-2099-09.xlsx": ("Hana Kobayashi", "2099-10-09"), "finance/ap/invoice-register-2099-10.xlsx": ("Beatrix Novak", "2099-11-02"),
+    "ops/crew/relief-crew-tombaugh-costing.xlsx": ("Andrei Popescu", "2099-10-27"), "ops/crew/venus-second-crew-costing.xlsx": ("Andrei Popescu", "2099-11-03"),
+    "ops/fleet/fleet-register.xlsx": ("Zainab Hussein", "2099-10-30"), "ops/schedule/scheduled-service-2099-2100.xlsx": ("Yuki Tanaka", "2099-10-19"),
+    "ops/ground/tycho-turnarounds-2099-10.xlsx": ("Lucia Bianchi", "2099-10-30"), "sales/rate-card-2099.xlsx": ("Sinead Byrne", "2099-01-12"),
+    "legal/vendor-register.xlsx": ("Sam Whitlock", "2099-10-30"), "people/org/headcount-2099-10.xlsx": ("Dorothea Klein", "2099-10-30"),
+    "it/asset-register.xlsx": ("Ling Zhou", "2099-10-26"),
 }
 STATUS = {"status": {"on hold": office.WARN, "waiting": office.AMBER, "open": office.AMBER, "returned": office.AMBER, "not signed": office.WARN,
                      "refit": office.AMBER, "under review": office.AMBER, "done": office.OK},
@@ -135,14 +135,14 @@ class Data:
 
 def build_chat(d: Data) -> None:
     lines = []
-    for day in days(date(2026, 8, 11), TODAY):
+    for day in days(date(2099, 8, 11), TODAY):
         y = day - timedelta(days=1)
         rows = d.by_day.get(str(y), [])
         if not rows:
             text = f"{nice(y)}: no new bookings on the scheduled service."
         else:
             top = Counter(d.route(b["flight_id"]) for b in rows).most_common(1)[0]
-            text = (f"{nice(y)}: **{len(rows)}** new bookings, {money(sum(b['price_paid'] for b in rows))} credits charged. "
+            text = (f"{nice(y)}: **{len(rows)}** new bookings, ${money(sum(b['price_paid'] for b in rows))} charged. "
                     f"Busiest route: {top[0]} ({top[1]}).")
             quotes = d.quotes_by_day.get(str(y), [])
             if quotes:
@@ -170,10 +170,10 @@ def build_chat(d: Data) -> None:
         out.append(f"[{when:%H:%M}] Flight Ops Bot: {text}")
     write("chat/ops-control/departures.md", "\n".join(out) + "\n")
 
-    fixed = {date(2026, 10, 1): [("08:38", "hold-service 1.0.0", "Aditi Sharma", "first production release")],
-             date(2026, 10, 6): [("13:52", "booking-api 4.11.0", "Jonas Keller", "confirmation time zones, admin sorting")],
-             date(2026, 10, 13): [("16:22", "booking-api 4.11.1", "Jonas Keller", "payment connection pool and timeout")],
-             date(2026, 10, 14): [("09:40", "booking-api 4.11.2", "Jonas Keller", "confirmation mail retry")]}
+    fixed = {date(2099, 10, 1): [("08:38", "hold-service 1.0.0", "Aditi Sharma", "first production release")],
+             date(2099, 10, 6): [("13:52", "booking-api 4.11.0", "Jonas Keller", "confirmation time zones, admin sorting")],
+             date(2099, 10, 13): [("16:22", "booking-api 4.11.1", "Jonas Keller", "payment connection pool and timeout")],
+             date(2099, 10, 14): [("09:40", "booking-api 4.11.2", "Jonas Keller", "confirmation mail retry")]}
     services = [("web-frontend", "Wren Abbott", ["copy changes on the payment page", "accessibility fixes", "dependency updates",
                                                   "countdown styling", "search results layout"]),
                 ("warehouse-jobs", "Felix Braun", ["nightly copy of quotes", "new reporting role", "retry on timeout", "bookings view by route"]),
@@ -181,12 +181,12 @@ def build_chat(d: Data) -> None:
                 ("status-checks", "Emeka Obi", ["alert thresholds", "pool usage dashboard"])]
     version = {"web-frontend": [2, 30, 0], "warehouse-jobs": [0, 4, 0], "hold-service": [1, 0, 0], "status-checks": [0, 9, 0]}
     out = []
-    for day in days(date(2026, 9, 1), TODAY - timedelta(days=1)):
+    for day in days(date(2099, 9, 1), TODAY - timedelta(days=1)):
         posts = list(fixed.get(day, []))
         if day.weekday() < 5:
             for _ in range(rng.choice([0, 0, 1, 1, 1, 2])):
                 name, who, notes = rng.choice(services)
-                if name == "hold-service" and day < date(2026, 10, 2):
+                if name == "hold-service" and day < date(2099, 10, 2):
                     continue
                 version[name][2] += 1
                 posts.append((f"{rng.randint(9, 17):02d}:{rng.randint(0, 59):02d}", f"{name} {'.'.join(map(str, version[name]))}", who, rng.choice(notes)))
@@ -275,15 +275,15 @@ def build_tickets_and_support_mail(d: Data) -> None:
     staff = [p["name"] for p in d.people]
     eligible = [b for b in d.bookings if b["booking_id"] not in PACK_BOOKINGS and b["status"] != "cancelled"]
     tickets: list[dict] = []
-    stamps = sorted(datetime(2026, 8, 10) + timedelta(minutes=rng.randint(8 * 60, 85 * 24 * 60)) for _ in range(197))
+    stamps = sorted(datetime(2099, 8, 10) + timedelta(minutes=rng.randint(8 * 60, 85 * 24 * 60)) for _ in range(197))
     stamps = [s.replace(hour=rng.randint(7, 19)) for s in stamps]
-    old = [s for s in stamps if s < datetime(2026, 10, 14)][-150:]
-    new = [s for s in stamps if s >= datetime(2026, 10, 14)][:46]
+    old = [s for s in stamps if s < datetime(2099, 10, 14)][-150:]
+    new = [s for s in stamps if s >= datetime(2099, 10, 14)][:46]
     numbered = [(1000 - len(old) + 1 + i, s) for i, s in enumerate(sorted(old))] + [(1014 + i + (1 if 1014 + i >= 1019 else 0), s) for i, s in enumerate(sorted(new))]
     mails = 0
     for number, created in numbered:
         tid = f"GT-{number:04d}"
-        age = (datetime(2026, 11, 4, 9) - created).days
+        age = (datetime(2099, 11, 4, 9) - created).days
         kind = rng.choices(["support", "it", "engineering", "facilities"], [62, 20, 10, 8])[0]
         status = "resolved" if age > 6 or rng.random() < 0.4 else rng.choice(["open", "in_progress", "waiting"])
         answered = created + timedelta(minutes=rng.randint(12, 240))
@@ -295,7 +295,7 @@ def build_tickets_and_support_mail(d: Data) -> None:
             dep = datetime.fromisoformat(f["departure_time"].replace("Z", ""))
             fill = {"route": d.route(b["flight_id"]), "dep": f"{dep.day} {MONTH[dep.month]}", "booking": b["booking_id"],
                     "cls": b["seat_class"], "name": user["name"]}
-            if "hold" in title.lower() and created < datetime(2026, 10, 1):
+            if "hold" in title.lower() and created < datetime(2099, 10, 1):
                 title, ask, answer, note = SUPPORT_CASES[5]
             ticket = {"id": tid, "title": title.format(**fill), "status": status, "priority": "normal", "queue": "support",
                       "requester": user["email"], "assignee": agent["name"], "created": f"{created:%Y-%m-%d %H:%M}",
@@ -326,12 +326,12 @@ def build_tickets_and_support_mail(d: Data) -> None:
         tickets.append(ticket)
     tickets.append({
         "id": "GT-1019", "title": "Assistance requests do not reach the handler at Tycho", "status": "resolved", "priority": "high",
-        "queue": "support", "requester": "judy@pluto.com", "assignee": "Anneli Korhonen", "created": "2026-10-19 09:05",
+        "queue": "support", "requester": "judy@pluto.com", "assignee": "Anneli Korhonen", "created": "2099-10-19 09:05",
         "description": "Three travellers in October booked wheelchair assistance for arrival on the Moon and nobody was there. Requests were sent to the ground handler on time.",
         "comments": [
-            {"author": "Anneli Korhonen", "date": "2026-10-20 13:10", "text": "Escalated to Operations in #support-escalations."},
-            {"author": "Lucia Bianchi", "date": "2026-10-20 15:02", "text": "Tycho's assistance mailbox was not read at weekends. Changed as of today."},
-            {"author": "Anneli Korhonen", "date": "2026-10-21 15:30", "text": "Customers informed, travel credit of 100,000 added for each."}]})
+            {"author": "Anneli Korhonen", "date": "2099-10-20 13:10", "text": "Escalated to Operations in #support-escalations."},
+            {"author": "Lucia Bianchi", "date": "2099-10-20 15:02", "text": "Tycho's assistance mailbox was not read at weekends. Changed as of today."},
+            {"author": "Anneli Korhonen", "date": "2099-10-21 15:30", "text": "Customers informed, travel credit of $100,000 added for each."}]})
     tickets.sort(key=lambda t: t["id"])
     write("tickets.yaml", "# Generated by scripts/routine.py. Do not edit by hand.\n" + yaml.safe_dump(tickets, allow_unicode=True, sort_keys=False, width=1000))
     print(f"routine: {len(tickets)} tickets, {mails} customer mail threads")
@@ -361,15 +361,15 @@ VENDORS = [
 def build_mail(d: Data) -> None:
     finance = "Finance <finance@galaxium.example>"
     system = "Booking System <noreply@galaxium.example>"
-    for day in days(date(2026, 10, 1), TODAY):
+    for day in days(date(2099, 10, 1), TODAY):
         y = day - timedelta(days=1)
         rows, quotes = d.by_day.get(str(y), []), d.quotes_by_day.get(str(y), [])
         by_class = Counter(b["seat_class"] for b in rows)
         body = (f"Daily summary for {nice(y)} {y.year} (scheduled service, by booking time, UTC)\n\n"
                 f"New bookings: {len(rows)}\n"
                 f"  economy {by_class['economy']}, business {by_class['business']}, galaxium {by_class['galaxium']}\n"
-                f"Amount charged: {money(sum(b['price_paid'] for b in rows))} credits\n"
-                + (f"Quotes issued: {len(quotes)} (became bookings: {sum(q['status'] == 'converted' for q in quotes)})\n" if y >= date(2026, 10, 1) else "")
+                f"Amount charged: ${money(sum(b['price_paid'] for b in rows))}\n"
+                + (f"Quotes issued: {len(quotes)} (became bookings: {sum(q['status'] == 'converted' for q in quotes)})\n" if y >= date(2099, 10, 1) else "")
                 + "\nThis mail is sent automatically at 07:00 UTC. The figures are a count at the time of sending; "
                   "the booking system is the record.")
         thread(f"daily-summary-{y}", f"Booking system: daily summary for {y}", ["automatic", "bookings"],
@@ -379,44 +379,44 @@ def build_mail(d: Data) -> None:
     register, number = [], 3100
     for i in range(209):
         name, sender, prefix, what, (low, high) = VENDORS[i % len(VENDORS)] if i < 30 else rng.choice(VENDORS)
-        received = date(2026, 10, 1) + timedelta(days=rng.randint(0, 30))
+        received = date(2099, 10, 1) + timedelta(days=rng.randint(0, 30))
         number += rng.randint(1, 9)
         amount = rng.randrange(low, high, 500)
         register.append({"received": str(received), "vendor": name, "invoice": f"{prefix}-{number}", "description": what,
-                         "amount": amount, "status": "paid" if received < date(2026, 10, 24) else "approved", "note": "", "_from": sender})
+                         "amount": amount, "status": "paid" if received < date(2099, 10, 24) else "approved", "note": "", "_from": sender})
     register += [
-        {"received": "2026-10-05", "vendor": "Helios Fuels", "invoice": "HF-22871", "description": "Fuel delivery 28 September, delivery note 77120",
+        {"received": "2099-10-05", "vendor": "Helios Fuels", "invoice": "HF-22871", "description": "Fuel delivery 28 September, delivery note 77120",
          "amount": 1840000, "status": "paid", "note": "", "_from": ""},
-        {"received": "2026-10-12", "vendor": "Helios Fuels", "invoice": "HF-22917", "description": "Fuel delivery 28 September, delivery note 77120",
+        {"received": "2099-10-12", "vendor": "Helios Fuels", "invoice": "HF-22917", "description": "Fuel delivery 28 September, delivery note 77120",
          "amount": 1840000, "status": "on hold", "note": "Duplicate of HF-22871. Credit note HF-CN-0388 received 19 October.", "_from": ""},
-        {"received": "2026-10-27", "vendor": "Lagrange Catering", "invoice": "LC-4471", "description": "Cabin catering, week 43",
+        {"received": "2099-10-27", "vendor": "Lagrange Catering", "invoice": "LC-4471", "description": "Cabin catering, week 43",
          "amount": 96500, "status": "on hold", "note": "Quantity dispute: 140 meals invoiced, 112 delivered.", "_from": ""},
     ]
     register.sort(key=lambda r: (r["received"], r["invoice"]))
     assert len(register) == 212
-    xlsx("finance/ap/invoice-register-2026-10.xlsx", {"Invoices received October": [{k: v for k, v in r.items() if k != "_from"} for r in register]})
+    xlsx("finance/ap/invoice-register-2099-10.xlsx", {"Invoices received October": [{k: v for k, v in r.items() if k != "_from"} for r in register]})
     for r in [r for r in register if r["_from"]][::7]:
         thread(f"invoice-{r['invoice'].lower()}", f"Invoice {r['invoice']}: {r['description']}", ["payables", "automatic"],
                [(f"{r['vendor']} <{r['_from']}>", "Invoices <invoices@galaxium.example>", f"{r['received']} {rng.randint(6, 17):02d}:{rng.randint(0, 59):02d}",
                  f"Dear customer,\n\nPlease find attached invoice {r['invoice']} for {r['description'].lower()}.\n\n"
-                 f"Amount due: {money(r['amount'])} credits. Payment terms as agreed.\n\n{r['vendor']}")])
+                 f"Amount due: ${money(r['amount'])}. Payment terms as agreed.\n\n{r['vendor']}")])
 
     everyone = "All Staff <all@galaxium.example>"
     menus = ["Europa noodle soup, roast vegetables, lemon tart", "Lentil curry, grilled fish, rice pudding", "Mushroom risotto, chicken with herbs, fruit",
              "Tomato soup, vegetable lasagne, apple cake", "Chickpea stew, baked salmon, yoghurt with honey", "Pumpkin soup, pasta with pesto, chocolate mousse"]
-    for i, monday in enumerate(date(2026, 9, 28) + timedelta(days=7 * k) for k in range(6)):
+    for i, monday in enumerate(date(2099, 9, 28) + timedelta(days=7 * k) for k in range(6)):
         thread(f"canteen-menu-{monday}", f"Canteen menu, week of {monday.day} {MONTH[monday.month]}", ["all-staff", "canteen"],
                [("Agnes Wójcik <agnes.wojcik@galaxium.example>", everyone, f"{monday} 08:15",
                  f"Good morning,\n\nThis week in the Earth HQ canteen:\n\n" + "\n".join(f"- {DAY[k]}: {menus[(i + k) % len(menus)]}" for k in range(5))
                  + "\n\nLuna and Mars colleagues: the lunch allowance applies as usual.\n\nAgnes")])
-    for when, month in [("2026-09-25 09:00", "September"), ("2026-10-23 09:00", "October")]:
+    for when, month in [("2099-09-25 09:00", "September"), ("2099-10-23 09:00", "October")]:
         thread(f"payslip-{month.lower()}", f"Your payslip for {month} is available", ["all-staff", "payroll", "automatic"],
                [("Payroll <payroll@galaxium.example>", everyone, when,
-                 f"Your payslip for {month} 2026 is available in the payroll system. Pay day is the 28th.\n\n"
+                 f"Your payslip for {month} 2099 is available in the payroll system. Pay day is the 28th.\n\n"
                  "Questions about your payslip go to Hana Kobayashi. Please do not reply to this mail.")])
-    for when, what in [("2026-10-09 16:00", "the drive will be read-only on Saturday 10 October between 06:00 and 08:00 UTC for a storage upgrade"),
-                       ("2026-10-21 16:00", "VPN certificates are renewed tomorrow, 22 October. You will be asked to confirm the new certificate once"),
-                       ("2026-10-30 16:00", "mail will be unavailable for about ten minutes on Sunday 1 November at 05:00 UTC")]:
+    for when, what in [("2099-10-09 16:00", "the drive will be read-only on Saturday 10 October between 06:00 and 08:00 UTC for a storage upgrade"),
+                       ("2099-10-21 16:00", "VPN certificates are renewed tomorrow, 22 October. You will be asked to confirm the new certificate once"),
+                       ("2099-10-30 16:00", "mail will be unavailable for about ten minutes on Sunday 1 November at 05:00 UTC")]:
         thread(f"it-maintenance-{when[:10]}", f"Planned maintenance: {what.split(' will ')[0].split(' are ')[0]}", ["it", "all-staff"],
                [("IT <it@galaxium.example>", everyone, when, f"Hello,\n\nA short notice: {what}.\n\nNothing for you to do. Questions in #help-it.\n\nBruno and Ling")])
 
@@ -433,7 +433,7 @@ def build_calendar(d: Data) -> None:
                        "organizer": organizer, "attendees": attendees or [], "location": location,
                        **({"notes": notes} if notes else {}), **({"repeats": repeats} if repeats else {})})
 
-    first, last = date(2026, 9, 28), date(2026, 11, 27)
+    first, last = date(2099, 9, 28), date(2099, 11, 27)
     for day in days(first, last):
         wd = day.weekday()
         if wd > 4:
@@ -441,7 +441,7 @@ def build_calendar(d: Data) -> None:
         add("Engineering stand-up", day, "09:30", "09:45", "Marcus Lindqvist", ["Engineering"], "Video", repeats="Every working day")
         add("Operations control handover", day, "08:00", "08:15", "Sofia Lindgren", ["Hiro Matsuda", "Priya Raman"], "Operations control room", repeats="Every working day")
         if wd == 0:
-            if day != date(2026, 11, 2):
+            if day != date(2099, 11, 2):
                 add("Route review", day, "09:00", "10:00", "Priya Raman", ["Yuki Tanaka", "Olu Adeyemi", "Tomás Rivera", "Amara Okafor"], "Room Phobos",
                     "Notes go to ops/route-reviews in the drive. One page per open item, sent the Friday before.", "Every Monday")
             add("Support: last week's numbers", day, "09:00", "09:30", "Nadia Haddad", ["Support"], "Room Deimos", repeats="Every Monday")
@@ -465,42 +465,42 @@ def build_calendar(d: Data) -> None:
 
     heads = ["Leadership", "Ingrid Solberg", "Amara Okafor", "Priya Raman", "Helena Vogt", "Elise Fontaine", "Dorothea Klein"]
     D = date
-    add("All-hands", D(2026, 10, 1), "15:00", "16:00", "Renata Castellanos", ["everyone"], "Atrium, Earth HQ, and video")
-    add("All-hands", D(2026, 11, 5), "15:00", "16:00", "Renata Castellanos", ["everyone"], "Atrium, Earth HQ, and video",
+    add("All-hands", D(2099, 10, 1), "15:00", "16:00", "Renata Castellanos", ["everyone"], "Atrium, Earth HQ, and video")
+    add("All-hands", D(2099, 11, 5), "15:00", "16:00", "Renata Castellanos", ["everyone"], "Atrium, Earth HQ, and video",
         "1. October results (Ingrid)\n2. Winter on Mars (Elise)\n3. After the hold service (Farid)\n4. Questions")
-    add("Leadership meeting", D(2026, 10, 15), "10:00", "12:00", "Renata Castellanos", heads, "Boardroom")
-    add("Leadership meeting", D(2026, 11, 12), "10:00", "12:00", "Renata Castellanos", heads, "Boardroom",
-        "1. October results (Ingrid)\n2. Win-loss, third quarter (Amara)\n3. Fleet options 2027, first look (Priya, Olu)\n4. After the hold service (Farid)\n\nBoard one-pagers are due today.")
-    add("Board meeting", D(2026, 11, 19), "09:00", "13:00", "Renata Castellanos", ["Leadership", "Ingrid Solberg", "Helena Vogt"], "Boardroom")
-    add("Postmortem: payment timeouts", D(2026, 10, 16), "11:00", "12:00", "Emeka Obi", ["Engineering", "Nadia Haddad", "Sofia Lindgren"], "Room Vesta")
-    for n, day in enumerate(days(D(2026, 11, 2), D(2026, 11, 6)), 1):
-        add(f"October close, day {n}", day, organizer="Chidi Eze", attendees=["Finance"], notes="Calendar: finance/close/close-calendar-2026-10.md")
-    add("Expense reports for October due 18:00", D(2026, 11, 3), organizer="Hana Kobayashi", attendees=["everyone"])
-    add("Benefits drop-in", D(2026, 11, 3), "12:30", "13:15", "Dorothea Klein", ["everyone"], "Room Deimos")
-    add("Benefits drop-in", D(2026, 11, 10), "12:30", "13:15", "Dorothea Klein", ["everyone"], "Room Deimos")
-    add("Venus planning workshop", D(2026, 11, 4), "09:00", "17:00", "Yuki Tanaka", ["Andrei Popescu", "Lucia Bianchi", "Zainab Hussein"], "Room Phobos")
-    add("Call: Nimbus Freight renewal", D(2026, 11, 5), "11:00", "11:45", "Jamal Carter", ["Amara Okafor", "Dev Malhotra"], "Video", "With Peter Lindholm. Account plan is in sales/accounts in the drive.")
-    add("Customer newsletter goes out", D(2026, 11, 5), organizer="Noor Rahimi", attendees=["Marketing"])
-    add("Code freeze for release 4.12", D(2026, 11, 6), organizer="Marcus Lindqvist", attendees=["Engineering"])
-    add("Quote due: Tharsis Engineering", D(2026, 11, 6), organizer="Bastien Moreau", attendees=["Amara Okafor"])
-    add("Budget actuals to departments", D(2026, 11, 6), organizer="Tomás Rivera", attendees=["Finance"])
-    add("Multi-factor sign-in becomes mandatory", D(2026, 11, 9), organizer="Bruno Ferreira", attendees=["everyone"])
-    add("Release 4.12", D(2026, 11, 10), "07:00", "08:00", "Marcus Lindqvist", ["Engineering", "Greta Olsen"], "Video")
-    add("Winter on Mars launch", D(2026, 11, 10), "09:00", "09:30", "Elise Fontaine", ["Marketing", "Amara Okafor", "Nadia Haddad"], "Room Vesta")
-    add("Flu vaccinations, 09:00 to 13:00", D(2026, 11, 10), organizer="Agnes Wójcik", attendees=["everyone"], location="Room Deimos")
-    add("Final interview: Senior Engineer, candidate A", D(2026, 11, 10), "14:00", "16:30", "Samir Chaudhry", ["Marcus Lindqvist", "Aditi Sharma", "Maya Goldberg"], "Room Ceres")
-    add("Final interview: Senior Engineer, candidate B", D(2026, 11, 11), "09:30", "12:00", "Samir Chaudhry", ["Marcus Lindqvist", "Aditi Sharma", "Maya Goldberg"], "Room Ceres")
-    add("Security and privacy training due", D(2026, 11, 13), organizer="Isaac Brandt", attendees=["everyone"])
-    add("Benefits enrolment closes", D(2026, 11, 13), organizer="Dorothea Klein", attendees=["everyone"])
-    add("Performance cycle opens: self reviews", D(2026, 11, 16), organizer="Dorothea Klein", attendees=["everyone"])
-    add("Quarterly safety review", D(2026, 11, 17), "10:00", "12:00", "Kwame Asante", ["Priya Raman", "Olu Adeyemi", "Zainab Hussein", "Lucia Bianchi", "Andrei Popescu"], "Room Phobos")
-    add("Book club", D(2026, 11, 18), "17:30", "18:30", "Noor Rahimi", ["Viktor Hale", "Hana Kobayashi", "Clara Jensen"], "Canteen")
-    add("Budget 2027: first drafts due", D(2026, 11, 20), organizer="Ingrid Solberg", attendees=heads + ["Marcus Lindqvist", "Nadia Haddad", "Bruno Ferreira"])
-    for day in days(D(2026, 11, 23), D(2026, 11, 27)):
+    add("Leadership meeting", D(2099, 10, 15), "10:00", "12:00", "Renata Castellanos", heads, "Boardroom")
+    add("Leadership meeting", D(2099, 11, 12), "10:00", "12:00", "Renata Castellanos", heads, "Boardroom",
+        "1. October results (Ingrid)\n2. Win-loss, third quarter (Amara)\n3. Fleet options 2100, first look (Priya, Olu)\n4. After the hold service (Farid)\n\nBoard one-pagers are due today.")
+    add("Board meeting", D(2099, 11, 19), "09:00", "13:00", "Renata Castellanos", ["Leadership", "Ingrid Solberg", "Helena Vogt"], "Boardroom")
+    add("Postmortem: payment timeouts", D(2099, 10, 16), "11:00", "12:00", "Emeka Obi", ["Engineering", "Nadia Haddad", "Sofia Lindgren"], "Room Vesta")
+    for n, day in enumerate(days(D(2099, 11, 2), D(2099, 11, 6)), 1):
+        add(f"October close, day {n}", day, organizer="Chidi Eze", attendees=["Finance"], notes="Calendar: finance/close/close-calendar-2099-10.md")
+    add("Expense reports for October due 18:00", D(2099, 11, 3), organizer="Hana Kobayashi", attendees=["everyone"])
+    add("Benefits drop-in", D(2099, 11, 3), "12:30", "13:15", "Dorothea Klein", ["everyone"], "Room Deimos")
+    add("Benefits drop-in", D(2099, 11, 10), "12:30", "13:15", "Dorothea Klein", ["everyone"], "Room Deimos")
+    add("Venus planning workshop", D(2099, 11, 4), "09:00", "17:00", "Yuki Tanaka", ["Andrei Popescu", "Lucia Bianchi", "Zainab Hussein"], "Room Phobos")
+    add("Call: Nimbus Freight renewal", D(2099, 11, 5), "11:00", "11:45", "Jamal Carter", ["Amara Okafor", "Dev Malhotra"], "Video", "With Peter Lindholm. Account plan is in sales/accounts in the drive.")
+    add("Customer newsletter goes out", D(2099, 11, 5), organizer="Noor Rahimi", attendees=["Marketing"])
+    add("Code freeze for release 4.12", D(2099, 11, 6), organizer="Marcus Lindqvist", attendees=["Engineering"])
+    add("Quote due: Tharsis Engineering", D(2099, 11, 6), organizer="Bastien Moreau", attendees=["Amara Okafor"])
+    add("Budget actuals to departments", D(2099, 11, 6), organizer="Tomás Rivera", attendees=["Finance"])
+    add("Multi-factor sign-in becomes mandatory", D(2099, 11, 9), organizer="Bruno Ferreira", attendees=["everyone"])
+    add("Release 4.12", D(2099, 11, 10), "07:00", "08:00", "Marcus Lindqvist", ["Engineering", "Greta Olsen"], "Video")
+    add("Winter on Mars launch", D(2099, 11, 10), "09:00", "09:30", "Elise Fontaine", ["Marketing", "Amara Okafor", "Nadia Haddad"], "Room Vesta")
+    add("Flu vaccinations, 09:00 to 13:00", D(2099, 11, 10), organizer="Agnes Wójcik", attendees=["everyone"], location="Room Deimos")
+    add("Final interview: Senior Engineer, candidate A", D(2099, 11, 10), "14:00", "16:30", "Samir Chaudhry", ["Marcus Lindqvist", "Aditi Sharma", "Maya Goldberg"], "Room Ceres")
+    add("Final interview: Senior Engineer, candidate B", D(2099, 11, 11), "09:30", "12:00", "Samir Chaudhry", ["Marcus Lindqvist", "Aditi Sharma", "Maya Goldberg"], "Room Ceres")
+    add("Security and privacy training due", D(2099, 11, 13), organizer="Isaac Brandt", attendees=["everyone"])
+    add("Benefits enrolment closes", D(2099, 11, 13), organizer="Dorothea Klein", attendees=["everyone"])
+    add("Performance cycle opens: self reviews", D(2099, 11, 16), organizer="Dorothea Klein", attendees=["everyone"])
+    add("Quarterly safety review", D(2099, 11, 17), "10:00", "12:00", "Kwame Asante", ["Priya Raman", "Olu Adeyemi", "Zainab Hussein", "Lucia Bianchi", "Andrei Popescu"], "Room Phobos")
+    add("Book club", D(2099, 11, 18), "17:30", "18:30", "Noor Rahimi", ["Viktor Hale", "Hana Kobayashi", "Clara Jensen"], "Canteen")
+    add("Budget 2100: first drafts due", D(2099, 11, 20), organizer="Ingrid Solberg", attendees=heads + ["Marcus Lindqvist", "Nadia Haddad", "Bruno Ferreira"])
+    for day in days(D(2099, 11, 23), D(2099, 11, 27)):
         add("Auditors on site: interim fieldwork", day, organizer="Chidi Eze", attendees=["Finance"], location="Room Ceres")
-    for day in days(D(2026, 11, 24), D(2026, 11, 26)):
+    for day in days(D(2099, 11, 24), D(2099, 11, 26)):
         add("Interplanetary Travel Expo, Luna", day, organizer="Pilar Navarro", attendees=["Lena Fischer", "Jamal Carter", "Maya Goldberg", "Elise Fontaine"], location="Hall 2, stand 214")
-    add("Budget 2027: review meetings", D(2026, 11, 27), "09:00", "17:00", "Ingrid Solberg", heads, "Boardroom")
+    add("Budget 2100: review meetings", D(2099, 11, 27), "09:00", "17:00", "Ingrid Solberg", heads, "Boardroom")
     events.sort(key=lambda e: (e["start"], e["id"]))
     write("calendar/events.yaml", "# Generated by scripts/routine.py. Do not edit by hand.\n" + yaml.safe_dump(events, allow_unicode=True, sort_keys=False, width=1000))
     print(f"routine: {len(events)} calendar events")
@@ -512,10 +512,10 @@ def build_drive(d: Data) -> None:
     name = lambda uid: d.users[uid]["name"]  # noqa: E731
     row = lambda b: {**b, "customer": name(b["user_id"]), "route": d.route(b["flight_id"])}  # noqa: E731
 
-    for month, label in [("2026-08", "August"), ("2026-09", "September")]:
+    for month, label in [("2099-08", "August"), ("2099-09", "September")]:
         rows = [row(b) for b in d.bookings if b["booking_time"].startswith(month)]
-        xlsx(f"finance/bookings-export-{month}.xlsx", {f"Bookings {label} 2026": rows})
-    sept = [b for b in d.bookings if b["booking_time"].startswith("2026-09")]
+        xlsx(f"finance/bookings-export-{month}.xlsx", {f"Bookings {label} 2099": rows})
+    sept = [b for b in d.bookings if b["booking_time"].startswith("2099-09")]
 
     def split(rows: list[dict], key) -> list[dict]:
         groups: dict[str, list[dict]] = defaultdict(list)
@@ -526,17 +526,17 @@ def build_drive(d: Data) -> None:
                  "charged_excluding_cancelled": sum(b["price_paid"] for b in v if b["status"] != "cancelled")}
                 for g, v in sorted(groups.items())]
 
-    xlsx("finance/close/2026-09/revenue-pack-2026-09.xlsx", {
+    xlsx("finance/close/2099-09/revenue-pack-2099-09.xlsx", {
         "By route": split(sept, lambda b: d.route(b["flight_id"])), "By seat class": split(sept, lambda b: b["seat_class"]),
-        "Source": [{"note": "Booking system, bookings with a booking time in September 2026, pulled 1 October 2026 by Tomás Rivera."}]})
+        "Source": [{"note": "Booking system, bookings with a booking time in September 2099, pulled 1 October 2099 by Tomás Rivera."}]})
 
     deferred = [{"booking_id": b["booking_id"], "customer": name(b["user_id"]), "route": d.route(b["flight_id"]),
                  "departure": d.flights[b["flight_id"]]["departure_time"][:10], "seat_class": b["seat_class"], "deferred_amount": b["price_paid"]}
-                for b in d.bookings if b["status"] != "cancelled" and b["booking_time"][:10] <= "2026-10-31"
-                and d.flights[b["flight_id"]]["departure_time"][:10] > "2026-10-31"]
-    xlsx("finance/close/2026-10/deferred-revenue-2026-10.xlsx", {"Deferred at 31 October": deferred, "Method": [
-        {"note": "Bookings not cancelled, booked on or before 31 October 2026, departing after 31 October 2026, at the amount charged."},
-        {"note": "Source: booking system, 3 November 2026. Prepared by Tomás Rivera."}]})
+                for b in d.bookings if b["status"] != "cancelled" and b["booking_time"][:10] <= "2099-10-31"
+                and d.flights[b["flight_id"]]["departure_time"][:10] > "2099-10-31"]
+    xlsx("finance/close/2099-10/deferred-revenue-2099-10.xlsx", {"Deferred at 31 October": deferred, "Method": [
+        {"note": "Bookings not cancelled, booked on or before 31 October 2099, departing after 31 October 2099, at the amount charged."},
+        {"note": "Source: booking system, 3 November 2099. Prepared by Tomás Rivera."}]})
 
     checklist = [("Bank reconciliations, four accounts", "Chidi Eze", 1, "done"), ("Payables cut-off", "Beatrix Novak", 1, "done"),
                  ("Payroll accrual", "Hana Kobayashi", 1, "done"), ("Expense reports cut-off", "Hana Kobayashi", 2, "done"),
@@ -544,11 +544,11 @@ def build_drive(d: Data) -> None:
                  ("Revenue: bookings to ledger", "Tomás Rivera", 3, "open"), ("Revenue: quotes to bookings (new)", "Tomás Rivera", 3, "open"),
                  ("Tycho Ground October invoice: hold or accrue", "Beatrix Novak", 3, "waiting for Legal"),
                  ("Flux commentary", "Chidi Eze", 4, "open"), ("Review", "Ingrid Solberg", 4, "open"), ("Sign-off", "Ingrid Solberg", 5, "open")]
-    xlsx("finance/close/2026-10/close-checklist.xlsx", {"October 2026 close": [{"task": t, "owner": o, "close_day": n, "status": s} for t, o, n, s in checklist]})
+    xlsx("finance/close/2099-10/close-checklist.xlsx", {"October 2099 close": [{"task": t, "owner": o, "close_day": n, "status": s} for t, o, n, s in checklist]})
 
-    lines = ["Revenue, scheduled service", "Revenue, charter", "Fuel", "Ground handling and port fees", "Crew", "Maintenance", "Staff, non-crew",
+    lines = ["Revenue, scheduled service", "Revenue, charter", "Ship leases", "Traffic control charges", "Insurance", "Fuel", "Ground handling and port fees", "Crew", "Maintenance", "Staff, non-crew",
              "Marketing", "Software and IT", "Office", "Travel", "Other"]
-    xlsx("finance/budget-2027/budget-template.xlsx", {"Budget 2027": [{"line": line, "actual_2026_to_october": "", **{MONTH[m][:3]: "" for m in range(1, 13)}, "comment": ""} for line in lines],
+    xlsx("finance/budget-2100/budget-template.xlsx", {"Budget 2100": [{"line": line, "actual_2026_to_october": "", **{MONTH[m][:3]: "" for m in range(1, 13)}, "comment": ""} for line in lines],
                                                         "Headcount": [{"role": "", "grade": "", "start_month": "", "monthly_cost": "", "reason": ""}]})
 
     staff = [p["name"] for p in d.people]
@@ -557,16 +557,16 @@ def build_drive(d: Data) -> None:
         who = "Tomás Rivera" if i == 30 else rng.choice(staff)
         amount = 42000 if i == 30 else rng.randrange(6000, 180000, 500)
         status = "returned: receipt missing, resubmitted and paid" if i == 30 else ("returned: receipt missing" if i in (7, 19, 48) else "paid")
-        reports.append({"report": f"ER-2026-{901 + i:04d}", "employee": who, "month": "September", "amount": amount, "lines": rng.randint(1, 9), "status": status})
-    xlsx("finance/expenses/expense-reports-2026-09.xlsx", {"Expense reports September": reports})
+        reports.append({"report": f"ER-2099-{901 + i:04d}", "employee": who, "month": "September", "amount": amount, "lines": rng.randint(1, 9), "status": status})
+    xlsx("finance/expenses/expense-reports-2099-09.xlsx", {"Expense reports September": reports})
 
     # Operations
-    monday = date(2026, 8, 10)
-    while monday + timedelta(days=6) <= date(2026, 10, 25):
+    monday = date(2099, 8, 10)
+    while monday + timedelta(days=6) <= date(2099, 10, 25):
         week = [b for b in d.bookings if str(monday) <= b["booking_time"][:10] <= str(monday + timedelta(days=6))]
         if week:
             summary = [{"measure": "Bookings", "value": len(week)}, {"measure": "Cancelled since", "value": sum(b["status"] == "cancelled" for b in week)},
-                       {"measure": "Charged, excluding cancelled (credits)", "value": sum(b["price_paid"] for b in week if b["status"] != "cancelled")},
+                       {"measure": "Charged, excluding cancelled (dollars)", "value": sum(b["price_paid"] for b in week if b["status"] != "cancelled")},
                        {"measure": "Week", "value": f"{monday} to {monday + timedelta(days=6)}, by booking date"},
                        {"measure": "Source", "value": "Booking system, pulled the following Monday by Yuki Tanaka"}]
             xlsx(f"ops/weekly-reports/weekly-bookings-{monday.isocalendar().year}-W{monday.isocalendar().week:02d}.xlsx",
@@ -575,37 +575,37 @@ def build_drive(d: Data) -> None:
         monday += timedelta(days=7)
 
     xlsx("ops/crew/relief-crew-tombaugh-costing.xlsx", {"Monthly cost": [
-        {"item": "Four crew on a six week rotation, salaries and allowances", "credits_per_month": 1180000},
-        {"item": "Housing at Tombaugh Station, four units", "credits_per_month": 1240000},
-        {"item": "Rotation travel for the relief crew", "credits_per_month": 220000},
-        {"item": "Second set of spares stationed at Tombaugh (financing and storage)", "credits_per_month": 260000},
-        {"item": "Total", "credits_per_month": 2900000}],
-        "Assumptions": [{"note": "Prepared by Andrei Popescu, 27 October 2026. Spares line added by Zainab Hussein."},
-                        {"note": "Housing is a quote from the Tombaugh Station Cooperative, valid until 31 December 2026."}]})
+        {"item": "Four crew on a six week rotation, salaries and allowances", "dollars_per_month": 1180000},
+        {"item": "Housing at Tombaugh Station, four units", "dollars_per_month": 1240000},
+        {"item": "Rotation travel for the relief crew", "dollars_per_month": 220000},
+        {"item": "Second set of spares stationed at Tombaugh (financing and storage)", "dollars_per_month": 260000},
+        {"item": "Total", "dollars_per_month": 2900000}],
+        "Assumptions": [{"note": "Prepared by Andrei Popescu, 27 October 2099. Spares line added by Zainab Hussein."},
+                        {"note": "Housing is a quote from the Tombaugh Station Cooperative, valid until 31 December 2099."}]})
     xlsx("ops/crew/venus-second-crew-costing.xlsx", {"Monthly cost": [
-        {"item": "Three crew based at Aphrodite Station, salaries and allowances", "credits_per_month": 960000},
-        {"item": "Housing at Aphrodite Station", "credits_per_month": 590000},
-        {"item": "Rotation travel", "credits_per_month": 150000},
-        {"item": "Total", "credits_per_month": 1700000}],
-        "Assumptions": [{"note": "Prepared by Andrei Popescu, 3 November 2026."}]})
+        {"item": "Three crew based at Aphrodite Station, salaries and allowances", "dollars_per_month": 960000},
+        {"item": "Housing at Aphrodite Station", "dollars_per_month": 590000},
+        {"item": "Rotation travel", "dollars_per_month": 150000},
+        {"item": "Total", "dollars_per_month": 1700000}],
+        "Assumptions": [{"note": "Prepared by Andrei Popescu, 3 November 2099."}]})
     fleet = yaml.safe_load((COMPANY / "fleet.yaml").read_text(encoding="utf-8"))
     class_name = {c["id"]: c["name"].removesuffix(" class") for c in fleet["classes"]}
     xlsx("ops/fleet/fleet-register.xlsx", {"Fleet": [
         {"ship": s["name"], "class": class_name[s["class"]], "seats": fleet["cabin"]["seats"], "certified_to": s["register"]["certified_to"], "routes": s["register"]["routes"],
          "status": s["register"]["status"], "next_check": s["register"]["next_check"]} for s in fleet["ships"]]})
-    xlsx("ops/schedule/scheduled-service-2026-27.xlsx", {"Scheduled service": [
+    xlsx("ops/schedule/scheduled-service-2099-2100.xlsx", {"Scheduled service": [
         {"flight": d.gx(f["flight_id"]), "origin": f["origin"], "destination": f["destination"], "departure_utc": f["departure_time"].replace("T", " ")[:16],
          "arrival_utc": f["arrival_time"].replace("T", " ")[:16], "economy_seats": f["economy_seats"], "business_seats": f["business_seats"], "galaxium_seats": f["galaxium_seats"]}
-        for f in d.flights.values()], "Changes": [{"note": "From the departure on 13 December 2026 the Earth to Venus service leaves at 08:30. The booking system shows the old time until the change is loaded."}]})
+        for f in d.flights.values()], "Changes": [{"note": "From the departure on 13 December 2099 the Earth to Venus service leaves at 08:30. The booking system shows the old time until the change is loaded."}]})
     late = {2: 112, 9: 104, 21: 97}
     turn_days = [2, 3, 5, 7, 9, 12, 14, 16, 19, 21, 23, 26, 28, 30]
-    xlsx("ops/ground/tycho-turnarounds-2026-10.xlsx", {"Tycho October 2026": [
-        {"date": f"2026-10-{day:02d}", "kind": "Scheduled service" if day == 5 else rng.choice(["Luna shuttle", "Luna shuttle", "Charter"]),
+    xlsx("ops/ground/tycho-turnarounds-2099-10.xlsx", {"Tycho October 2099": [
+        {"date": f"2099-10-{day:02d}", "kind": "Scheduled service" if day == 5 else rng.choice(["Luna shuttle", "Luna shuttle", "Charter"]),
          "turnaround_minutes": late.get(day, rng.randint(61, 88)), "target_minutes": 90, "over_target": "yes" if day in late else "no",
          "cause": "Shared fuelling gantry" if day in late else ""} for day in turn_days],
         "Source": [{"note": "Operations control log. Kept by Lucia Bianchi."}]})
 
-    xlsx("sales/rate-card-2026.xlsx", {"Charter rate card 2026": [
+    xlsx("sales/rate-card-2099.xlsx", {"Charter rate card 2099": [
         {"route": r, "seat_economy": e, "seat_business": int(e * 2.5), "whole_ship_10_seats": int(e * 2.5 * 10 * 0.8)}
         for r, e in [("Earth to Mars", 1000000), ("Earth to Moon", 500000), ("Mars to Earth", 950000), ("Venus to Earth", 1200000), ("Jupiter to Europa", 2000000),
                      ("Earth to Venus", 1100000), ("Moon to Mars", 800000), ("Mars to Jupiter", 2500000), ("Europa to Earth", 3000000), ("Earth to Pluto", 5000000)]],
@@ -613,24 +613,24 @@ def build_drive(d: Data) -> None:
                   {"note": "Discounts follow policies/discount-policy.md."}]})
 
     xlsx("legal/vendor-register.xlsx", {"Vendors": [
-        {"vendor": "Tycho Ground Services", "service": "Ground handling, Luna", "contract_ends": "2026-12-31", "monthly_fee": 380000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewal draft received 30 October, under review"},
-        {"vendor": "Helios Fuels", "service": "Fuel supply", "contract_ends": "2027-01-31", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Zainab Hussein", "status": "Renewal draft expected in November"},
-        {"vendor": "Lagrange Catering", "service": "Cabin catering", "contract_ends": "2027-10-20", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewed 21 October"},
-        {"vendor": "Ferrypay", "service": "Payment processing", "contract_ends": "2027-06-30", "monthly_fee": "per transaction", "automatic_renewal": "yes, 12 months", "owner": "Marcus Lindqvist", "status": "Active"},
-        {"vendor": "Olympus Port Authority", "service": "Port and pad fees, Mars", "contract_ends": "2027-06-30", "monthly_fee": 250000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
-        {"vendor": "Aphrodite Station Operations", "service": "Berth, Venus", "contract_ends": "2027-03-31", "monthly_fee": 210000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
-        {"vendor": "Tombaugh Station Cooperative", "service": "Berth and servicing, Pluto", "contract_ends": "2027-08-31", "monthly_fee": 540000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
-        {"vendor": "Northlight Telecom", "service": "Connectivity", "contract_ends": "2027-02-28", "monthly_fee": 52000, "automatic_renewal": "yes, 12 months", "owner": "Bruno Ferreira", "status": "Active"},
-        {"vendor": "Mail and collaboration suite", "service": "Mail, chat, drive", "contract_ends": "2026-12-15", "monthly_fee": 61000, "automatic_renewal": "yes, 12 months", "owner": "Bruno Ferreira", "status": "Renews 15 December"},
+        {"vendor": "Tycho Ground Services", "service": "Ground handling, Luna", "contract_ends": "2099-12-31", "monthly_fee": 380000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewal draft received 30 October, under review"},
+        {"vendor": "Helios Fuels", "service": "Fuel supply", "contract_ends": "2100-01-31", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Zainab Hussein", "status": "Renewal draft expected in November"},
+        {"vendor": "Lagrange Catering", "service": "Cabin catering", "contract_ends": "2100-10-20", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewed 21 October"},
+        {"vendor": "Ferrypay", "service": "Payment processing", "contract_ends": "2100-06-30", "monthly_fee": "per transaction", "automatic_renewal": "yes, 12 months", "owner": "Marcus Lindqvist", "status": "Active"},
+        {"vendor": "Olympus Port Authority", "service": "Port and pad fees, Mars", "contract_ends": "2100-06-30", "monthly_fee": 250000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
+        {"vendor": "Aphrodite Station Operations", "service": "Berth, Venus", "contract_ends": "2100-03-31", "monthly_fee": 210000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
+        {"vendor": "Tombaugh Station Cooperative", "service": "Berth and servicing, Pluto", "contract_ends": "2100-08-31", "monthly_fee": 540000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
+        {"vendor": "Northlight Telecom", "service": "Connectivity", "contract_ends": "2100-02-28", "monthly_fee": 52000, "automatic_renewal": "yes, 12 months", "owner": "Bruno Ferreira", "status": "Active"},
+        {"vendor": "Mail and collaboration suite", "service": "Mail, chat, drive", "contract_ends": "2099-12-15", "monthly_fee": 61000, "automatic_renewal": "yes, 12 months", "owner": "Bruno Ferreira", "status": "Renews 15 December"},
         {"vendor": "Pulse Feedback", "service": "Customer surveys", "contract_ends": "", "monthly_fee": 14000, "automatic_renewal": "", "owner": "Nadia Haddad", "status": "Not signed: data processing addendum open"}]})
 
-    xlsx("people/org/headcount-2026-10.xlsx", {"Headcount 31 October": [
+    xlsx("people/org/headcount-2099-10.xlsx", {"Headcount 31 October": [
         {"name": p["name"], "role": p["role"], "department": p["department"], "location": p.get("location", ""),
          "manager": next((m["name"] for m in d.people if m["id"] == p.get("manager")), "")} for p in d.people],
         "By department": [{"department": k, "people": v} for k, v in sorted(Counter(p["department"] for p in d.people).items())]})
     xlsx("it/asset-register.xlsx", {"Laptops": [
         {"asset": f"LT-{200 + i:04d}", "assigned_to": p["name"], "model": rng.choice(["Model A 14", "Model A 16", "Model B 13"]),
-         "purchased": f"{rng.choice([2021, 2022, 2023, 2024, 2025])}-{rng.randint(1, 12):02d}", "note": "Replacement ordered, delivery 5 November" if p["name"] in ("Andrei Popescu", "Hana Kobayashi") else ""}
+         "purchased": f"{rng.choice([2094, 2095, 2096, 2097, 2098])}-{rng.randint(1, 12):02d}", "note": "Replacement ordered, delivery 5 November" if p["name"] in ("Andrei Popescu", "Hana Kobayashi") else ""}
         for i, p in enumerate(d.people)]})
 
 

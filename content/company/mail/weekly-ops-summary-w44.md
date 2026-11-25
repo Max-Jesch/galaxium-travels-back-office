@@ -5,7 +5,7 @@ labels: [operations, report]
 From: Sofia Lindgren <sofia.lindgren@galaxium.example>
 To: Operations <operations@galaxium.example>
 Cc: Olu Adeyemi <olu.adeyemi@galaxium.example>
-Date: 2026-11-02 08:20
+Date: 2099-11-02 08:20
 
 Week 44 in short:
 

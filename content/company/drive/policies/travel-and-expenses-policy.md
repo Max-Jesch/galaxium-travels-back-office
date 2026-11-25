@@ -1,10 +1,10 @@
 ---
 owner: Hana Kobayashi
-modified: 2026-10-12
+modified: 2099-10-12
 ---
 # Travel and expenses policy
 
-Version 4, effective 1 November 2026.
+Version 4, effective 1 November 2099.
 
 ## Travel between stations
 - Staff travel on our own scheduled service or shuttles in economy. Business class for legs longer than ten hours.
@@ -22,6 +22,6 @@ Stays of more than 14 days at one station need approval before travel.
 
 ## Expenses
 - Submit by the second working day of the following month.
-- Every line above 5,000 credits needs a receipt.
-- Client entertainment above 60,000 credits needs your department head's approval in advance.
+- Every line above $5,000 needs a receipt.
+- Client entertainment above $60,000 needs your department head's approval in advance.
 - Reports without receipts are returned once. After that the line is not reimbursed.

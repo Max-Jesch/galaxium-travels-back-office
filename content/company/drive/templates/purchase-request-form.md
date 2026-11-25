@@ -1,6 +1,6 @@
 ---
 owner: Beatrix Novak
-modified: 2026-10-07
+modified: 2099-10-07
 ---
 # Purchase request
 
@@ -10,7 +10,7 @@ modified: 2026-10-07
 | Department | |
 | Supplier | |
 | What | |
-| Amount in credits | |
+| Amount in dollars | |
 | One-off or recurring | |
 | Contract longer than 12 months or with automatic renewal? | If yes, Legal reviews first |
 | What happens if we do not buy it | Required above 250,000 |

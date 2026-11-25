@@ -6,12 +6,12 @@ labels:
 ---
 From: Meridian Crew Hotels <groups@meridiancrewhotels.example>
 To: Invoices <invoices@galaxium.example>
-Date: 2026-10-15 06:37
+Date: 2099-10-15 06:37
 
 Dear customer,
 
 Please find attached invoice MH-4056 for crew accommodation.
 
-Amount due: 66,500 credits. Payment terms as agreed.
+Amount due: $66,500. Payment terms as agreed.
 
 Meridian Crew Hotels

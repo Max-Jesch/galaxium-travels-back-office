@@ -1,6 +1,6 @@
 ---
 owner: Amara Okafor
-modified: 2026-07-01
+modified: 2099-07-01
 ---
 # Discount policy for corporate contracts
 

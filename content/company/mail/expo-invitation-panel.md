@@ -5,7 +5,7 @@ labels: [external, events]
 From: Programme Team <programme@travelexpo.example>
 To: Elise Fontaine <elise.fontaine@galaxium.example>
 Cc: Pilar Navarro <pilar.navarro@galaxium.example>
-Date: 2026-10-23 11:30
+Date: 2099-10-23 11:30
 
 Dear Ms Fontaine,
 
@@ -20,7 +20,7 @@ The Programme Team, Interplanetary Travel Expo
 From: Elise Fontaine <elise.fontaine@galaxium.example>
 To: Maya Goldberg <maya.goldberg@galaxium.example>
 Cc: Pilar Navarro <pilar.navarro@galaxium.example>
-Date: 2026-10-23 14:02
+Date: 2099-10-23 14:02
 
 Maya, this is yours if you want it. You would be good at it.
 
@@ -29,6 +29,6 @@ Maya, this is yours if you want it. You would be good at it.
 From: Maya Goldberg <maya.goldberg@galaxium.example>
 To: Elise Fontaine <elise.fontaine@galaxium.example>
 Cc: Pilar Navarro <pilar.navarro@galaxium.example>
-Date: 2026-10-26 09:12
+Date: 2099-10-26 09:12
 
 Yes, gladly. I will confirm with them directly.

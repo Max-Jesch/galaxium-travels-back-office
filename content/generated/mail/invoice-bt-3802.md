@@ -6,12 +6,12 @@ labels:
 ---
 From: Brightwell Training <admin@brightwelltraining.example>
 To: Invoices <invoices@galaxium.example>
-Date: 2026-10-14 07:16
+Date: 2099-10-14 07:16
 
 Dear customer,
 
 Please find attached invoice BT-3802 for simulator sessions.
 
-Amount due: 203,000 credits. Payment terms as agreed.
+Amount due: $203,000. Payment terms as agreed.
 
 Brightwell Training

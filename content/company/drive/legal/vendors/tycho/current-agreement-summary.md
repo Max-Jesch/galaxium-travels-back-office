@@ -1,15 +1,15 @@
 ---
 owner: Sam Whitlock
-modified: 2026-10-12
+modified: 2099-10-12
 ---
 # Tycho Ground Services: summary of the current agreement
 
-Ground handling at Tycho for all Galaxium turnarounds. Signed 12 December 2024.
+Ground handling at Tycho for all Galaxium turnarounds. Signed 12 December 2097.
 
 | Topic | Current agreement |
 | --- | --- |
-| Term | 24 months, 1 January 2025 to 31 December 2026. No automatic renewal. |
-| Fee | 380,000 credits a month, fixed for the term |
+| Term | 24 months, 1 January 2098 to 31 December 2099. No automatic renewal. |
+| Fee | $380,000 a month, fixed for the term |
 | Payment | Net 45, invoice with the monthly service report |
 | Service level | Turnaround within 90 minutes |
 | Service credits | 5% of the monthly fee for each turnaround over 90 minutes, claimed in writing within 30 days |

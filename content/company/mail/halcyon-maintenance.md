@@ -1,12 +1,12 @@
 ---
 subject: Halcyon out of service 26 to 29 October, valve assembly
 labels: [operations, fleet]
-attachments: [ops/fleet/halcyon-maintenance-2026-10.md]
+attachments: [ops/fleet/halcyon-maintenance-2099-10.md]
 ---
 From: Zainab Hussein <zainab.hussein@galaxium.example>
 To: Priya Raman <priya.raman@galaxium.example>
 Cc: Operations Control <opscontrol@galaxium.example>, Kwame Asante <kwame.asante@galaxium.example>
-Date: 2026-10-24 13:40
+Date: 2099-10-24 13:40
 
 Priya,
 
@@ -21,6 +21,6 @@ Zainab
 From: Priya Raman <priya.raman@galaxium.example>
 To: Zainab Hussein <zainab.hussein@galaxium.example>
 Cc: Operations Control <opscontrol@galaxium.example>, Kwame Asante <kwame.asante@galaxium.example>
-Date: 2026-10-24 14:15
+Date: 2099-10-24 14:15
 
 Agreed, thank you. This is the reason I do not want Halcyon flying back to back without a spare.

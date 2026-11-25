@@ -1,186 +1,186 @@
-# Corporate deals closed in the third quarter of 2026 (July to September).
+# Corporate deals closed in the third quarter of 2099 (July to September).
 # The CRM is the system of record. The tracker spreadsheet in the drive is a manual copy.
 - id: D-2001
-  name: Helix Mining, crew rotation 2027
+  name: Helix Mining, crew rotation 2100
   account_id: A-101
   owner: Dev Malhotra
   stage: won
   amount: 46000000
-  close_date: 2026-07-14
+  close_date: 2099-07-14
   notes:
-    - {author: Dev Malhotra, date: 2026-06-30, text: "Oksana compared us with Orbitway. We won on the fixed Earth to Mars slots and the group hold. Price was 6% above Orbitway and it did not matter."}
+    - {author: Dev Malhotra, date: 2099-06-30, text: "Oksana compared us with Orbitway. We won on the fixed Earth to Mars slots and the group hold. Price was 6% above Orbitway and it did not matter."}
 - id: D-2002
   name: Ceres Agritech, harvest rotation
   account_id: A-102
   owner: Dev Malhotra
   stage: lost
   amount: 33000000
-  close_date: 2026-07-17
+  close_date: 2099-07-17
   loss_reason: Schedule frequency
   competitor: Orbitway
   notes:
-    - {author: Dev Malhotra, date: 2026-07-09, text: "Luis needs a departure every week during harvest. We offer one a month on the belt routes."}
-    - {author: Dev Malhotra, date: 2026-07-17, text: "Lost to Orbitway. Luis said our price was fine, the monthly schedule was the problem."}
+    - {author: Dev Malhotra, date: 2099-07-09, text: "Luis needs a departure every week during harvest. We offer one a month on the belt routes."}
+    - {author: Dev Malhotra, date: 2099-07-17, text: "Lost to Orbitway. Luis said our price was fine, the monthly schedule was the problem."}
 - id: D-2003
   name: Lunar Polytechnic, semester transfers
   account_id: A-107
   owner: Lena Fischer
   stage: won
   amount: 9500000
-  close_date: 2026-07-22
+  close_date: 2099-07-22
   notes:
-    - {author: Lena Fischer, date: 2026-07-20, text: "Signed. Jonas liked the Earth to Moon frequency and the simple invoice."}
+    - {author: Lena Fischer, date: 2099-07-20, text: "Signed. Jonas liked the Earth to Moon frequency and the simple invoice."}
 - id: D-2004
   name: Outer Belt Logistics, Jupiter shuttle add-on
   account_id: A-104
   owner: Dev Malhotra
   stage: lost
   amount: 27000000
-  close_date: 2026-07-29
+  close_date: 2099-07-29
   loss_reason: Schedule frequency
   competitor: Orbitway
   notes:
-    - {author: Dev Malhotra, date: 2026-07-28, text: "Imani went with Orbitway for the Jupiter shuttle. Two departures a month against our one. She keeps the main rotation with us."}
+    - {author: Dev Malhotra, date: 2099-07-28, text: "Imani went with Orbitway for the Jupiter shuttle. Two departures a month against our one. She keeps the main rotation with us."}
 - id: D-2005
   name: Red Sands Hospitality, winter guest packages
   account_id: A-109
   owner: Lena Fischer
   stage: won
   amount: 18000000
-  close_date: 2026-08-04
+  close_date: 2099-08-04
   notes:
-    - {author: Lena Fischer, date: 2026-08-03, text: "Won. Carla wanted Galaxium class for the top guest tier. No competitor offers an equivalent cabin to Mars."}
+    - {author: Lena Fischer, date: 2099-08-03, text: "Won. Carla wanted Galaxium class for the top guest tier. No competitor offers an equivalent cabin to Mars."}
 - id: D-2006
-  name: Europa Research Trust, autumn expedition 2026
+  name: Europa Research Trust, autumn expedition 2099
   account_id: A-106
   owner: Lena Fischer
   stage: lost
   amount: 24000000
-  close_date: 2026-08-07
+  close_date: 2099-08-07
   loss_reason: Outer-system coverage
   competitor: Stellar Lines
   notes:
-    - {author: Lena Fischer, date: 2026-08-06, text: "Dr. Aydin needs Europa and Pluto on one contract. Stellar Lines flies Pluto twice a month, we fly it once. Lost."}
+    - {author: Lena Fischer, date: 2099-08-06, text: "Dr. Aydin needs Europa and Pluto on one contract. Stellar Lines flies Pluto twice a month, we fly it once. Lost."}
 - id: D-2007
   name: Vesta Shipwrights, yard crew travel
   account_id: A-112
   owner: Dev Malhotra
   stage: lost
   amount: 19500000
-  close_date: 2026-08-12
+  close_date: 2099-08-12
   loss_reason: Schedule frequency
   competitor: Orbitway
   notes:
-    - {author: Dev Malhotra, date: 2026-08-11, text: "Tariq: shift changes every two weeks, so a monthly departure leaves crews stranded. Orbitway won. I offered a discount, he said it was not about money."}
+    - {author: Dev Malhotra, date: 2099-08-11, text: "Tariq: shift changes every two weeks, so a monthly departure leaves crews stranded. Orbitway won. I offered a discount, he said it was not about money."}
 - id: D-2008
   name: Nimbus Freight, Earth to Moon crew shuttles
   account_id: A-105
   owner: Dev Malhotra
   stage: won
   amount: 12000000
-  close_date: 2026-08-19
+  close_date: 2099-08-19
   notes:
-    - {author: Dev Malhotra, date: 2026-08-18, text: "Won against NovaTransit. Peter said our price was higher, but the booking tool sealed it."}
+    - {author: Dev Malhotra, date: 2099-08-18, text: "Won against NovaTransit. Peter said our price was higher, but the booking tool sealed it."}
 - id: D-2009
   name: Lunar Polytechnic, research cohort travel
   account_id: A-107
   owner: Lena Fischer
   stage: lost
   amount: 7800000
-  close_date: 2026-08-21
+  close_date: 2099-08-21
   loss_reason: Refund terms
   competitor: NovaTransit
   notes:
-    - {author: Lena Fischer, date: 2026-08-20, text: "Lost. Grant funding can be withdrawn at short notice, and Jonas cannot accept losing 50% when cancelling inside seven days. NovaTransit refunds in full up to 48 hours."}
+    - {author: Lena Fischer, date: 2099-08-20, text: "Lost. Grant funding can be withdrawn at short notice, and Jonas cannot accept losing 50% when cancelling inside seven days. NovaTransit refunds in full up to 48 hours."}
 - id: D-2010
   name: Selene Resorts, launch season charters
   account_id: A-111
   owner: Lena Fischer
   stage: won
   amount: 21500000
-  close_date: 2026-08-27
+  close_date: 2099-08-27
   notes:
-    - {author: Lena Fischer, date: 2026-08-26, text: "Signed for the launch season. Freya wants a renewal conversation in February."}
+    - {author: Lena Fischer, date: 2099-08-26, text: "Signed for the launch season. Freya wants a renewal conversation in February."}
 - id: D-2011
   name: Kepler Media, Pluto documentary series
   account_id: A-110
   owner: Dev Malhotra
   stage: lost
   amount: 31000000
-  close_date: 2026-08-29
+  close_date: 2099-08-29
   loss_reason: Outer-system coverage
   competitor: Stellar Lines
   notes:
-    - {author: Dev Malhotra, date: 2026-08-28, text: "Arjun needs crews in and out of Pluto every two weeks for six months. With one departure a month we cannot do it. Stellar Lines took it."}
+    - {author: Dev Malhotra, date: 2099-08-28, text: "Arjun needs crews in and out of Pluto every two weeks for six months. With one departure a month we cannot do it. Stellar Lines took it."}
 - id: D-2012
   name: Aurora Biolabs, sample courier seats
   account_id: A-108
   owner: Lena Fischer
   stage: won
   amount: 6200000
-  close_date: 2026-09-03
+  close_date: 2099-09-03
   notes:
-    - {author: Lena Fischer, date: 2026-09-02, text: "Small but strategic. Mei wants a named contact in support."}
+    - {author: Lena Fischer, date: 2099-09-02, text: "Small but strategic. Mei wants a named contact in support."}
 - id: D-2013
   name: Helix Mining, executive travel
   account_id: A-101
   owner: Dev Malhotra
   stage: lost
   amount: 8400000
-  close_date: 2026-09-05
+  close_date: 2099-09-05
   loss_reason: Price
   competitor: NovaTransit
   notes:
-    - {author: Dev Malhotra, date: 2026-09-04, text: "Lost on price. NovaTransit undercut our business class by about 15% and Oksana's board wanted the saving."}
+    - {author: Dev Malhotra, date: 2099-09-04, text: "Lost on price. NovaTransit undercut our business class by about 15% and Oksana's board wanted the saving."}
 - id: D-2014
   name: Tharsis Engineering, crew rotation
   account_id: A-103
   owner: Dev Malhotra
   stage: lost
   amount: 29000000
-  close_date: 2026-09-11
+  close_date: 2099-09-11
   loss_reason: Schedule frequency
   competitor: Orbitway
   notes:
-    - {author: Dev Malhotra, date: 2026-09-02, text: "Verbal yes from Bao on the rotation, pending the schedule check with his site managers. Marked it as won in my tracker."}
-    - {author: Dev Malhotra, date: 2026-09-11, text: "Bao called. Site managers rejected a monthly Mars to Jupiter departure and they signed with Orbitway. Deal is lost. The site visit contract (D-2017) is separate and still on."}
+    - {author: Dev Malhotra, date: 2099-09-02, text: "Verbal yes from Bao on the rotation, pending the schedule check with his site managers. Marked it as won in my tracker."}
+    - {author: Dev Malhotra, date: 2099-09-11, text: "Bao called. Site managers rejected a monthly Mars to Jupiter departure and they signed with Orbitway. Deal is lost. The site visit contract (D-2017) is separate and still on."}
 - id: D-2015
   name: Kepler Media, Mars documentary crew
   account_id: A-110
   owner: Dev Malhotra
   stage: won
   amount: 14800000
-  close_date: 2026-09-16
+  close_date: 2099-09-16
   notes:
-    - {author: Dev Malhotra, date: 2026-09-15, text: "Won. Arjun was clear that Mars works well with us even though we lost the Pluto series."}
+    - {author: Dev Malhotra, date: 2099-09-15, text: "Won. Arjun was clear that Mars works well with us even though we lost the Pluto series."}
 - id: D-2016
   name: Aurora Biolabs, conference block booking
   account_id: A-108
   owner: Lena Fischer
   stage: lost
   amount: 5600000
-  close_date: 2026-09-18
+  close_date: 2099-09-18
   loss_reason: Refund terms
   competitor: NovaTransit
   notes:
-    - {author: Lena Fischer, date: 2026-09-17, text: "Lost. Conference dates may move, and Mei needs free changes up to three days before. Our refund tiers do not allow it."}
+    - {author: Lena Fischer, date: 2099-09-17, text: "Lost. Conference dates may move, and Mei needs free changes up to three days before. Our refund tiers do not allow it."}
 - id: D-2017
   name: Tharsis Engineering, site visits
   account_id: A-103
   owner: Dev Malhotra
   stage: won
   amount: 11000000
-  close_date: 2026-09-24
+  close_date: 2099-09-24
   notes:
-    - {author: Dev Malhotra, date: 2026-09-23, text: "Signed. Earth to Mars only, which is where our schedule is strong."}
+    - {author: Dev Malhotra, date: 2099-09-23, text: "Signed. Earth to Mars only, which is where our schedule is strong."}
 - id: D-2018
   name: Nimbus Freight, Venus lane
   account_id: A-105
   owner: Lena Fischer
   stage: lost
   amount: 16000000
-  close_date: 2026-09-29
+  close_date: 2099-09-29
   loss_reason: Price
   competitor: Stellar Lines
   notes:
-    - {author: Lena Fischer, date: 2026-09-28, text: "Lost on price. Stellar Lines bundled Venus with their freight contract at a rate we could not match."}
+    - {author: Lena Fischer, date: 2099-09-28, text: "Lost on price. Stellar Lines bundled Venus with their freight contract at a rate we could not match."}

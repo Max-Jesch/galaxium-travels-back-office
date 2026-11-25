@@ -1,13 +1,13 @@
 ---
 owner: Yuki Tanaka
-modified: 2026-10-28
+modified: 2099-10-28
 ---
 # A second monthly Pluto departure: outline
 
 Status: outline. First full draft due 9 November. Decision planned for the December leadership meeting.
 
 ## The question
-Should we fly Earth to Pluto twice a month from March 2027?
+Should we fly Earth to Pluto twice a month from March 2100?
 
 ## Options
 | | Option | What it needs | Monthly cost |

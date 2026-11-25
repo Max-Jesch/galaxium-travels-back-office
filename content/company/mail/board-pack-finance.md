@@ -4,7 +4,7 @@ labels: [finance, board]
 ---
 From: Ingrid Solberg <ingrid.solberg@galaxium.example>
 To: Tomás Rivera <tomas.rivera@galaxium.example>, Chidi Eze <chidi.eze@galaxium.example>
-Date: 2026-10-27 10:48
+Date: 2099-10-27 10:48
 
 Both,
 

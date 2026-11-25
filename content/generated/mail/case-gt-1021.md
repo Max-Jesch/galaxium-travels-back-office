@@ -5,7 +5,7 @@ labels:
 ---
 From: Ulla <ulla@moonmail.example>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-10-18 08:54
+Date: 2099-10-18 08:54
 
 Hello,
 
@@ -17,7 +17,7 @@ Ulla
 
 From: Anneli Korhonen <anneli.korhonen@galaxium.example>
 To: Ulla <ulla@moonmail.example>
-Date: 2026-10-18 09:30
+Date: 2099-10-18 09:30
 
 Hello Ulla,
 

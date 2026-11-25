@@ -6,7 +6,7 @@ attachments: [engineering/releases/release-4.12-test-plan.md]
 From: Marcus Lindqvist <marcus.lindqvist@galaxium.example>
 To: Engineering <engineering@galaxium.example>
 Cc: Nadia Haddad <nadia.haddad@galaxium.example>, Maya Goldberg <maya.goldberg@galaxium.example>, Greta Olsen <greta.olsen@galaxium.example>
-Date: 2026-11-03 11:10
+Date: 2099-11-03 11:10
 
 Team,
 

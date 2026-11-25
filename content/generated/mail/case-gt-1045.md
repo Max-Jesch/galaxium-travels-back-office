@@ -5,7 +5,7 @@ labels:
 ---
 From: Yusuf <yusuf@beltpost.example>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-10-28 09:29
+Date: 2099-10-28 09:29
 
 Hello,
 
@@ -17,7 +17,7 @@ Yusuf
 
 From: Mateo Vargas <mateo.vargas@galaxium.example>
 To: Yusuf <yusuf@beltpost.example>
-Date: 2026-10-28 10:34
+Date: 2099-10-28 10:34
 
 Hello Yusuf,
 

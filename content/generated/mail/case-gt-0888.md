@@ -5,7 +5,7 @@ labels:
 ---
 From: Ines <ines@beltpost.example>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-08-27 17:25
+Date: 2099-08-27 17:25
 
 Hello,
 
@@ -17,7 +17,7 @@ Ines
 
 From: Anneli Korhonen <anneli.korhonen@galaxium.example>
 To: Ines <ines@beltpost.example>
-Date: 2026-08-27 19:07
+Date: 2099-08-27 19:07
 
 Hello Ines,
 

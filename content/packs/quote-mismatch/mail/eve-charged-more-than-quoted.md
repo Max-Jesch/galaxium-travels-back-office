@@ -4,11 +4,11 @@ labels: [support, complaint, pricing]
 ---
 From: Eve <eve@marsmail.com>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-10-28 08:14
+Date: 2099-10-28 08:14
 
 Hello,
 
-Yesterday evening I booked Earth to Mars for 3 December in Galaxium class. Your site showed me a price of 550,000 credits and held the seat for 15 minutes. I confirmed inside the 15 minutes. My statement now shows 5,000,000 credits.
+Yesterday evening I booked Earth to Mars for 3 December in Galaxium class. Your site showed me a price of $550,000 and held the seat for 15 minutes. I confirmed inside the 15 minutes. My statement now shows $5,000,000.
 
 That is nine times the price I agreed to. Please correct the charge to the price I was shown.
 
@@ -18,7 +18,7 @@ Eve
 
 From: Kofi Mensah <kofi.mensah@galaxium.example>
 To: Eve <eve@marsmail.com>
-Date: 2026-10-28 09:40
+Date: 2099-10-28 09:40
 
 Hello Eve,
 
@@ -31,7 +31,7 @@ Kofi, Galaxium Support
 From: Nadia Haddad <nadia.haddad@galaxium.example>
 To: Finance <finance@galaxium.example>
 Cc: Kofi Mensah <kofi.mensah@galaxium.example>
-Date: 2026-11-02 10:05
+Date: 2099-11-02 10:05
 
 Ingrid, Tomás,
 

@@ -4,7 +4,7 @@ labels: [all-staff]
 ---
 From: Renata Castellanos <renata.castellanos@galaxium.example>
 To: All Staff <all@galaxium.example>
-Date: 2026-11-02 09:00
+Date: 2099-11-02 09:00
 
 Dear all,
 

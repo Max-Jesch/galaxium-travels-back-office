@@ -22,7 +22,7 @@ mcp = FastMCP(
         "The corporate systems of Galaxium Travels, a fictional interplanetary travel company: "
         "mail, chat, CRM, tickets, a shared drive and a read-only snapshot of bookings and quotes. "
         "Call backoffice_info first to learn today's date and whose desk you are working at. "
-        "Amounts are in credits. Tools that send, post, create or update are logged, and return a url "
+        "Amounts are in dollars. Tools that send, post, create or update are logged, and return a url "
         "that opens the record in the web view: give it to the user when you report what you did."
     ),
     stateless_http=True,
@@ -100,7 +100,7 @@ def backoffice_info() -> dict:
         "company": store.company().get("name"),
         "today": store.today(),
         "you_are_working_for": {k: me[k] for k in ("name", "role", "department", "email")},
-        "currency": "credits",
+        "currency": "US dollars",
         "systems": {
             "mail": "Threads in the company mail system",
             "chat": "Team channels and your direct messages",

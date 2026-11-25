@@ -12,7 +12,7 @@ The facts are in three files under `content/company/`: `fleet.yaml`, `ports.yaml
 `cabin.yaml`. Nothing about a ship, a port or a seat class is typed in here. Routes and
 block hours are read from the snapshot. The rules of `documents.py` apply: figures from
 existing notes are repeated exactly, nothing answers a question that a pack or an open
-mail asks, and every document is dated on or before 4 November 2026.
+mail asks, and every document is dated on or before 4 November 2099.
 
 `check()` fails the build if the three files stop agreeing with the snapshot or with
 each other.
@@ -55,7 +55,7 @@ def long(d: date | str) -> str:
 def ends(port: dict) -> str:
     """The end of a handling contract, as a reader says it."""
     value = str(port["contract_ends"])
-    return long(value) if value[:2] == "20" else {"rolling": "Rolling", "": "No contract: own staff"}[value]
+    return long(value) if value[:1].isdigit() else {"rolling": "Rolling", "": "No contract: own staff"}[value]
 
 
 class World:
@@ -117,14 +117,14 @@ class World:
         return [[row["row"], ", ".join(s["id"] for s in row["seats"]), self.seat_classes[row["seats"][0]["class"]]["name"], row.get("note", "")] for row in self.fleet["cabin"]["rows"]]
 
 
-SOURCE_SNAPSHOT = "Block hours: booking system. Ships and crews: roster of 20 October 2026"
+SOURCE_SNAPSHOT = "Block hours: booking system. Ships and crews: roster of 20 October 2099"
 
 
 # ------------------------------------------------------------------ the fleet
 
 def fleet_deck(w: World) -> None:
     in_service = [s for s in w.ships if s["register"]["status"].startswith("In service")]
-    deck = Deck(path("ops/fleet/fleet-guide.pptx"), "The fleet", "Three classes, six ships · Flight Operations · November 2026", owner="Priya Raman", modified="2026-11-02")
+    deck = Deck(path("ops/fleet/fleet-guide.pptx"), "The fleet", "Three classes, six ships · Flight Operations · November 2099", owner="Priya Raman", modified="2099-11-02")
     deck.figures("Six ships, and every one of them has ten seats",
                  [(str(len(w.ships)), "ships"), (str(len(w.classes)), "classes"), (str(w.fleet["cabin"]["seats"]), "seats on each ship"), (str(len(in_service)), "in service today")],
                  items=["**The class decides where a ship may go**, not how many people she carries.", "**The cabin is the same on all six**, so a seat number means the same everywhere.",
@@ -159,7 +159,7 @@ def fleet_deck(w: World) -> None:
                note="The route names are the booking system's: it says Moon where we say Luna.")
     deck.timeline("How a leg is flown", [(p["phase"], p["what"].split(". ")[0].rstrip(".") + ".") for p in w.fleet["flight"]], items=w.fleet["flight_notes"])
     deck.bullets("Open items on the fleet", [item for c in cs for item in c["open_items"]], size=17,
-                 source="ops/safety/bulletin-2026-07.md, ops/fleet/halcyon-maintenance-2026-10.md, ops/fleet/maintenance-plan-2026-q4.xlsx")
+                 source="ops/safety/bulletin-2099-07.md, ops/fleet/halcyon-maintenance-2099-10.md, ops/fleet/maintenance-plan-2099-q4.xlsx")
     deck.save()
 
 
@@ -168,8 +168,8 @@ def data_sheets(w: World) -> None:
     for c in w.classes.values():
         ships = w.of_class(c["id"])
         doc = Doc(path(f"ops/fleet/data-sheets/{c['id']}-class.docx"), f"{c['name']}: data sheet", subtitle=c["role"], label="Operations · Fleet data sheet",
-                  meta=[("Owner", "Zainab Hussein"), ("Updated", "30 October 2026"), ("Ships", ", ".join(s["name"] for s in ships)), ("Certified to", c["certified_to"])],
-                  owner="Zainab Hussein", modified="2026-10-30")
+                  meta=[("Owner", "Zainab Hussein"), ("Updated", "30 October 2099"), ("Ships", ", ".join(s["name"] for s in ships)), ("Certified to", c["certified_to"])],
+                  owner="Zainab Hussein", modified="2099-10-30")
         doc.h1("1. The class")
         doc.p(c["summary"])
         doc.fields([("Builder", c["builder"]), ("Length", f"{c['length_m']} m"), ("Seats", f"{cabin['seats']}: 6 economy, 3 business, 1 galaxium"), ("Crew", f"{c['crew']}: {c['crew_roles'].lower()}"),
@@ -206,7 +206,7 @@ def data_sheets(w: World) -> None:
 
 
 def fleet_book(w: World) -> None:
-    book = Book(path("ops/fleet/fleet-specifications.xlsx"), owner="Zainab Hussein", modified="2026-10-30")
+    book = Book(path("ops/fleet/fleet-specifications.xlsx"), owner="Zainab Hussein", modified="2099-10-30")
     book.sheet("Ships", [{"ship": s["name"], "class": w.classes[s["class"]]["name"], "in_service_since": str(s["in_service_since"]), "home_port": s["home_port"], "flies": s["flies"],
                           "certified_to": s["register"]["certified_to"], "status": s["register"]["status"], "next_check": s["register"]["next_check"], "note": s["note"]} for s in w.ships],
                title="The fleet: ships", subtitle="Kept by Zainab Hussein. Status and next check agree with ops/fleet/fleet-register.xlsx.", status={"status": {"refit": "FBEBD3"}},
@@ -220,13 +220,13 @@ def fleet_book(w: World) -> None:
                title="The cabin: ten seats, the same on every ship", subtitle="Fare factor: policies/pricing-policy.md. The fare is the base price of the flight times the factor.", formats={"fare_factor": "0.0"})
     book.sheet("Crews", [{"crew": c["name"], "size": c["size"], "captain": c["captain"], "ship": ", ".join(sorted({r["ship"] for r in w.routes if r["crew"] == c["name"]})),
                           "routes": ", ".join(w.route(r) for r in w.routes if r["crew"] == c["name"])} for c in w.crews.values()],
-               title="Crews of the scheduled service", subtitle="Roster of 20 October 2026, kept by Andrei Popescu.", total={"size": "sum"}, widths={"routes": 58})
+               title="Crews of the scheduled service", subtitle="Roster of 20 October 2099, kept by Andrei Popescu.", total={"size": "sum"}, widths={"routes": 58})
     book.sheet("Rotations", [{"route": w.route(r), "block_hours": r["hours"], "ship": r["ship"], "class": w.classes[next(s["class"] for s in w.ships if s["name"] == r["ship"])]["name"],
                               "crew": r["crew"]} for r in w.routes],
                title="Scheduled service: which ship flies which route", subtitle=SOURCE_SNAPSHOT + ".")
     book.notes("Notes", ["Seats, routes and block hours are those of the booking system. The route names are the booking system's: it says Moon where we say Luna.",
                          "Lengths, holds, life support and coolant loops are the builder's figures for the class.",
-                         "Open items are in the data sheet of each class and in ops/fleet/maintenance-plan-2026-q4.xlsx."])
+                         "Open items are in the data sheet of each class and in ops/fleet/maintenance-plan-2099-q4.xlsx."])
     book.close()
 
 
@@ -240,7 +240,7 @@ def port_briefs(w: World) -> None:
     for p in w.ports:
         same = p["called"] == p["body"]
         doc = Doc(path(f"ops/ground/port-briefs/port-brief-{p['slug']}.docx"), f"Port brief: {p['port']}", subtitle=f"{p['called']} · {p['kind']}", label="Operations · Port brief",
-                  meta=[("Owner", "Lucia Bianchi"), ("Updated", "2 November 2026"), ("Handler", p["handler"]), ("Contract ends", ends(p))], owner="Lucia Bianchi", modified="2026-11-02")
+                  meta=[("Owner", "Lucia Bianchi"), ("Updated", "2 November 2099"), ("Handler", p["handler"]), ("Contract ends", ends(p))], owner="Lucia Bianchi", modified="2099-11-02")
         doc.h1("1. At a glance")
         doc.fields([("In the booking system", p["body"] if same else f"{p['body']} (we say {p['called']})"), ("Port", p["port"]), ("Gravity", p["gravity"]), ("Local time", p["local_time"]),
                     ("Our contact", p["contact"] or "The handler's duty desk"), ("Our presence", p["our_presence"])])
@@ -265,8 +265,8 @@ def port_briefs(w: World) -> None:
 
 
 def network_deck(w: World) -> None:
-    deck = Deck(path("ops/ground/ports-and-destinations.pptx"), "Ports and destinations", "Where we dock, and where travellers are going · Ground Operations · November 2026",
-                owner="Lucia Bianchi", modified="2026-11-02")
+    deck = Deck(path("ops/ground/ports-and-destinations.pptx"), "Ports and destinations", "Where we dock, and where travellers are going · Ground Operations · November 2099",
+                owner="Lucia Bianchi", modified="2099-11-02")
     deck.statement("Two names for every place", "The booking site sells a destination. Our ship docks at a port.",
                    "A traveller books Mars and reads about Olympus Base. Operations says Olympus Port, because that is where the pad, the handler and the contract are. Both names are right, and this deck puts them side by side.")
     nodes = {body: (x, y, w.called(body), w.port[body]["port"], above) for body, (x, y, above) in MAP_AT.items()}
@@ -294,7 +294,7 @@ def network_deck(w: World) -> None:
 
 
 def port_directory(w: World) -> None:
-    book = Book(path("ops/ground/port-directory.xlsx"), owner="Lucia Bianchi", modified="2026-11-02")
+    book = Book(path("ops/ground/port-directory.xlsx"), owner="Lucia Bianchi", modified="2099-11-02")
     book.sheet("Ports", [{"booking_system": p["body"], "we_say": p["called"], "port": p["port"], "kind": p["kind"], "handler": p["handler"], "contract_ends": str(p["contract_ends"]),
                           "our_contact": p["contact"], "gravity": p["gravity"], "local_time": p["local_time"], "departures_a_month": sum(r["origin"] == p["body"] for r in w.routes),
                           "arrivals_a_month": sum(r["destination"] == p["body"] for r in w.routes), "our_presence": p["our_presence"]} for p in w.ports],
@@ -306,7 +306,7 @@ def port_directory(w: World) -> None:
                            "handler_at_origin": w.port[r["origin"]]["handler"], "handler_at_destination": w.port[r["destination"]]["handler"]} for r in w.routes],
                title="Scheduled routes, port to port", subtitle=SOURCE_SNAPSHOT + ".", widths={"handler_at_origin": 34, "handler_at_destination": 34})
     book.notes("Notes", ["The booking system names the body (Moon, Mars). Operations names the port (Tycho Spaceport, Olympus Port). The public site describes the destination beyond the port (Artemis Base Camp, Olympus Base).",
-                         "Transfers beyond the port are run by the port or the station and are not part of our ticket.", "Turnaround counts and service levels by port are in ops/ground/turnaround-scorecard-2026-q3.xlsx."])
+                         "Transfers beyond the port are run by the port or the station and are not part of our ticket.", "Turnaround counts and service levels by port are in ops/ground/turnaround-scorecard-2099-q3.xlsx."])
     book.close()
 
 
@@ -315,8 +315,8 @@ def port_directory(w: World) -> None:
 def cabin_guide(w: World) -> None:
     every = w.cabin["for_everyone"]
     doc = Doc(path("marketing/product/cabin-class-guide.docx"), "Cabin class guide", subtitle="Economy, business and galaxium: what we promise and what is behind it", label="Marketing · Product guide",
-              meta=[("Owner", "Noor Rahimi"), ("Checked by", "Priya Raman, Nadia Haddad"), ("Updated", "8 October 2026"), ("For", "Sales, Support and anyone writing about the product")],
-              owner="Noor Rahimi", modified="2026-10-08")
+              meta=[("Owner", "Noor Rahimi"), ("Checked by", "Priya Raman, Nadia Haddad"), ("Updated", "8 October 2099"), ("For", "Sales, Support and anyone writing about the product")],
+              owner="Noor Rahimi", modified="2099-10-08")
     doc.callout("The words in bold under each class are the booking site's. Use them as they are. If a campaign needs other words, the site changes first.", "House rule")
     doc.h1("1. The three classes")
     doc.table(["Seat class", "Seats", "On every ship", "Fare"], [[c["name"], c["seats"], sum(s["class"] == c["id"] for row in w.fleet["cabin"]["rows"] for s in row["seats"]),
@@ -340,12 +340,12 @@ def cabin_guide(w: World) -> None:
 def traveller_guide(w: World) -> None:
     every = w.cabin["for_everyone"]
     doc = Doc(path("support/knowledge-base/before-you-fly.docx"), "Before you fly", subtitle="What we tell travellers, from booking to arrival", label="Support · Knowledge base",
-              meta=[("Owner", "Greta Olsen"), ("Updated", "22 October 2026"), ("Use", "Answers to travellers. Copy the wording."), ("Questions", "#support-escalations")], owner="Greta Olsen", modified="2026-10-22")
+              meta=[("Owner", "Greta Olsen"), ("Updated", "22 October 2099"), ("Use", "Answers to travellers. Copy the wording."), ("Questions", "#support-escalations")], owner="Greta Olsen", modified="2099-10-22")
     doc.h1("1. From booking to arrival")
     doc.table(["When", "What we tell the traveller"], [[s["when"], s["what"]] for s in w.cabin["before_you_fly"]], widths=[1.4, 4.8])
     doc.h1("2. The same for every traveller")
     doc.table(["", ""], [["Baggage", every["baggage"]], ["Meals", every["meals"]], ["Medical equipment", every["medical"]], ["Assistance", every["assistance"]], ["Seat holds", every["holds"]]], widths=[1.4, 4.8])
-    doc.callout("On the Kestrel class ships heavy items go under the seat, not in the overhead bins, until the restraint latches are replaced (safety bulletin 2026-07).", "Until further notice")
+    doc.callout("On the Kestrel class ships heavy items go under the seat, not in the overhead bins, until the restraint latches are replaced (safety bulletin 2099-07).", "Until further notice")
     doc.h1("3. On board")
     doc.table(["Part of the flight", "How long", "What happens"], [[p["phase"], p["about"], p["what"]] for p in w.fleet["flight"]], widths=[1.5, 1.3, 3.6])
     doc.bullets(w.fleet["flight_notes"])

@@ -2,7 +2,7 @@ name: Galaxium Travels
 tagline: Interplanetary travel, booked like a train ticket.
 domain: galaxium.example
 # The story's date. Every mail, chat message and report is written relative to it.
-today: 2026-11-04
+today: 2099-11-04
 # Whose desk the agent works at when no scenario pack says otherwise.
 persona: priya.raman
 # Who looks after each top-level folder of the drive, when a file does not say.
@@ -19,3 +19,14 @@ drive_owners:
   leadership: Renata Castellanos
   policies: Helena Vogt
   templates: Agnes Wójcik
+# The company's history in one line a year. The years in which the ships entered service
+# are those of fleet.yaml; money, owners and the reason for founding are in finance.yaml.
+founded: 2092
+history:
+  - {when: "2092", what: "Founded at Cape Meridian. Three Kestrel class ships ordered from Hadley Yards."}
+  - {when: "2094", what: "Kestrel enters service. First scheduled departures: Earth, Luna and Mars."}
+  - {when: "2095", what: "Meridian enters service. Venus. The first corporate account."}
+  - {when: "2096", what: "Solstice, Aurora and Perihelion. Jupiter. Offices on Luna and Mars."}
+  - {when: "2097", what: "Halcyon enters service with the outer-system package. Europa."}
+  - {when: "2098", what: "No new route. The first year with a profit."}
+  - {when: "2099", what: "Pluto from the spring. Perihelion into refit in June. Seat holds on the public site from October."}

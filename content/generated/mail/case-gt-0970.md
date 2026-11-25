@@ -5,7 +5,7 @@ labels:
 ---
 From: Bob <bob@example.com>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-10-01 15:09
+Date: 2099-10-01 15:09
 
 Hello,
 
@@ -17,7 +17,7 @@ Bob
 
 From: Mateo Vargas <mateo.vargas@galaxium.example>
 To: Bob <bob@example.com>
-Date: 2026-10-01 17:13
+Date: 2099-10-01 17:13
 
 Hello Bob,
 

@@ -4,7 +4,7 @@ labels: [sales]
 ---
 From: Amara Okafor <amara.okafor@galaxium.example>
 To: Priya Raman <priya.raman@galaxium.example>, Ingrid Solberg <ingrid.solberg@galaxium.example>
-Date: 2026-10-28 14:10
+Date: 2099-10-28 14:10
 
 Both,
 

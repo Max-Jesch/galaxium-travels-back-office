@@ -7,8 +7,8 @@ labels:
 ---
 From: Payroll <payroll@galaxium.example>
 To: All Staff <all@galaxium.example>
-Date: 2026-10-23 09:00
+Date: 2099-10-23 09:00
 
-Your payslip for October 2026 is available in the payroll system. Pay day is the 28th.
+Your payslip for October 2099 is available in the payroll system. Pay day is the 28th.
 
 Questions about your payslip go to Hana Kobayashi. Please do not reply to this mail.

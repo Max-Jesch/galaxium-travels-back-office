@@ -34,7 +34,7 @@ In October, 3 of 14 turnarounds at Tycho were later than 90 minutes (2, 9 and 21
 
 ## The other proposal
 
-Clavius Port Services offers 395,000 credits a month, a 24 month term without automatic renewal, 90 minute turnarounds with 5% credits, and a liability cap of 12 months. Clavius relies on the shared fuelling gantry until July 2027, while Tycho's second gantry is due in January. Clavius meets the playbook on every topic it mentions; payment terms and termination are not stated and must be asked.
+Clavius Port Services offers $395,000 a month, a 24 month term without automatic renewal, 90 minute turnarounds with 5% credits, and a liability cap of 12 months. Clavius relies on the shared fuelling gantry until July 2100, while Tycho's second gantry is due in January. Clavius meets the playbook on every topic it mentions; payment terms and termination are not stated and must be asked.
 
 ## What a good result contains
 

@@ -1,10 +1,10 @@
 ---
 owner: Clara Jensen
-modified: 2026-11-03
+modified: 2099-11-03
 ---
 # Release 4.12: test plan
 
-Release date: Tuesday 10 November 2026, 07:00 UTC. Code freeze Friday 6 November.
+Release date: Tuesday 10 November 2099, 07:00 UTC. Code freeze Friday 6 November.
 
 ## Refund preview (issue 43)
 The preview must show the same refund, fee and travel credit that the cancellation then applies. Cases are taken from policies/refund-policy.md, one per tier, plus:

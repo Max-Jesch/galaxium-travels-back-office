@@ -4,7 +4,7 @@ labels: [support, schedule-change]
 ---
 From: Galaxium Support <support@galaxium.example>
 To: Frank <frank@venusmail.com>
-Date: 2026-11-03 16:40
+Date: 2099-11-03 16:40
 
 Dear Frank,
 
@@ -18,6 +18,6 @@ Galaxium Support
 
 From: Frank <frank@venusmail.com>
 To: Galaxium Support <support@galaxium.example>
-Date: 2026-11-03 19:05
+Date: 2099-11-03 19:05
 
 Later is better for me. Thanks for letting me know.

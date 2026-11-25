@@ -5,7 +5,7 @@ labels: [ops, vendor]
 From: Rafael Ortega <rafael.ortega@tychoground.example>
 To: Priya Raman <priya.raman@galaxium.example>
 Cc: Sam Whitlock <sam.whitlock@galaxium.example>
-Date: 2026-10-30 11:20
+Date: 2099-10-30 11:20
 
 Dear Priya,
 

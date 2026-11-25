@@ -1,11 +1,11 @@
 ---
 subject: Deferred revenue schedule for October
 labels: [finance, close]
-attachments: [finance/close/2026-10/deferred-revenue-2026-10.xlsx]
+attachments: [finance/close/2099-10/deferred-revenue-2099-10.xlsx]
 ---
 From: Tomás Rivera <tomas.rivera@galaxium.example>
 To: Chidi Eze <chidi.eze@galaxium.example>
-Date: 2026-11-03 11:42
+Date: 2099-11-03 11:42
 
 Chidi,
 
@@ -19,6 +19,6 @@ Tomás
 
 From: Chidi Eze <chidi.eze@galaxium.example>
 To: Tomás Rivera <tomas.rivera@galaxium.example>
-Date: 2026-11-03 13:10
+Date: 2099-11-03 13:10
 
 Thanks. Posted as it stands. Flag it in your memo to Ingrid so that we do not forget.

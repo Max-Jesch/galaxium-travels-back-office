@@ -1,11 +1,11 @@
 ---
-subject: Performance cycle 2026 opens on 16 November
+subject: Performance cycle 2099 opens on 16 November
 labels: [people, all-staff]
-attachments: [people/performance-cycle-2026/timeline.md]
+attachments: [people/performance-cycle-2099/timeline.md]
 ---
 From: Dorothea Klein <dorothea.klein@galaxium.example>
 To: All Staff <all@galaxium.example>
-Date: 2026-10-29 11:20
+Date: 2099-10-29 11:20
 
 Dear colleagues,
 

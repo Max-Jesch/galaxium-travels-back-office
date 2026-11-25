@@ -4,7 +4,7 @@ labels: [newsletter, all-staff]
 ---
 From: Noor Rahimi <noor.rahimi@galaxium.example>
 To: All Staff <all@galaxium.example>
-Date: 2026-10-30 12:00
+Date: 2099-10-30 12:00
 
 THE ORBIT, your monthly internal newsletter
 

@@ -56,7 +56,7 @@ classes:
       - "Not certified beyond Mars. The hull is not shielded for Jupiter's radiation belts."
       - "Venus needs the radiation shielding procedure on approach, which is why a Venus leg counts as outer-system for crew rest."
     open_items:
-      - "Safety bulletin 2026-07: two overhead restraint latches opened during the departure burn on Kestrel in September (rows 2 and 5). Cabin crew check every latch by hand on Kestrel and Meridian. 48 replacement latches are due on 14 November, Kestrel first, then Meridian. Until then heavy items go under the seat."
+      - "Safety bulletin 2099-07: two overhead restraint latches opened during the departure burn on Kestrel in September (rows 2 and 5). Cabin crew check every latch by hand on Kestrel and Meridian. 48 replacement latches are due on 14 November, Kestrel first, then Meridian. Until then heavy items go under the seat."
       - "Solstice was built with the later latch and is not covered by the bulletin."
   - id: aurora
     name: Aurora class
@@ -108,55 +108,55 @@ classes:
     limits:
       - "Only a hull with the outer-system package flies beyond Jupiter. Today that is Halcyon alone."
     open_items:
-      - "Halcyon: the number 2 coolant valve assembly was replaced from 26 to 29 October 2026, after wear was found at the routine inspection. Pressure tested for 12 hours and signed off on 29 October. Cost 640,000 credits, charged to the maintenance reserve."
-      - "Perihelion: in refit since 1 June 2026 to receive the outer-system package. Back in service in February 2027 as the second outer-system hull."
+      - "Halcyon: the number 2 coolant valve assembly was replaced from 26 to 29 October 2099, after wear was found at the routine inspection. Pressure tested for 12 hours and signed off on 29 October. Cost $640,000, charged to the maintenance reserve."
+      - "Perihelion: in refit since 1 June 2099 to receive the outer-system package. Back in service in February 2100 as the second outer-system hull."
 
 # register: the rows of ops/fleet/fleet-register.xlsx, kept by Zainab Hussein.
 ships:
   - name: Kestrel
     class: kestrel
-    in_service_since: 2021
+    in_service_since: 2094
     home_port: Cape Meridian
     flies: "Earth to Mars and back"
     note: "First ship of the fleet and the one the class is named after."
-    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars, Venus", status: In service, next_check: "2026-11-14 (baggage latches)"}
+    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars, Venus", status: In service, next_check: "2099-11-14 (baggage latches)"}
   - name: Meridian
     class: kestrel
-    in_service_since: 2022
+    in_service_since: 2095
     home_port: Cape Meridian
     flies: "Earth to Venus and back"
     note: "The Venus ship. Docks at berth 3 of Aphrodite Station."
-    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars, Venus", status: In service, next_check: "2026-11-21"}
+    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars, Venus", status: In service, next_check: "2099-11-21"}
   - name: Solstice
     class: kestrel
-    in_service_since: 2023
+    in_service_since: 2096
     home_port: Cape Meridian
     flies: "Earth to Luna, and Luna to Mars"
     note: "Newest of the class, built with the later overhead latch."
-    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars", status: In service, next_check: "2026-12-05"}
+    register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars", status: In service, next_check: "2099-12-05"}
   - name: Aurora
     class: aurora
-    in_service_since: 2023
+    in_service_since: 2096
     home_port: Olympus Port
     flies: "Mars to Jupiter"
     note: "Based on Mars. Her routine checks are done at Olympus Port."
-    register: {certified_to: Jupiter, routes: "Mars, Jupiter", status: In service, next_check: "2026-12-12"}
+    register: {certified_to: Jupiter, routes: "Mars, Jupiter", status: In service, next_check: "2099-12-12"}
   - name: Halcyon
     class: halcyon
-    in_service_since: 2024
+    in_service_since: 2097
     home_port: Cape Meridian
     flies: "Jupiter to Europa, Europa to Earth, and Earth to Pluto"
     note: "The only hull certified beyond Jupiter until Perihelion returns."
-    register: {certified_to: Pluto, routes: "Jupiter, Europa, Pluto", status: In service (valve assembly replaced 29 October), next_check: "2026-11-25"}
+    register: {certified_to: Pluto, routes: "Jupiter, Europa, Pluto", status: In service (valve assembly replaced 29 October), next_check: "2099-11-25"}
   - name: Perihelion
     class: halcyon
-    in_service_since: 2023
+    in_service_since: 2096
     home_port: Cape Meridian
     flies: ""
     note: "First hull of the class, delivered without the outer-system package. Flew charter rotations as far as Jupiter until the refit began."
-    register: {certified_to: Pluto after refit, routes: "", status: Refit until February 2027, next_check: ""}
+    register: {certified_to: Pluto after refit, routes: "", status: Refit until February 2100, next_check: ""}
 
-# The six crews of the roster of 20 October 2026, kept by Andrei Popescu.
+# The six crews of the roster of 20 October 2099, kept by Andrei Popescu.
 crews:
   - {name: Inner A, size: 3, captain: Ileana Dragomir}
   - {name: Inner B, size: 3, captain: Tobias Achterberg}
