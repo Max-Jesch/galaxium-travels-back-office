@@ -7,10 +7,12 @@ permission for that system and logs the call, allowed or not.
 from __future__ import annotations
 
 import functools
+import threading
 from collections import defaultdict
 from typing import Any, Callable
 from urllib.parse import quote
 
+import anyio
 from mcp.server.fastmcp import FastMCP
 from mcp.types import ToolAnnotations
 
@@ -30,13 +32,27 @@ mcp = FastMCP(
 )
 
 TOOLS: list[dict] = []  # shown on the Permissions tab of the web view
+_WRITE_LOCK = threading.Lock()
 
 
 def _register(fn: Callable, system: str, kind: str) -> Callable:
     TOOLS.append({"name": fn.__name__, "system": system, "kind": kind,
                   "description": (fn.__doc__ or "").strip().split("\n")[0]})
     read_only = kind == "read"
-    mcp.tool(annotations=ToolAnnotations(readOnlyHint=read_only, destructiveHint=False, openWorldHint=False))(fn)
+
+    # FastMCP runs a plain function on its event loop, so one slow call would hold up every
+    # other call and the web view. Run each call in a worker thread instead; writes take a
+    # lock, because they read, change and rewrite the same state files.
+    @functools.wraps(fn)
+    async def threaded(*args: Any, **kwargs: Any) -> Any:
+        def call() -> Any:
+            if read_only:
+                return fn(*args, **kwargs)
+            with _WRITE_LOCK:
+                return fn(*args, **kwargs)
+        return await anyio.to_thread.run_sync(call)
+
+    mcp.tool(annotations=ToolAnnotations(readOnlyHint=read_only, destructiveHint=False, openWorldHint=False))(threaded)
     return fn
 
 
@@ -281,12 +297,52 @@ def crm_list_accounts(query: str = "", limit: int = 50) -> dict:
 
 
 @_read("crm")
-def crm_list_deals(stage: str = "", owner: str = "", account_id: str = "", query: str = "", limit: int = 50) -> dict:
-    """List deals. stage is one of prospect, proposal, negotiation, won, lost. Returns summaries; use crm_get_deal for notes."""
+def crm_list_deals(stage: str = "", owner: str = "", account_id: str = "", query: str = "", closed_from: str = "", closed_to: str = "",
+                   limit: int = 200, offset: int = 0) -> dict:
+    """List deals (sales pipeline, won and lost deals), oldest close date first. For totals of the open pipeline use crm_pipeline_summary. stage is one of prospect, proposal, negotiation, won, lost.
+    closed_from and closed_to (YYYY-MM-DD, inclusive) filter by close date: the CRM holds every deal since January 2098.
+    `total` is the number of matches; if it is larger than the items returned, read on with offset.
+    Returns summaries; use crm_get_deal for notes."""
     items = [d for d in store.deals().values()
              if (not stage or d.get("stage") == stage) and (not owner or owner.lower() in d.get("owner", "").lower())
-             and (not account_id or d.get("account_id") == account_id) and (not query or _matches(d, query))]
-    return _page([{k: v for k, v in d.items() if k != "notes"} for d in items], limit)
+             and (not account_id or d.get("account_id") == account_id) and (not query or _matches(d, query))
+             and (not closed_from or str(d.get("close_date", "")) >= closed_from) and (not closed_to or str(d.get("close_date", "")) <= closed_to)]
+    items.sort(key=lambda d: (str(d.get("close_date", "")), str(d.get("id"))))
+    return _page([{k: v for k, v in d.items() if k != "notes"} for d in items], limit, offset)
+
+
+_GROUPS = {"stage": lambda d: d["stage"], "close_month": lambda d: str(d.get("close_date", ""))[:7],
+           "owner": lambda d: d.get("owner", ""), "account": lambda d: d.get("account_id", "")}
+
+
+@_read("crm")
+def crm_pipeline_summary(group_by: str = "stage", owner: str = "", close_from: str = "", close_to: str = "") -> dict:
+    """Totals of the open sales pipeline from the CRM: deals, open value and weighted forecast, for pipeline and
+    forecast questions such as this quarter's or next month's numbers. group_by is stage, close_month, owner or account.
+    close_from and close_to (YYYY-MM-DD, inclusive) filter by expected close date. Covers open deals only (prospect,
+    proposal, negotiation); for won and lost deals use crm_list_deals with stage and closed_from/closed_to."""
+    if group_by not in _GROUPS:
+        raise ValueError(f"group_by must be one of {', '.join(_GROUPS)}")
+    prob = store.finance().get("stage_probability", {})
+    deals = [d for d in store.deals().values() if d.get("stage") in prob
+             and (not owner or owner.lower() in d.get("owner", "").lower())
+             and (not close_from or str(d.get("close_date", "")) >= close_from) and (not close_to or str(d.get("close_date", "")) <= close_to)]
+    groups: dict[str, dict] = {}
+    for d in sorted(deals, key=lambda d: (str(d.get("close_date", "")), str(d["id"]))):
+        g = groups.setdefault(_GROUPS[group_by](d), {"deals": 0, "open_value": 0, "weighted": 0, "deal_ids": []})
+        g["deals"] += 1
+        g["open_value"] += d["amount"]
+        g["weighted"] += round(d["amount"] * prob[d["stage"]])
+        g["deal_ids"].append(d["id"])
+    order = list(prob) if group_by == "stage" else sorted(groups)
+    items = [{group_by: k, **groups[k]} for k in order if k in groups]
+    return {
+        "as_of": store.today(),
+        "source": "CRM deals, read now. Weighted value is the amount times the stage probability of the sales forecast.",
+        "stage_probability": prob,
+        "total": {k: sum(g[k] for g in groups.values()) for k in ("deals", "open_value", "weighted")},
+        "items": items,
+    }
 
 
 @_read("crm")
@@ -325,16 +381,23 @@ def drive_list(folder: str = "") -> dict:
 
 @_read("drive")
 def drive_read(path: str) -> dict:
-    """Read a drive file as text. Spreadsheets, documents and decks are converted to text. For the file itself, for example a deck template to build on, use drive_download."""
-    return _public(store.drive_text(path))
+    """Read a drive file (document, spreadsheet, deck, memo, export) as text. Spreadsheets, documents and decks are converted to text. For the file itself, for example a deck template to build on, use drive_download."""
+    entry = _public(store.drive_text(path))
+    notes = []
+    if entry["path"].lower().endswith((".xlsx", ".csv")):
+        notes.append("A spreadsheet in the drive is a copy. The CRM is the record for deals, the booking system for bookings "
+                     "and quotes: check figures against them before you rely on this file.")
+    if entry.get("source") == "agent":
+        notes.append(f"Put on the drive through the back office tools on {entry.get('modified')}, not written by a company system.")
+    return {**entry, "note": " ".join(notes)} if notes else entry
 
 
 @_read("drive")
 def drive_search(query: str) -> dict:
-    """Find drive files whose name or text contains every word of the query."""
+    """Find drive files (documents, spreadsheets, decks, reports, exports) whose name or text contains every word of the query."""
     hits = []
     for f in store.drive_files():
-        if _matches(f["path"], query) or _matches(store.drive_text(f["path"])["text"], query):
+        if _matches(f["path"], query) or _matches(store.entry_text(f)["text"], query):
             hits.append(_public(f))
     return _all(hits)
 
