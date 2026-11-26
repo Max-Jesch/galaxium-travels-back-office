@@ -1,70 +1,101 @@
 # The fixed cast. Mail addresses use the reserved .example domain.
 # manager is the id of the person they report to. also_reads lists shared mailboxes.
+# since is the year they joined. People with `kind` (crew, station) are not office staff:
+# they are in the directory, but the generated office routine leaves them out.
 
 # Leadership
-- {id: renata.castellanos, name: Renata Castellanos, role: Chief Executive Officer, department: Leadership, email: renata.castellanos@galaxium.example, location: Earth HQ}
-- {id: olu.adeyemi, name: Olu Adeyemi, role: Chief Operating Officer, department: Leadership, email: olu.adeyemi@galaxium.example, manager: renata.castellanos, location: Earth HQ}
-- {id: farid.nazari, name: Farid Nazari, role: Chief Technology Officer, department: Leadership, email: farid.nazari@galaxium.example, manager: renata.castellanos, location: Earth HQ}
+- {id: renata.castellanos, name: Renata Castellanos, role: Chief Executive Officer, department: Leadership, email: renata.castellanos@galaxium.example, location: Earth HQ, since: 2092, about: "Founder. Sold contract seats at Stellar Lines for nine years and left to sell one seat at a time."}
+- {id: olu.adeyemi, name: Olu Adeyemi, role: Chief Operating Officer, department: Leadership, email: olu.adeyemi@galaxium.example, manager: renata.castellanos, location: Earth HQ, since: 2092, about: "Founder. Flew for Orbitway as a captain until 2091. Signed the order for the first three ships."}
+- {id: farid.nazari, name: Farid Nazari, role: Chief Technology Officer, department: Leadership, email: farid.nazari@galaxium.example, manager: renata.castellanos, location: Earth HQ, since: 2092, about: "Founder. Wrote the first booking site himself. It took a booking nineteen months before the first ship flew."}
 
 # Finance
-- {id: ingrid.solberg, name: Ingrid Solberg, role: Finance Director, department: Finance, email: ingrid.solberg@galaxium.example, manager: renata.castellanos, location: Earth HQ, also_reads: [finance@galaxium.example]}
-- {id: tomas.rivera, name: Tomás Rivera, role: Financial Analyst, department: Finance, email: tomas.rivera@galaxium.example, manager: ingrid.solberg, location: Earth HQ, also_reads: [finance@galaxium.example]}
-- {id: chidi.eze, name: Chidi Eze, role: Financial Controller, department: Finance, email: chidi.eze@galaxium.example, manager: ingrid.solberg, location: Earth HQ, also_reads: [finance@galaxium.example]}
-- {id: beatrix.novak, name: Beatrix Novak, role: Accounts Payable Specialist, department: Finance, email: beatrix.novak@galaxium.example, manager: chidi.eze, location: Earth HQ, also_reads: [finance@galaxium.example, invoices@galaxium.example]}
-- {id: hana.kobayashi, name: Hana Kobayashi, role: Payroll and Expenses Specialist, department: Finance, email: hana.kobayashi@galaxium.example, manager: chidi.eze, location: Luna Station office}
+- {id: ingrid.solberg, name: Ingrid Solberg, role: Finance Director, department: Finance, email: ingrid.solberg@galaxium.example, manager: renata.castellanos, location: Earth HQ, also_reads: [finance@galaxium.example], since: 2097, about: "Joined in the autumn of 2097, the week the third round was being negotiated."}
+- {id: tomas.rivera, name: Tomás Rivera, role: Financial Analyst, department: Finance, email: tomas.rivera@galaxium.example, manager: ingrid.solberg, location: Earth HQ, also_reads: [finance@galaxium.example], since: 2098}
+- {id: chidi.eze, name: Chidi Eze, role: Financial Controller, department: Finance, email: chidi.eze@galaxium.example, manager: ingrid.solberg, location: Earth HQ, also_reads: [finance@galaxium.example], since: 2096}
+- {id: beatrix.novak, name: Beatrix Novak, role: Accounts Payable Specialist, department: Finance, email: beatrix.novak@galaxium.example, manager: chidi.eze, location: Earth HQ, also_reads: [finance@galaxium.example, invoices@galaxium.example], since: 2097}
+- {id: hana.kobayashi, name: Hana Kobayashi, role: Payroll and Expenses Specialist, department: Finance, email: hana.kobayashi@galaxium.example, manager: chidi.eze, location: Luna Station office, since: 2096, about: "Moved to Luna in 2098 to run payroll for the Luna company."}
 
 # Sales
-- {id: amara.okafor, name: Amara Okafor, role: Head of Sales, department: Sales, email: amara.okafor@galaxium.example, manager: renata.castellanos, location: Earth HQ}
-- {id: dev.malhotra, name: Dev Malhotra, role: Account Executive, department: Sales, email: dev.malhotra@galaxium.example, manager: amara.okafor, location: Earth HQ}
-- {id: lena.fischer, name: Lena Fischer, role: Account Executive, department: Sales, email: lena.fischer@galaxium.example, manager: amara.okafor, location: Luna Station office}
-- {id: bastien.moreau, name: Bastien Moreau, role: Account Executive, department: Sales, email: bastien.moreau@galaxium.example, manager: amara.okafor, location: Mars office}
-- {id: sinead.byrne, name: Sinead Byrne, role: Sales Operations Analyst, department: Sales, email: sinead.byrne@galaxium.example, manager: amara.okafor, location: Earth HQ}
-- {id: jamal.carter, name: Jamal Carter, role: Customer Success Manager, department: Sales, email: jamal.carter@galaxium.example, manager: amara.okafor, location: Earth HQ}
+- {id: amara.okafor, name: Amara Okafor, role: Head of Sales, department: Sales, email: amara.okafor@galaxium.example, manager: renata.castellanos, location: Earth HQ, since: 2095, about: "Signed Outer Belt Logistics, the first corporate account, in her first year."}
+- {id: dev.malhotra, name: Dev Malhotra, role: Account Executive, department: Sales, email: dev.malhotra@galaxium.example, manager: amara.okafor, location: Earth HQ, since: 2096}
+- {id: lena.fischer, name: Lena Fischer, role: Account Executive, department: Sales, email: lena.fischer@galaxium.example, manager: amara.okafor, location: Luna Station office, since: 2097, about: "Based on Luna, where most research and education accounts have their offices."}
+- {id: bastien.moreau, name: Bastien Moreau, role: Account Executive, department: Sales, email: bastien.moreau@galaxium.example, manager: amara.okafor, location: Mars office, since: 2099, about: "Joined in the spring from the Olympus Port Authority."}
+- {id: sinead.byrne, name: Sinead Byrne, role: Sales Operations Analyst, department: Sales, email: sinead.byrne@galaxium.example, manager: amara.okafor, location: Earth HQ, since: 2098}
+- {id: jamal.carter, name: Jamal Carter, role: Customer Success Manager, department: Sales, email: jamal.carter@galaxium.example, manager: amara.okafor, location: Earth HQ, since: 2097}
 
 # Marketing
-- {id: elise.fontaine, name: Elise Fontaine, role: Head of Marketing, department: Marketing, email: elise.fontaine@galaxium.example, manager: renata.castellanos, location: Earth HQ}
-- {id: noor.rahimi, name: Noor Rahimi, role: Content Lead, department: Marketing, email: noor.rahimi@galaxium.example, manager: elise.fontaine, location: Earth HQ}
-- {id: viktor.hale, name: Viktor Hale, role: Brand Designer, department: Marketing, email: viktor.hale@galaxium.example, manager: elise.fontaine, location: Earth HQ}
-- {id: pilar.navarro, name: Pilar Navarro, role: Events and Partnerships Manager, department: Marketing, email: pilar.navarro@galaxium.example, manager: elise.fontaine, location: Mars office}
+- {id: elise.fontaine, name: Elise Fontaine, role: Head of Marketing, department: Marketing, email: elise.fontaine@galaxium.example, manager: renata.castellanos, location: Earth HQ, since: 2096}
+- {id: noor.rahimi, name: Noor Rahimi, role: Content Lead, department: Marketing, email: noor.rahimi@galaxium.example, manager: elise.fontaine, location: Earth HQ, since: 2098}
+- {id: viktor.hale, name: Viktor Hale, role: Brand Designer, department: Marketing, email: viktor.hale@galaxium.example, manager: elise.fontaine, location: Earth HQ, since: 2097}
+- {id: pilar.navarro, name: Pilar Navarro, role: Events and Partnerships Manager, department: Marketing, email: pilar.navarro@galaxium.example, manager: elise.fontaine, location: Mars office, since: 2098}
 
 # Support
-- {id: nadia.haddad, name: Nadia Haddad, role: Support Lead, department: Support, email: nadia.haddad@galaxium.example, manager: olu.adeyemi, location: Earth HQ, also_reads: [support@galaxium.example]}
-- {id: kofi.mensah, name: Kofi Mensah, role: Support Agent, department: Support, email: kofi.mensah@galaxium.example, manager: nadia.haddad, location: Earth HQ, also_reads: [support@galaxium.example]}
-- {id: anneli.korhonen, name: Anneli Korhonen, role: Support Agent, department: Support, email: anneli.korhonen@galaxium.example, manager: nadia.haddad, location: Luna Station office, also_reads: [support@galaxium.example]}
-- {id: mateo.vargas, name: Mateo Vargas, role: Support Agent, department: Support, email: mateo.vargas@galaxium.example, manager: nadia.haddad, location: Mars office, also_reads: [support@galaxium.example]}
-- {id: thandi.dlamini, name: Thandi Dlamini, role: Senior Support Agent, department: Support, email: thandi.dlamini@galaxium.example, manager: nadia.haddad, location: Earth HQ, also_reads: [support@galaxium.example]}
-- {id: greta.olsen, name: Greta Olsen, role: Support Operations and Knowledge Base, department: Support, email: greta.olsen@galaxium.example, manager: nadia.haddad, location: Earth HQ}
+- {id: nadia.haddad, name: Nadia Haddad, role: Support Lead, department: Support, email: nadia.haddad@galaxium.example, manager: olu.adeyemi, location: Earth HQ, also_reads: [support@galaxium.example], since: 2094, about: "Answered the support line alone in the first year."}
+- {id: kofi.mensah, name: Kofi Mensah, role: Support Agent, department: Support, email: kofi.mensah@galaxium.example, manager: nadia.haddad, location: Earth HQ, also_reads: [support@galaxium.example], since: 2096}
+- {id: anneli.korhonen, name: Anneli Korhonen, role: Support Agent, department: Support, email: anneli.korhonen@galaxium.example, manager: nadia.haddad, location: Luna Station office, also_reads: [support@galaxium.example], since: 2097}
+- {id: mateo.vargas, name: Mateo Vargas, role: Support Agent, department: Support, email: mateo.vargas@galaxium.example, manager: nadia.haddad, location: Mars office, also_reads: [support@galaxium.example], since: 2099}
+- {id: thandi.dlamini, name: Thandi Dlamini, role: Senior Support Agent, department: Support, email: thandi.dlamini@galaxium.example, manager: nadia.haddad, location: Earth HQ, also_reads: [support@galaxium.example], since: 2095}
+- {id: greta.olsen, name: Greta Olsen, role: Support Operations and Knowledge Base, department: Support, email: greta.olsen@galaxium.example, manager: nadia.haddad, location: Earth HQ, since: 2096}
 
 # Legal
-- {id: helena.vogt, name: Helena Vogt, role: General Counsel, department: Legal, email: helena.vogt@galaxium.example, manager: renata.castellanos, location: Earth HQ}
-- {id: sam.whitlock, name: Sam Whitlock, role: Contracts Manager, department: Legal, email: sam.whitlock@galaxium.example, manager: helena.vogt, location: Earth HQ, also_reads: [legal@galaxium.example]}
-- {id: isaac.brandt, name: Isaac Brandt, role: Compliance and Privacy Officer, department: Legal, email: isaac.brandt@galaxium.example, manager: helena.vogt, location: Earth HQ, also_reads: [legal@galaxium.example]}
+- {id: helena.vogt, name: Helena Vogt, role: General Counsel, department: Legal, email: helena.vogt@galaxium.example, manager: renata.castellanos, location: Earth HQ, since: 2095}
+- {id: sam.whitlock, name: Sam Whitlock, role: Contracts Manager, department: Legal, email: sam.whitlock@galaxium.example, manager: helena.vogt, location: Earth HQ, also_reads: [legal@galaxium.example], since: 2097}
+- {id: isaac.brandt, name: Isaac Brandt, role: Compliance and Privacy Officer, department: Legal, email: isaac.brandt@galaxium.example, manager: helena.vogt, location: Earth HQ, also_reads: [legal@galaxium.example], since: 2098}
 
 # Operations
-- {id: priya.raman, name: Priya Raman, role: Head of Flight Operations, department: Operations, email: priya.raman@galaxium.example, manager: olu.adeyemi, location: Earth HQ}
-- {id: yuki.tanaka, name: Yuki Tanaka, role: Route Planner, department: Operations, email: yuki.tanaka@galaxium.example, manager: priya.raman, location: Earth HQ}
-- {id: andrei.popescu, name: Andrei Popescu, role: Crew Scheduling Lead, department: Operations, email: andrei.popescu@galaxium.example, manager: priya.raman, location: Earth HQ}
-- {id: lucia.bianchi, name: Lucia Bianchi, role: Ground Operations Manager, department: Operations, email: lucia.bianchi@galaxium.example, manager: priya.raman, location: Luna Station office}
-- {id: kwame.asante, name: Kwame Asante, role: Safety Officer, department: Operations, email: kwame.asante@galaxium.example, manager: olu.adeyemi, location: Earth HQ}
-- {id: sofia.lindgren, name: Sofia Lindgren, role: Operations Controller, department: Operations, email: sofia.lindgren@galaxium.example, manager: priya.raman, location: Earth HQ, also_reads: [opscontrol@galaxium.example]}
-- {id: hiro.matsuda, name: Hiro Matsuda, role: Operations Controller, department: Operations, email: hiro.matsuda@galaxium.example, manager: priya.raman, location: Mars office, also_reads: [opscontrol@galaxium.example]}
-- {id: zainab.hussein, name: Zainab Hussein, role: Fleet Maintenance Planner, department: Operations, email: zainab.hussein@galaxium.example, manager: priya.raman, location: Luna Station office}
+- {id: priya.raman, name: Priya Raman, role: Head of Flight Operations, department: Operations, email: priya.raman@galaxium.example, manager: olu.adeyemi, location: Earth HQ, since: 2093, about: "Planned the first timetable around one ship. Head of Flight Operations since 2096."}
+- {id: yuki.tanaka, name: Yuki Tanaka, role: Route Planner, department: Operations, email: yuki.tanaka@galaxium.example, manager: priya.raman, location: Earth HQ, since: 2097}
+- {id: andrei.popescu, name: Andrei Popescu, role: Crew Scheduling Lead, department: Operations, email: andrei.popescu@galaxium.example, manager: priya.raman, location: Earth HQ, since: 2095}
+- {id: lucia.bianchi, name: Lucia Bianchi, role: Ground Operations Manager, department: Operations, email: lucia.bianchi@galaxium.example, manager: priya.raman, location: Luna Station office, since: 2094, about: "Ran the ramp at Cape Meridian for the first two years. Moved to Luna in 2096, because the ports she has to watch are the ones that are not ours."}
+- {id: kwame.asante, name: Kwame Asante, role: Safety Officer, department: Operations, email: kwame.asante@galaxium.example, manager: olu.adeyemi, location: Earth HQ, since: 2094, about: "Reports to the Chief Operating Officer and not to Flight Operations, so that nobody he may have to stop is his manager."}
+- {id: sofia.lindgren, name: Sofia Lindgren, role: Operations Controller, department: Operations, email: sofia.lindgren@galaxium.example, manager: priya.raman, location: Earth HQ, also_reads: [opscontrol@galaxium.example], since: 2095}
+- {id: hiro.matsuda, name: Hiro Matsuda, role: Operations Controller, department: Operations, email: hiro.matsuda@galaxium.example, manager: priya.raman, location: Mars office, also_reads: [opscontrol@galaxium.example], since: 2096, about: "Works the Mars day, which covers most of the Earth night."}
+- {id: zainab.hussein, name: Zainab Hussein, role: Fleet Maintenance Planner, department: Operations, email: zainab.hussein@galaxium.example, manager: priya.raman, location: Luna Station office, since: 2095, about: "Licensed engineer. Sits on Luna, next to Hadley Yards, where the parts and the heavy work are."}
 
 # Engineering
-- {id: marcus.lindqvist, name: Marcus Lindqvist, role: "Engineering Manager, Booking Platform", department: Engineering, email: marcus.lindqvist@galaxium.example, manager: farid.nazari, location: Earth HQ}
-- {id: aditi.sharma, name: Aditi Sharma, role: "Senior Engineer, Hold Service", department: Engineering, email: aditi.sharma@galaxium.example, manager: marcus.lindqvist, location: Earth HQ}
-- {id: jonas.keller, name: Jonas Keller, role: "Engineer, Booking API", department: Engineering, email: jonas.keller@galaxium.example, manager: marcus.lindqvist, location: Earth HQ}
-- {id: wren.abbott, name: Wren Abbott, role: "Engineer, Web Frontend", department: Engineering, email: wren.abbott@galaxium.example, manager: marcus.lindqvist, location: Luna Station office}
-- {id: emeka.obi, name: Emeka Obi, role: Site Reliability Engineer, department: Engineering, email: emeka.obi@galaxium.example, manager: farid.nazari, location: Earth HQ}
-- {id: clara.jensen, name: Clara Jensen, role: Quality Engineer, department: Engineering, email: clara.jensen@galaxium.example, manager: marcus.lindqvist, location: Earth HQ}
-- {id: felix.braun, name: Felix Braun, role: Data Engineer, department: Engineering, email: felix.braun@galaxium.example, manager: farid.nazari, location: Earth HQ}
-- {id: maya.goldberg, name: Maya Goldberg, role: "Product Manager, Booking", department: Engineering, email: maya.goldberg@galaxium.example, manager: farid.nazari, location: Earth HQ}
+- {id: marcus.lindqvist, name: Marcus Lindqvist, role: "Engineering Manager, Booking Platform", department: Engineering, email: marcus.lindqvist@galaxium.example, manager: farid.nazari, location: Earth HQ, since: 2094}
+- {id: aditi.sharma, name: Aditi Sharma, role: "Senior Engineer, Hold Service", department: Engineering, email: aditi.sharma@galaxium.example, manager: marcus.lindqvist, location: Earth HQ, since: 2096}
+- {id: jonas.keller, name: Jonas Keller, role: "Engineer, Booking API", department: Engineering, email: jonas.keller@galaxium.example, manager: marcus.lindqvist, location: Earth HQ, since: 2097}
+- {id: wren.abbott, name: Wren Abbott, role: "Engineer, Web Frontend", department: Engineering, email: wren.abbott@galaxium.example, manager: marcus.lindqvist, location: Luna Station office, since: 2098}
+- {id: emeka.obi, name: Emeka Obi, role: Site Reliability Engineer, department: Engineering, email: emeka.obi@galaxium.example, manager: farid.nazari, location: Earth HQ, since: 2096}
+- {id: clara.jensen, name: Clara Jensen, role: Quality Engineer, department: Engineering, email: clara.jensen@galaxium.example, manager: marcus.lindqvist, location: Earth HQ, since: 2099}
+- {id: felix.braun, name: Felix Braun, role: Data Engineer, department: Engineering, email: felix.braun@galaxium.example, manager: farid.nazari, location: Earth HQ, since: 2099}
+- {id: maya.goldberg, name: Maya Goldberg, role: "Product Manager, Booking", department: Engineering, email: maya.goldberg@galaxium.example, manager: farid.nazari, location: Earth HQ, since: 2097}
 
 # People and workplace
-- {id: dorothea.klein, name: Dorothea Klein, role: Head of People, department: People, email: dorothea.klein@galaxium.example, manager: renata.castellanos, location: Earth HQ}
-- {id: samir.chaudhry, name: Samir Chaudhry, role: Recruiter, department: People, email: samir.chaudhry@galaxium.example, manager: dorothea.klein, location: Earth HQ}
-- {id: agnes.wojcik, name: Agnes Wójcik, role: Office Manager, department: People, email: agnes.wojcik@galaxium.example, manager: dorothea.klein, location: Earth HQ}
+- {id: dorothea.klein, name: Dorothea Klein, role: Head of People, department: People, email: dorothea.klein@galaxium.example, manager: renata.castellanos, location: Earth HQ, since: 2095}
+- {id: samir.chaudhry, name: Samir Chaudhry, role: Recruiter, department: People, email: samir.chaudhry@galaxium.example, manager: dorothea.klein, location: Earth HQ, since: 2098}
+- {id: agnes.wojcik, name: Agnes Wójcik, role: Office Manager, department: People, email: agnes.wojcik@galaxium.example, manager: dorothea.klein, location: Earth HQ, since: 2093, about: "The eleventh employee. Knows who knows."}
 
 # IT
-- {id: bruno.ferreira, name: Bruno Ferreira, role: IT Manager, department: IT, email: bruno.ferreira@galaxium.example, manager: farid.nazari, location: Earth HQ, also_reads: [it@galaxium.example]}
-- {id: ling.zhou, name: Ling Zhou, role: IT Support Technician, department: IT, email: ling.zhou@galaxium.example, manager: bruno.ferreira, location: Earth HQ, also_reads: [it@galaxium.example]}
+- {id: bruno.ferreira, name: Bruno Ferreira, role: IT Manager, department: IT, email: bruno.ferreira@galaxium.example, manager: farid.nazari, location: Earth HQ, also_reads: [it@galaxium.example], since: 2096}
+- {id: ling.zhou, name: Ling Zhou, role: IT Support Technician, department: IT, email: ling.zhou@galaxium.example, manager: bruno.ferreira, location: Earth HQ, also_reads: [it@galaxium.example], since: 2098}
+
+# Hangar and stations. The people they lead are counted in company.yaml (workforce).
+- {id: ragnhild.aasen, name: Ragnhild Aasen, role: "Maintenance Base Manager", department: Hangar and stations, email: ragnhild.aasen@galaxium.example, manager: olu.adeyemi, location: Cape Meridian hangar, since: 2093, kind: station, about: "Signs every ship back into service. Built the hangar's shift system when the fleet went from two ships to five in one year."}
+- {id: deepak.varma, name: Deepak Varma, role: "Station Manager, Cape Meridian", department: Hangar and stations, email: deepak.varma@galaxium.example, manager: lucia.bianchi, location: Cape Meridian terminal, since: 2096, kind: station, about: "Ramp, departure desks and the lounge."}
+- {id: tomasz.zielinski, name: Tomasz Zielinski, role: "Line Maintenance Lead, Olympus Port", department: Hangar and stations, email: tomasz.zielinski@galaxium.example, manager: ragnhild.aasen, location: Olympus Port, since: 2096, kind: station, about: "Came out with Aurora and stayed."}
+- {id: ximena.rojas, name: Ximena Rojas, role: "Desk Supervisor, Olympus Port", department: Hangar and stations, email: ximena.rojas@galaxium.example, manager: lucia.bianchi, location: Olympus Port, since: 2097, kind: station, about: "Runs the Galaxium desk in the arrivals hall, and the lost property shelf behind it."}
+
+# Flight crew: the six crews of fleet.yaml. Captains report to the chief pilot, a crew to its captain.
+- {id: ileana.dragomir, name: Ileana Dragomir, role: "Captain, Inner A, and Chief Pilot", department: Flight crew, email: ileana.dragomir@galaxium.example, manager: priya.raman, location: Cape Meridian crew base, since: 2093, kind: crew, about: "Flew the first scheduled departure, Earth to Mars, on 3 March 2094."}
+- {id: mwangi.kariuki, name: Mwangi Kariuki, role: "First Officer, Inner A", department: Flight crew, email: mwangi.kariuki@galaxium.example, manager: ileana.dragomir, location: Cape Meridian crew base, since: 2097, kind: crew}
+- {id: saskia.vermeer, name: Saskia Vermeer, role: "Cabin Lead, Inner A", department: Flight crew, email: saskia.vermeer@galaxium.example, manager: ileana.dragomir, location: Cape Meridian crew base, since: 2095, kind: crew, about: "Reported the first of the two latches on Kestrel."}
+- {id: tobias.achterberg, name: Tobias Achterberg, role: "Captain, Inner B", department: Flight crew, email: tobias.achterberg@galaxium.example, manager: ileana.dragomir, location: Cape Meridian crew base, since: 2096, kind: crew, about: "Has flown the four hours to Luna more often than anyone in the company."}
+- {id: amina.yusuf, name: Amina Yusuf, role: "First Officer, Inner B", department: Flight crew, email: amina.yusuf@galaxium.example, manager: tobias.achterberg, location: Cape Meridian crew base, since: 2098, kind: crew}
+- {id: callum.reyes, name: Callum Reyes, role: "Cabin Lead, Inner B", department: Flight crew, email: callum.reyes@galaxium.example, manager: tobias.achterberg, location: Cape Meridian crew base, since: 2096, kind: crew}
+- {id: nkechi.adebayo, name: Nkechi Adebayo, role: "Captain, Inner C", department: Flight crew, email: nkechi.adebayo@galaxium.example, manager: ileana.dragomir, location: Cape Meridian crew base, since: 2095, kind: crew, about: "The Venus captain. Wrote the approach procedure for berth 3."}
+- {id: lars.engstrom, name: Lars Engström, role: "First Officer, Inner C", department: Flight crew, email: lars.engstrom@galaxium.example, manager: nkechi.adebayo, location: Cape Meridian crew base, since: 2097, kind: crew}
+- {id: hyunwoo.park, name: Hyun-woo Park, role: "Cabin Lead, Inner C", department: Flight crew, email: hyunwoo.park@galaxium.example, manager: nkechi.adebayo, location: Cape Meridian crew base, since: 2098, kind: crew}
+- {id: sunniva.dahl, name: Sunniva Dahl, role: "Captain, Outer A", department: Flight crew, email: sunniva.dahl@galaxium.example, manager: ileana.dragomir, location: Cape Meridian crew base, since: 2096, kind: crew, about: "Flies the Europa legs. Her brother Henrik runs station logistics at Icebreaker, where her crew spends eight days of every month."}
+- {id: inti.quispe, name: Inti Quispe, role: "First Officer, Outer A", department: Flight crew, email: inti.quispe@galaxium.example, manager: sunniva.dahl, location: Cape Meridian crew base, since: 2097, kind: crew}
+- {id: bogdan.ilie, name: Bogdan Ilie, role: "Flight Engineer, Outer A", department: Flight crew, email: bogdan.ilie@galaxium.example, manager: sunniva.dahl, location: Cape Meridian crew base, since: 2097, kind: crew}
+- {id: marisol.etxeberria, name: Marisol Etxeberria, role: "Cabin Lead, Outer A", department: Flight crew, email: marisol.etxeberria@galaxium.example, manager: sunniva.dahl, location: Cape Meridian crew base, since: 2097, kind: crew}
+- {id: raul.mendieta, name: Raúl Mendieta, role: "Captain, Outer B", department: Flight crew, email: raul.mendieta@galaxium.example, manager: ileana.dragomir, location: Olympus Port crew base, since: 2096, kind: crew, about: "Based on Mars with Aurora. Flies Jupiter and the Belt call."}
+- {id: anjali.deshmukh, name: Anjali Deshmukh, role: "First Officer, Outer B", department: Flight crew, email: anjali.deshmukh@galaxium.example, manager: raul.mendieta, location: Olympus Port crew base, since: 2098, kind: crew}
+- {id: per.holmgren, name: Per Holmgren, role: "Flight Engineer, Outer B", department: Flight crew, email: per.holmgren@galaxium.example, manager: raul.mendieta, location: Olympus Port crew base, since: 2096, kind: crew}
+- {id: zodwa.nkosi, name: Zodwa Nkosi, role: "Cabin Lead, Outer B", department: Flight crew, email: zodwa.nkosi@galaxium.example, manager: raul.mendieta, location: Olympus Port crew base, since: 2097, kind: crew}
+- {id: kaito.fujimori, name: Kaito Fujimori, role: "Captain, Outer C", department: Flight crew, email: kaito.fujimori@galaxium.example, manager: ileana.dragomir, location: Cape Meridian crew base, since: 2097, kind: crew, about: "Flew the first scheduled departure to Pluto, on 21 April 2099."}
+- {id: eleni.papadaki, name: Eleni Papadaki, role: "First Officer, Outer C", department: Flight crew, email: eleni.papadaki@galaxium.example, manager: kaito.fujimori, location: Cape Meridian crew base, since: 2098, kind: crew}
+- {id: idris.benali, name: Idris Benali, role: "Flight Engineer, Outer C", department: Flight crew, email: idris.benali@galaxium.example, manager: kaito.fujimori, location: Cape Meridian crew base, since: 2098, kind: crew, about: "Logged the coolant temperatures on the October return from Pluto that sent Halcyon for inspection."}
+- {id: maren.solvik, name: Maren Solvik, role: "Cabin Lead, Outer C", department: Flight crew, email: maren.solvik@galaxium.example, manager: kaito.fujimori, location: Cape Meridian crew base, since: 2099, kind: crew}

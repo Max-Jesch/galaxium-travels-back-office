@@ -7,8 +7,12 @@
 #
 #   - Fares are the base prices of the snapshot times the seat class factors. A full
 #     departure earns 18.5 times the economy fare (6 x 1 + 3 x 2.5 + 1 x 5).
-#   - Charter revenue is in line with the won deals of the CRM (about 240 million
-#     dollars from April to October 2099).
+#   - Charter revenue is in line with the won deals of the CRM (about 263 million
+#     dollars from April to October 2099), and with the legs of `flying`: a contract
+#     leg earns between 3.5 and 4 million dollars on average, because most carry a
+#     block of a few seats and few are whole ships.
+#   - Traffic control and fuel are in line with the legs of `flying` and with
+#     drive/finance/analysis/cost-per-leg-2099.md.
 #   - Fuel, ports and catering are in line with the invoice register of October 2099.
 #   - Cash and payables are those of the August board pack.
 #
@@ -16,18 +20,23 @@
 # so it says nothing about October. The build checks that every year adds up.
 
 owners:
-  - {name: Founders and staff, share: 36, note: "The founding team of 2092 and the staff share plan."}
-  - {name: Ceres Capital Partners, share: 40, note: "Growth investor. Led the rounds of 2095 and 2097. Two seats on the board."}
-  - {name: Lowell Ship Finance, share: 24, note: "Lessor of all six ships. Took its stake in 2097, in place of part of the lease on Halcyon."}
+  - {name: Founders and staff, share: 36, note: "The three founders of 2092, Renata Castellanos, Olu Adeyemi and Farid Nazari, and the staff share plan."}
+  - {name: Perigee Capital Partners, share: 40, note: "Growth investor. Led the rounds of 2095 and 2097. One seat on the board."}
+  - {name: Lowell Ship Finance, share: 24, note: "Lessor of all six ships. Took its stake in 2097, when it accepted shares instead of cash for eighteen months of the lease on Halcyon. One seat on the board."}
 
 funding:
   - {year: 2092, raised: 140, what: "Founding round. Deposits on three inner-system ships."}
-  - {year: 2095, raised: 320, what: "Second round, led by Ceres Capital Partners. Solstice, Aurora and the Jupiter route."}
-  - {year: 2097, raised: 460, what: "Third round. Halcyon, the outer-system package and the routes beyond Jupiter."}
+  - {year: 2095, raised: 320, what: "Second round, led by Perigee Capital Partners. Solstice, Aurora and the Jupiter route."}
+  - {year: 2097, raised: 460, what: "Third round, in the autumn the company nearly ran out of cash. Halcyon, the outer-system package and the routes beyond Jupiter."}
 
 board:
   seats: "An independent chair, two directors named by the investors and the Chief Executive."
   meets: "Quarterly, and in December for the budget."
+  members:
+    - {name: Margit Halvorsen, seat: Chair, from: "Independent. Ran the port authority at Cape Meridian until 2093."}
+    - {name: Desmond Achebe, seat: Director, from: Perigee Capital Partners}
+    - {name: Katarzyna Lis, seat: Director, from: Lowell Ship Finance}
+    - {name: Renata Castellanos, seat: Director, from: Chief Executive and founder}
 
 entities:
   - {name: Galaxium Travels Ltd., where: "Cape Meridian, Earth", what: "The operator. Holds the operating licence, the leases, the contracts and the staff on Earth and Mars."}
@@ -37,28 +46,79 @@ entities:
 depends_on:
   - {what: The ships, who: Lowell Ship Finance, how: "All six are leased, for twelve years from delivery. The lease runs whether a ship flies or not. The largest cost we have."}
   - {what: The way between the ports, who: System Traffic Control, how: "A charge for every flight, by distance, paid from a prepaid account."}
-  - {what: Building and heavy work, who: Hadley Yards, how: "Built all six. Does refits and supplies parts. Routine checks are our own, at Cape Meridian."}
+  - {what: Building and heavy work, who: Hadley Yards, how: "Built all six at its yard in orbit above Luna. Does refits and supplies parts. Routine checks are our own, at Cape Meridian."}
+  - {what: The right to sell a departure, who: The Slot Conference, how: "The ports and Traffic Control give out departure slots twice a year. No fee, but a public slot that is flown less than eight times in ten is lost."}
   - {what: The ports, who: Seven port operators, how: "A fee for every turnaround. Our own staff handle the ships on Earth, a contracted handler elsewhere."}
   - {what: Fuel, who: Helios Fuels, how: "Delivered at Cape Meridian and bought at the ports."}
 
 # How a year of flying is made up. A leg is one flight from port to port.
 slots:
-  rule: "The ports give out departure slots by timetable period: March to August and September to February. We hold one scheduled slot a month on each of our ten routes. A charter or a shuttle flies on a slot asked for one at a time."
-  why_it_matters: "A ship flies about one leg a week, so inside Jupiter the fleet has room: growth there is a question of demand and slots. Beyond Jupiter it is a question of hulls, because one ship is certified."
+  rule: "The ports give out departure slots at the Slot Conference, twice a year, for the timetable periods March to August and September to February. A public slot is the right to sell seats to the public on one departure, and we hold one a month on each of our ten routes. Contract and technical slots are asked for one at a time."
+  why_it_matters: "A ship flies about two legs a week, and more than half of all legs are the four hours to Luna. So inside Jupiter the fleet has room: growth there is a question of demand and public slots. Beyond Jupiter it is a question of hulls, because one ship is certified."
+  kinds:
+    - {kind: Public slot, carries: "Anyone who buys a seat.", how: "Given out by the Slot Conference for a timetable period. A carrier keeps a slot it flew at least eight times in ten. New slots appear only when a port adds capacity or a carrier hands one back, and they go by seats offered, which favours large ships."}
+    - {kind: Contract slot, carries: "Travellers named under a contract with one or more corporate customers.", how: "Asked for one at a time, usually given within a week where the port has room at that hour."}
+    - {kind: Technical slot, carries: "Our crews and staff, parts, and travellers we brought out ourselves and are taking home.", how: "Asked for one at a time. Nobody on board may have paid for that leg."}
+  why_one_a_month: "We entered in 2094 through the new-entrant pool, which gave one public slot a month on each route. The older carriers hold theirs from the time of the hundred-seat ships, and a slot is a departure whatever the size of the ship."
+  next: "The conference for March to August 2100 sits at Tycho on 23 November 2099. Requests closed on 30 October. Ours: the ten slots we hold, a second Earth to Pluto and an evening Earth to Mars. A request can be withdrawn until the conference sits."
+
+# The way home. Three of the ten routes end where we hold no public slot for the way back.
+way_home:
+  rule: "A traveller who flies out with us to Luna, Jupiter or Pluto flies home with us on the same fare. We may not sell the way back, because we hold no public slot for it, but we may carry our own travellers on a leg we fly anyway."
+  legs:
+    - {from: Luna, to: Earth, ride: "Any Luna shuttle."}
+    - {from: Jupiter, to: Mars, ride: "Aurora's way back, on the 19th."}
+    - {from: Pluto, to: Earth, ride: "Halcyon's way back, on the 24th."}
+  how: "Booked through Support at least 48 hours ahead, at no charge, and confirmed when the seat is free. The passage list is kept by operations control and is not in the booking system."
+  luna_connection: "The same holds for the Luna shuttle in both directions: a traveller with a ticket for one of our departures rides it free to reach that departure or to get home after it."
+  from_mars_venus_europa: "From Mars, Venus and Europa the way home is a scheduled departure and is bought like any other seat."
+  under_contract: "A corporate customer buys the way home on its own at half the outbound rate, as a reserved seat."
+
+# Ports we fly to under contract only. They are not on the public site.
+contract_ports:
+  - {name: Vesta Yard, where: "Asteroid Belt, at Vesta", what: "The dock of Vesta Shipwrights. Reached from Olympus Port on the Belt call."}
+  - {name: Ceres Station, where: "Asteroid Belt, at Ceres", what: "The settlement and its farms. Reached from Olympus Port on the Belt call."}
+
+# A leg is one flight from port to port. `charter` are the contract legs, `shuttle` the
+# legs of the Luna shuttle, `positioning` the legs that bring a ship back or out to where
+# its next departure is.
 flying:
-  - {year: 2094, routes: 4,  scheduled: 40,  charter: 0,  shuttle: 30, ships: 1}
-  - {year: 2095, routes: 6,  scheduled: 72,  charter: 6,  shuttle: 60, ships: 2}
-  - {year: 2096, routes: 7,  scheduled: 84,  charter: 20, shuttle: 80, ships: 5}
-  - {year: 2097, routes: 9,  scheduled: 96,  charter: 34, shuttle: 90, ships: 6}
-  - {year: 2098, routes: 9,  scheduled: 108, charter: 48, shuttle: 96, ships: 6}
-  - {year: 2099, routes: 10, scheduled: 117, charter: 44, shuttle: 96, ships: 6}
+  - {year: 2094, routes: 4,  scheduled: 40,  charter: 0,   shuttle: 20,  positioning: 10, ships: 1}
+  - {year: 2095, routes: 6,  scheduled: 72,  charter: 12,  shuttle: 24,  positioning: 36, ships: 2}
+  - {year: 2096, routes: 7,  scheduled: 84,  charter: 40,  shuttle: 96,  positioning: 48, ships: 5}
+  - {year: 2097, routes: 9,  scheduled: 96,  charter: 72,  shuttle: 168, positioning: 54, ships: 6}
+  - {year: 2098, routes: 9,  scheduled: 108, charter: 112, shuttle: 216, positioning: 60, ships: 6}
+  - {year: 2099, routes: 10, scheduled: 117, charter: 108, shuttle: 264, positioning: 69, ships: 6}
+flying_kinds:
+  - {kind: Scheduled service, slot: Public, what: "One departure a month on each of ten routes.", sold: "On the public site, one seat at a time."}
+  - {kind: Contract flying, slot: Contract, what: "A monthly rotation Earth to Mars and back, the Belt call from Mars, two Luna departures a month, and whole ships now and then.", sold: "By Sales, as a block of seats or a whole ship. Never on the public site."}
+  - {kind: Luna shuttle, slot: Technical or contract, what: "Ten night rotations a month between Cape Meridian and Tycho, and the two legs that turn Solstice round on the 5th and the 15th. Freight in the hold, crews, staff and parts in the cabin.", sold: "The hold, as freight. Seats only under contract. Our own travellers ride free to connect or to go home."}
+  - {kind: Positioning, slot: Technical, what: "The way back from Venus, Mars, Jupiter and Pluto, and the way out to Jupiter.", sold: "Not sold. Our own travellers ride home on it."}
 
 # Why the booking system starts on 10 August.
 books:
   rule: "Seats are sold from one sales book per timetable period. The book for September 2099 to February 2100 opened on 10 August 2099, and it is the one the booking system holds."
   follows: "Seats on the September and October departures that were sold before 10 August are in the closed spring book. Finance keeps the totals of closed books; the booking system does not."
 
+# The chance Sales gives an open deal of closing, by stage, for the weighted forecast.
+# A share, not an amount. Read by the forecast sheet (scripts/documents.py) and by the
+# crm_pipeline_summary tool.
+stage_probability: {prospect: 0.1, proposal: 0.3, negotiation: 0.6}
+
+# Charter revenue by quarter, in millions of dollars, by the quarter flown. Each year adds
+# up to "Charter rotations" in `years`. 2099 falls after the second quarter because
+# Perihelion went into refit in June. The fourth quarter of 2099 is the forecast of the
+# August close. The contracts of crm/contracts.yaml, spread over their terms, have to
+# stay below every quarter (scripts/salesbook.py checks it).
+charter_by_quarter:
+  - {year: 2098, quarters: [96, 104, 106, 104]}
+  - {year: 2099, quarters: [98, 124, 90, 83], forecast_from: 4}
+
 revenue_lines: [Scheduled service, Charter rotations, Cargo and other]
+# Where the people are paid from. The hangar is in Maintenance, the ramp and the station
+# desks in Ports and ground handling, the lounge hosts in Catering and cabin. "Staff,
+# non-crew" is the office staff of people.yaml and the duty controllers. The counts are
+# in company.yaml (workforce).
 cost_lines: [Ship leases, Traffic control charges, Fuel, Ports and ground handling, Maintenance, Insurance, Flight crew, "Staff, non-crew", "Sales, marketing and payment fees", Catering and cabin, "Software, offices and other"]
 
 years:
@@ -102,9 +162,10 @@ years:
 
 position:
   what: "The smallest of the four scheduled carriers, and the only one that sells a single seat to Pluto on a public site at a price that holds."
+  market: "About 190,000 seats were sold between the planets in 2098, by the count of Interplanetary Travel Weekly. We sold 832 of them. We are not in the business of carrying most people: we carry the ones for whom a ship of ten, a fixed price and a seat booked in minutes is worth it."
   against:
-    - {name: Orbitway, they: "The largest on the inner routes. Sells frequency.", we: "Fly beyond Jupiter. They do not."}
-    - {name: NovaTransit, they: "Low fares on Earth, Luna and Mars.", we: "Fly beyond Mars, and keep to the schedule."}
-    - {name: Stellar Lines, they: "The widest outer-system network, at 10% to 20% above our fares.", we: "Cost less, and are booked in minutes instead of by contract."}
+    - {name: Orbitway, they: "The largest on the inner routes: 24 ships of 80 to 120 seats, flying since 2071. Sells frequency.", we: "Fly beyond Jupiter. They do not."}
+    - {name: NovaTransit, they: "Low fares on Earth, Luna and Mars: 15 ships of 160 seats, flying since 2084. Holds the Lunar Free Port's franchise for public seats with Orbitway.", we: "Fly beyond Mars, and keep to the schedule."}
+    - {name: Stellar Lines, they: "The widest outer-system network: 11 ships of 40 to 60 seats, flying since 2068, Pluto twice a month. 10% to 20% above our fares.", we: "Cost less, and are booked in minutes instead of by contract."}
 
 why_founded: "Until the 2090s a seat to Mars was bought by contract, through an agent, weeks ahead, on a ship built for a hundred. In 2091 Hadley Yards showed the Kestrel class: ten seats, a crew of three, turned round in 90 minutes. Galaxium was founded the next year to fly it on a timetable and sell each seat the way a train ticket is sold: one price, one page, one traveller at a time."

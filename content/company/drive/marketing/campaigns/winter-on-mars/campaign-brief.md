@@ -13,7 +13,7 @@ modified: 2099-10-07
 
 **Offer.**
 - Public site: no discount. Prices follow the pricing policy.
-- Groups of eight or more through Sales: 10% off, departures 10 December to 28 February, at most 40 seats a month at that rate.
+- Groups of eight or more through Sales: 10% off, departures 10 December to 28 February, at most 16 seats a month at that rate. Groups fly on the contract rotation (the 22nd out, the 26th back), not on the scheduled departure.
 
 **Channels.** Customer newsletter, paid media on Earth and Luna, the Kepler Media films, the stand at the Interplanetary Travel Expo.
 

@@ -1,5 +1,5 @@
 ---
-subject: Request for quote, 40 rotations Mars to Jupiter in 2100
+subject: Request for quote, four rotations Mars to Jupiter in 2100
 labels: [sales, customer]
 ---
 From: Bao Nguyen <bao.nguyen@tharsiseng.example>
@@ -8,7 +8,7 @@ Date: 2099-10-19 08:20
 
 Dear Mr Moreau,
 
-Tharsis Engineering will staff a construction site on Ganymede next year. We request a quote for 40 return rotations Mars to Jupiter between February and November 2100, in groups of 6 to 10, business class.
+Tharsis Engineering will staff a construction site on Ganymede next year. We request a quote for four rotations Mars to Jupiter between February and November 2100: a site team of six out each time, and the team it relieves back to Mars.
 
 Two questions: can a seat hold be extended beyond 15 minutes for a group, and can names be supplied 72 hours before departure rather than at booking?
 
@@ -25,7 +25,7 @@ Date: 2099-10-20 16:30
 
 Dear Mr Nguyen,
 
-Thank you for the request. You will have our quote by 6 November. On your questions: group holds are not available today and are planned for early 2100; until then I can reserve group blocks for you manually. Names are required at booking, because the traveller must match the account, but changes are possible by cancelling and rebooking under our refund terms. I will propose a workable process in the quote.
+Thank you for the request. You will have our quote by 6 November. On your questions: group holds on the public site are not available today and are planned for early 2100. A rotation like yours does not need one: it flies under contract, and I reserve the block for you. Names are required at booking, because the traveller must match the account, but changes are possible by cancelling and rebooking under our refund terms. I will propose a workable process in the quote.
 
 Kind regards,
 Bastien Moreau

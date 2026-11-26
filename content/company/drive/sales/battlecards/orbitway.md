@@ -8,6 +8,8 @@ modified: 2099-10-29
 
 **Their pitch.** Frequency. Twice daily Earth to Mars from March 2100, weekly Jupiter. "Book the departure, not the fare."
 
+**What it rests on.** They announced before the Slot Conference of 23 November has sat. The second daily departure needs the new public slots of Olympus Port's third pad. New slots go by seats offered, so they will probably get them.
+
 **Prices.** About level with ours on Mars, higher on Jupiter.
 
 **Where we win.** Pluto and Europa. Smaller ships and a quieter cabin. Seat holds for corporate bookers.

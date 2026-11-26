@@ -12,4 +12,4 @@
 ## 2099-11-03
 [13:30] Pilar Navarro: Group rate sheet for Winter on Mars with Red Sands Hospitality: 10% off for groups of eight or more, departures 10 December to 28 February. For approval.
     [14:05] Amara Okafor: Fine from Sales.
-    [14:30] Ingrid Solberg: Approved, with a cap of 40 seats a month at that rate.
+    [14:30] Ingrid Solberg: Approved, with a cap of 16 seats a month at that rate. That is two groups on the contract rotation, and it leaves room for Nimbus and Helix.

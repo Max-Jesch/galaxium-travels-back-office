@@ -8,7 +8,7 @@ Date: 2099-11-02 09:00
 
 Dear all,
 
-Our November all-hands is on Thursday at 15:00 in the atrium at Earth HQ and on video for Luna and Mars.
+Our November all-hands is on Thursday at 15:00 in the atrium at Earth HQ and on video for Luna and Mars. Mars colleagues: the delay is about five minutes each way this month, so you watch a little behind us. Send your questions to Agnes beforehand and I will read them out.
 
 1. October results (Ingrid, 10 minutes)
 2. Winter on Mars: what we launch on the 10th (Elise, 10 minutes)

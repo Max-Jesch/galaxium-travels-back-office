@@ -1,5 +1,5 @@
 ---
-subject: Can we shorten the rest at Aphrodite to 22 hours in December?
+subject: Can we shorten the rest at Aphrodite to 24.5 hours in December?
 labels: [operations, crew, safety]
 ---
 From: Andrei Popescu <andrei.popescu@galaxium.example>
@@ -9,7 +9,7 @@ Date: 2099-10-30 10:20
 
 Kwame,
 
-With the later Venus departure from 13 December the crew arrives 90 minutes later. To keep the return leg on time the rest at Aphrodite would be 24.5 hours on those rotations, against the 26 hour rule. Is there any room?
+With the later Venus departure from 13 December the crew arrives 90 minutes later. The leg home leaves Aphrodite at 17:00 the next day. To keep it there, the rest would be 24.5 hours on those rotations, against the 26 hour rule. Is there any room?
 
 Andrei
 

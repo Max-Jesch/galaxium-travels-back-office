@@ -12,7 +12,7 @@ Team,
 
 Launch is Tuesday 10 November at 09:00. Open items on the checklist:
 
-- Group rate with Red Sands: approved today with a cap of 40 seats a month.
+- Group rate with Red Sands: approved today with a cap of 16 seats a month.
 - Paid media: booking closes Thursday.
 - Press note: Noor's draft is with Legal.
 - Support briefing: Greta needs the questions and answers by Friday.
