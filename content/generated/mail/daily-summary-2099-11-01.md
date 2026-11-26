@@ -15,4 +15,6 @@ New bookings: 0
 Amount charged: $0
 Quotes issued: 0 (became bookings: 0)
 
+Sales are closed from 1 November 00:00 UTC to 5 November 06:00 UTC: the ports' traveller registry is moving to a new platform, and no carrier can issue a booking or a quote while it does. Cancellations work.
+
 This mail is sent automatically at 07:00 UTC. The figures are a count at the time of sending; the booking system is the record.

@@ -109,7 +109,11 @@ class Data:
         self.flights = {f["flight_id"]: f for f in read("flights")}
         self.bookings = read("bookings")
         self.quotes = read("quotes")
-        self.people = yaml.safe_load((COMPANY / "people.yaml").read_text(encoding="utf-8"))
+        self.everyone = yaml.safe_load((COMPANY / "people.yaml").read_text(encoding="utf-8"))
+        # The office staff. Flight crew and the heads of the hangar and the stations carry `kind`
+        # and take no part in the office routine: no laptop, no expense report, no helpdesk ticket.
+        self.people = [p for p in self.everyone if not p.get("kind")]
+        self.fleet = yaml.safe_load((COMPANY / "fleet.yaml").read_text(encoding="utf-8"))
         self.by_day: dict[str, list[dict]] = defaultdict(list)
         for b in self.bookings:
             self.by_day[b["booking_time"][:10]].append(b)
@@ -133,12 +137,50 @@ class Data:
 
 # ------------------------------------------------------------------ chat
 
+# The ports' traveller registry moved to a new platform. No carrier could issue a booking
+# or a quote while it did, which is why the snapshot has none in these days.
+SALES_CLOSED = date(2099, 11, 1)
+PORT = {"Earth": "Cape Meridian", "Moon": "Tycho", "Mars": "Olympus Port", "Venus": "Aphrodite Station", "Jupiter": "Ganymede Gate",
+        "Europa": "Icebreaker", "Pluto": "Tombaugh Station", "Belt": "Vesta Yard and Ceres Station"}
+TYCHO_LATE = {date(2099, 10, 2): 22, date(2099, 10, 9): 14, date(2099, 10, 21): 7, date(2099, 10, 30): 19, date(2099, 11, 3): 0}  # minutes late out of Tycho
+PINNED_LATE = {datetime(2099, 10, 24, 6, 0): 6}  # legs that a mail or a chat message describes: Halcyon home from Pluto, docked 06:02
+
+
+def other_legs(d: Data) -> list[tuple[datetime, str]]:
+    """The legs of fleet.yaml's monthly pattern, for the departure log: everything that is not scheduled service."""
+    own = random.Random(2099)  # its own generator, so that the log does not move anything else
+    pattern, now, out = d.fleet["pattern"], datetime(TODAY.year, TODAY.month, TODAY.day), []
+
+    def leg(dep: datetime, hours: int, ship: str, origin: str, destination: str, kind: str, late: int = 0) -> None:
+        if dep >= now:
+            return
+        left = dep + timedelta(minutes=late)
+        out.append((left, f"{ship} {origin} → {destination} departed {left:%H:%M}{f', {late} minutes late' if late >= 5 else ''}. {kind}."))
+        if dep + timedelta(hours=hours) < now:
+            out.append((dep + timedelta(hours=hours, minutes=late // 3), f"{ship} arrived at {destination}."))
+
+    for year, month in [(2099, 9), (2099, 10), (2099, 11)]:
+        for x in pattern["legs"]:
+            hh, mm = map(int, x["dep"].split(":"))
+            drawn = own.choice([0, 0, 0, 0, 2, 3, 6])
+            leg(datetime(year, month, x["day"], hh, mm), x["hours"], x["ship"], PORT[x["origin"]], PORT[x["destination"]], x["kind"], PINNED_LATE.get(datetime(year, month, x["day"], hh, mm), drawn))
+        for kind, mornings in (("Luna shuttle", pattern["shuttle"]["mornings"]), ("Contract", pattern["contract_mornings"])):
+            for day in mornings:
+                turn = datetime(year, month, day)
+                leg(turn - timedelta(hours=2, minutes=10), 4, "Solstice", "Cape Meridian", "Tycho", kind, own.choice([0, 0, 0, 2, 4]))
+                drawn = own.choice([0, 0, 0, 3])
+                leg(turn + timedelta(hours=3, minutes=20), 4, "Solstice", "Tycho", "Cape Meridian", kind, TYCHO_LATE.get(turn.date(), drawn))
+    return out
+
+
 def build_chat(d: Data) -> None:
     lines = []
     for day in days(date(2099, 8, 11), TODAY):
         y = day - timedelta(days=1)
         rows = d.by_day.get(str(y), [])
-        if not rows:
+        if y >= SALES_CLOSED:
+            text = f"{nice(y)}: no new bookings. Sales are closed for the registry changeover until Thursday 5 November, 06:00 UTC."
+        elif not rows:
             text = f"{nice(y)}: no new bookings on the scheduled service."
         else:
             top = Counter(d.route(b["flight_id"]) for b in rows).most_common(1)[0]
@@ -150,7 +192,7 @@ def build_chat(d: Data) -> None:
         lines += [f"## {day}", f"[07:00] Bookings Bot: {text}"]
     write("chat/bookings-feed/daily.md", "\n".join(lines) + "\n")
 
-    lines = []
+    lines = other_legs(d)
     for f in d.flights.values():
         dep = datetime.fromisoformat(f["departure_time"].replace("Z", ""))
         arr = datetime.fromisoformat(f["arrival_time"].replace("Z", ""))
@@ -348,7 +390,7 @@ VENDORS = [
     ("Cape Meridian Facilities", "billing@capemeridianfm.example", "CM", "Office cleaning and maintenance, Earth HQ", (30_000, 70_000)),
     ("Northlight Telecom", "billing@northlight.example", "NT", "Connectivity, three stations", (40_000, 60_000)),
     ("Tombaugh Station Cooperative", "treasury@tombaughcoop.example", "TS", "Berth and servicing, Tombaugh", (400_000, 700_000)),
-    ("Outer Belt Port Services", "ar@obports.example", "OB", "Handling, Ganymede Gate", (220_000, 380_000)),
+    ("Galilean Port Services", "ar@galileanports.example", "GP", "Handling, Ganymede Gate", (220_000, 380_000)),
     ("Skyward Uniforms", "orders@skywarduniforms.example", "SU", "Crew uniforms", (15_000, 55_000)),
     ("Quill & Ledger", "office@quillledger.example", "QL", "Office supplies", (4_000, 18_000)),
     ("Meridian Crew Hotels", "groups@meridiancrewhotels.example", "MH", "Crew accommodation", (50_000, 160_000)),
@@ -370,6 +412,8 @@ def build_mail(d: Data) -> None:
                 f"  economy {by_class['economy']}, business {by_class['business']}, galaxium {by_class['galaxium']}\n"
                 f"Amount charged: ${money(sum(b['price_paid'] for b in rows))}\n"
                 + (f"Quotes issued: {len(quotes)} (became bookings: {sum(q['status'] == 'converted' for q in quotes)})\n" if y >= date(2099, 10, 1) else "")
+                + ("\nSales are closed from 1 November 00:00 UTC to 5 November 06:00 UTC: the ports' traveller registry is moving to a new platform, "
+                   "and no carrier can issue a booking or a quote while it does. Cancellations work.\n" if y >= SALES_CLOSED else "")
                 + "\nThis mail is sent automatically at 07:00 UTC. The figures are a count at the time of sending; "
                   "the booking system is the record.")
         thread(f"daily-summary-{y}", f"Booking system: daily summary for {y}", ["automatic", "bookings"],
@@ -548,7 +592,7 @@ def build_drive(d: Data) -> None:
 
     lines = ["Revenue, scheduled service", "Revenue, charter", "Ship leases", "Traffic control charges", "Insurance", "Fuel", "Ground handling and port fees", "Crew", "Maintenance", "Staff, non-crew",
              "Marketing", "Software and IT", "Office", "Travel", "Other"]
-    xlsx("finance/budget-2100/budget-template.xlsx", {"Budget 2100": [{"line": line, "actual_2026_to_october": "", **{MONTH[m][:3]: "" for m in range(1, 13)}, "comment": ""} for line in lines],
+    xlsx("finance/budget-2100/budget-template.xlsx", {"Budget 2100": [{"line": line, "actual_2099_to_october": "", **{MONTH[m][:3]: "" for m in range(1, 13)}, "comment": ""} for line in lines],
                                                         "Headcount": [{"role": "", "grade": "", "start_month": "", "monthly_cost": "", "reason": ""}]})
 
     staff = [p["name"] for p in d.people]
@@ -598,28 +642,47 @@ def build_drive(d: Data) -> None:
          "arrival_utc": f["arrival_time"].replace("T", " ")[:16], "economy_seats": f["economy_seats"], "business_seats": f["business_seats"], "galaxium_seats": f["galaxium_seats"]}
         for f in d.flights.values()], "Changes": [{"note": "From the departure on 13 December 2099 the Earth to Venus service leaves at 08:30. The booking system shows the old time until the change is loaded."}]})
     late = {2: 112, 9: 104, 21: 97}
-    turn_days = [2, 3, 5, 7, 9, 12, 14, 16, 19, 21, 23, 26, 28, 30]
-    xlsx("ops/ground/tycho-turnarounds-2099-10.xlsx", {"Tycho October 2099": [
-        {"date": f"2099-10-{day:02d}", "kind": "Scheduled service" if day == 5 else rng.choice(["Luna shuttle", "Luna shuttle", "Charter"]),
-         "turnaround_minutes": late.get(day, rng.randint(61, 88)), "target_minutes": 90, "over_target": "yes" if day in late else "no",
-         "cause": "Shared fuelling gantry" if day in late else ""} for day in turn_days],
-        "Source": [{"note": "Operations control log. Kept by Lucia Bianchi."}]})
+    pattern = d.fleet["pattern"]
+    kinds = {5: "Scheduled service in, Luna shuttle out", 15: "Luna shuttle in, scheduled service out",
+             **{day: "Contract" for day in pattern["contract_mornings"]}, **{day: "Luna shuttle" for day in pattern["shuttle"]["mornings"]}}
+    turn_days = sorted(kinds)
+    assert len(turn_days) == 14 and set(late) <= set(pattern["shuttle"]["mornings"])
+    rows = []
+    for day in turn_days:
+        rng.choice(["Luna shuttle", "Luna shuttle", "Charter"])  # drawn and not used: keeps everything after it as it was
+        rows.append({"date": f"2099-10-{day:02d}", "kind": kinds[day], "turnaround_minutes": late.get(day, rng.randint(61, 88)), "target_minutes": 90,
+                     "over_target": "yes" if day in late else "no", "cause": "Shared fuelling gantry" if day in late else ""})
+    xlsx("ops/ground/tycho-turnarounds-2099-10.xlsx", {"Tycho October 2099": rows,
+        "Source": [{"note": "Operations control log. Kept by Lucia Bianchi."},
+                   {"note": "The shuttle docks at 01:50 and leaves at 03:20, so a turnaround over 90 minutes is a late departure."}]})
 
-    xlsx("sales/rate-card-2099.xlsx", {"Charter rate card 2099": [
-        {"route": r, "seat_economy": e, "seat_business": int(e * 2.5), "whole_ship_10_seats": int(e * 2.5 * 10 * 0.8)}
-        for r, e in [("Earth to Mars", 1000000), ("Earth to Moon", 500000), ("Mars to Earth", 950000), ("Venus to Earth", 1200000), ("Jupiter to Europa", 2000000),
-                     ("Earth to Venus", 1100000), ("Moon to Mars", 800000), ("Mars to Jupiter", 2500000), ("Europa to Earth", 3000000), ("Earth to Pluto", 5000000)]],
+    base = {f"{f['origin']} to {f['destination']}": f["base_price"] for f in d.flights.values()}
+    included = {"Earth to Moon", "Mars to Jupiter", "Earth to Pluto"}  # the routes of finance.yaml's way_home
+    card = [{"route": r, "seat_economy": e, "seat_business": int(e * 2.5), "whole_ship_10_seats": int(e * 2.5 * 10 * 0.8),
+             "way_home": "included" if r in included else "a scheduled departure, bought separately",
+             "where_it_flies": {"Earth to Moon": "The Luna shuttle, and Luna departures under contract", "Earth to Mars": "The Mars rotation, out on the 22nd",
+                                "Mars to Earth": "The Mars rotation, back on the 26th"}.get(r, "A contract departure on dates of the customer's own")} for r, e in base.items()]
+    card += [{"route": "Mars to the Belt (Vesta Yard, Ceres Station)", "seat_economy": 1300000, "seat_business": 3250000, "whole_ship_10_seats": 26000000, "way_home": "included", "where_it_flies": "The Belt call, on the 1st"},
+             {"route": "Earth to Jupiter", "seat_economy": 3000000, "seat_business": 7500000, "whole_ship_10_seats": 60000000, "way_home": "bought separately", "where_it_flies": "Halcyon's leg out, on the 9th"}]
+    home = [{"route": r, "reserved_seat_economy": e // 2, "reserved_seat_business": int(e * 2.5) // 2, "where_it_flies": w}
+            for r, e, w in [("Moon to Earth", base["Earth to Moon"], "Any Luna shuttle"), ("Jupiter to Mars", base["Mars to Jupiter"], "Aurora's way back, on the 19th"),
+                            ("Pluto to Earth", base["Earth to Pluto"], "Halcyon's way back, on the 24th"), ("The Belt to Mars", 1300000, "The Belt call, on the 2nd")]]
+    xlsx("sales/rate-card-2099.xlsx", {"Charter rate card 2099": card, "The way home on its own": home,
         "Notes": [{"note": "Seat prices equal the public base prices. Whole-ship price is ten business seats less 20%."},
-                  {"note": "Discounts follow policies/discount-policy.md."}]})
+                  {"note": "Where the way home is included, the traveller rides back on a leg we fly anyway, as on the public site."},
+                  {"note": "A customer whose people did not fly out with us buys the way home on its own, as a reserved seat at half the outbound rate."},
+                  {"note": "Contract seats fly on contract departures, on the Luna shuttle and on the legs of the second sheet. They are never taken out of the ten public seats of a scheduled departure."},
+                  {"note": "Port fees at a customer's own dock are charged at cost. Discounts follow policies/discount-policy.md and apply to the base fare."}]})
 
     xlsx("legal/vendor-register.xlsx", {"Vendors": [
         {"vendor": "Tycho Ground Services", "service": "Ground handling, Luna", "contract_ends": "2099-12-31", "monthly_fee": 380000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewal draft received 30 October, under review"},
         {"vendor": "Helios Fuels", "service": "Fuel supply", "contract_ends": "2100-01-31", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Zainab Hussein", "status": "Renewal draft expected in November"},
         {"vendor": "Lagrange Catering", "service": "Cabin catering", "contract_ends": "2100-10-20", "monthly_fee": "by delivery", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Renewed 21 October"},
         {"vendor": "Ferrypay", "service": "Payment processing", "contract_ends": "2100-06-30", "monthly_fee": "per transaction", "automatic_renewal": "yes, 12 months", "owner": "Marcus Lindqvist", "status": "Active"},
-        {"vendor": "Olympus Port Authority", "service": "Port and pad fees, Mars", "contract_ends": "2100-06-30", "monthly_fee": 250000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
-        {"vendor": "Aphrodite Station Operations", "service": "Berth, Venus", "contract_ends": "2100-03-31", "monthly_fee": 210000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
-        {"vendor": "Tombaugh Station Cooperative", "service": "Berth and servicing, Pluto", "contract_ends": "2100-08-31", "monthly_fee": 540000, "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
+        {"vendor": "Olympus Port Authority", "service": "Port and pad fees, Mars", "contract_ends": "2100-06-30", "monthly_fee": "by turnaround", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
+        {"vendor": "Aphrodite Station Operations", "service": "Berth, Venus", "contract_ends": "2100-03-31", "monthly_fee": "by turnaround", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
+        {"vendor": "Galilean Port Services", "service": "Handling, Ganymede Gate", "contract_ends": "2100-12-31", "monthly_fee": "by turnaround", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
+        {"vendor": "Tombaugh Station Cooperative", "service": "Berth and servicing, Pluto", "contract_ends": "2100-08-31", "monthly_fee": "by turnaround", "automatic_renewal": "no", "owner": "Lucia Bianchi", "status": "Active"},
         {"vendor": "Northlight Telecom", "service": "Connectivity", "contract_ends": "2100-02-28", "monthly_fee": 52000, "automatic_renewal": "yes, 12 months", "owner": "Bruno Ferreira", "status": "Active"},
         {"vendor": "Mail and collaboration suite", "service": "Mail, chat, drive", "contract_ends": "2099-12-15", "monthly_fee": 61000, "automatic_renewal": "yes, 12 months", "owner": "Bruno Ferreira", "status": "Renews 15 December"},
         {"vendor": "Pulse Feedback", "service": "Customer surveys", "contract_ends": "", "monthly_fee": 14000, "automatic_renewal": "", "owner": "Nadia Haddad", "status": "Not signed: data processing addendum open"}]})

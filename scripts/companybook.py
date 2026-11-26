@@ -28,6 +28,7 @@ from office import Book, Doc
 ROOT = Path(__file__).resolve().parent.parent
 DRIVE = ROOT / "content" / "generated" / "drive"
 FACTORS = {"economy": 1, "business": 2.5, "galaxium": 5}
+PLACE = {"Moon": "Luna", "Earth": "Earth", "Mars": "Mars", "Jupiter": "Jupiter", "Pluto": "Pluto"}  # the pattern's bodies, in the words of way_home
 GROUPS = {"Flying": ["Operations"], "Commercial": ["Sales", "Marketing", "Support"], "Digital": ["Engineering", "IT"], "Corporate": ["Leadership", "Finance", "Legal", "People"]}
 
 CSS = """
@@ -109,6 +110,15 @@ def check(f: dict, d) -> None:
         assert y["seats_offered"] == fly[y["year"]]["scheduled"] * 10, f"{y['year']}: seats offered is not ten a scheduled leg"
     assert f["flying"][-1]["routes"] == len(routes(d)), "finance.yaml and the snapshot disagree on the number of routes"
     assert f["flying"][-1]["ships"] == 6
+    # The flying programme has to agree with the monthly pattern of fleet.yaml.
+    pattern = yaml.safe_load((ROOT / "content" / "company" / "fleet.yaml").read_text(encoding="utf-8"))["pattern"]
+    kinds = Counter(x["kind"] for x in pattern["legs"])
+    last = f["flying"][-1]
+    assert last["shuttle"] == 12 * (2 * len(pattern["shuttle"]["mornings"]) + kinds["Luna shuttle"]), "finance.yaml: shuttle legs do not follow from fleet.yaml's pattern"
+    assert last["positioning"] == 12 * kinds["Positioning"] - 3, "finance.yaml: positioning legs do not follow from the pattern (Pluto flew nine months of 2099)"
+    assert last["charter"] >= 12 * (kinds["Contract"] + 2 * len(pattern["contract_mornings"])), "finance.yaml: fewer contract legs than the pattern flies"
+    for way in f["way_home"]["legs"]:
+        assert any(x["kind"] != "Contract" and PLACE.get(x["origin"]) == way["from"] and PLACE.get(x["destination"]) == way["to"] for x in pattern["legs"]), f"no leg in the pattern takes travellers home from {way['from']}"
 
 
 def build(d) -> None:
@@ -134,13 +144,15 @@ def build(d) -> None:
     doc.h1("3. How we earn")
     doc.table(["Line", "Who buys", "What is sold", f"Revenue {last['year']}, $ million"],
               [["Scheduled service", "Travellers, on the public site", "One seat on one departure", last["revenue"][0]],
-               ["Charter rotations", "Companies, under a contract", "A whole ship or a block of seats, on dates fixed a year ahead", last["revenue"][1]],
-               ["Cargo and other", "Travellers and companies", "Hold space booked ahead, excess baggage", last["revenue"][2]],
+               ["Charter rotations", "Companies, under a contract", "A block of seats or a whole ship: on a contract departure, on the Luna shuttle or on a leg we fly anyway", last["revenue"][1]],
+               ["Cargo and other", "Forwarders, travellers and companies", "Freight in the hold of the Luna shuttle, hold space booked ahead, excess baggage", last["revenue"][2]],
                ["Total", "", "", total(last)]], widths=[1.6, 2.2, 3.4, 1.6], total=True)
     doc.bullets([f"A seat costs the route's base price times the seat class factor: economy 1, business 2.5, galaxium 5. A full departure earns 18.5 times the economy fare.",
                  f"Earth to Mars: ${mars['economy']:,} in economy, ${mars['full']:,} for a full ship. Earth to Pluto: ${pluto['economy']:,} and ${pluto['full']:,}.",
-                 f"A whole ship on charter is priced as ten business seats less 20%: ${mars['whole_ship']:,} from Earth to Mars. One charter leg earns about what a full scheduled departure does.",
-                 "Shuttles between Earth and Luna move crews and ships. They are not sold."])
+                 f"A whole ship on charter is priced as ten business seats less 20%: ${mars['whole_ship']:,} from Earth to Mars. Few contract legs are whole ships. Most carry a block of a few seats, "
+                 f"and a contract leg earned ${1000 * last['revenue'][1] // fly[last['year']]['charter']:,},000 on average in {last['year']}.",
+                 f"**The way home.** {f['way_home']['rule']} {f['way_home']['how']}",
+                 "The Luna shuttle flies ten nights a month. Its hold is sold as freight and its seats under contract. It is not on the public site: the public seats between Earth and Luna belong to the Free Port's franchise carriers, and we hold one public slot a month."])
     doc.h1("4. What we depend on")
     doc.table(["What", "Whose it is", "How we pay"], [[x["what"], x["who"], x["how"]] for x in f["depends_on"]], widths=[1.6, 1.8, 5.2])
     doc.h1(f"5. What it costs ({last['year']})")
@@ -157,13 +169,19 @@ def build(d) -> None:
     doc.table(["Year", "Raised, $ million", "For what"], [[str(x["year"]), x["raised"], x["what"]] for x in f["funding"]] + [["Total", sum(x["raised"] for x in f["funding"]), ""]],
               widths=[0.9, 1.5, 6.2], total=True)
     doc.p(f"**The board.** {f['board']['seats']} {f['board']['meets']}")
+    doc.table(["Seat", "Who", "From"], [[m["seat"], m["name"], m["from"]] for m in f["board"]["members"]], widths=[1.2, 2.4, 5])
     doc.table(["Company", "Where", "What it does"], [[e["name"], e["where"], e["what"]] for e in f["entities"]], widths=[2.4, 2, 4.2])
     doc.h1("8. Who else flies")
+    doc.p(f["position"]["market"])
     doc.table(["Carrier", "What they are", "What we do that they do not"], [[c["name"], c["they"], c["we"]] for c in f["position"]["against"]], widths=[1.6, 3.6, 3.4])
     doc.h1("9. How a year of flying is made up")
-    doc.table(["Year", "Scheduled legs", "Charter legs", "Shuttle legs", "All legs"],
-              [[label(y), x["scheduled"], x["charter"], x["shuttle"], x["scheduled"] + x["charter"] + x["shuttle"]] for y, x in ((y, fly[y["year"]]) for y in years)], widths=[1.6, 1.4, 1.4, 1.4, 1.4])
+    doc.table(["Kind", "Slot", "What it is", "How it is sold"], [[k["kind"], k["slot"], k["what"], k["sold"]] for k in f["flying_kinds"]], widths=[1.5, 1.2, 3.3, 2.8])
+    doc.table(["Year", "Scheduled legs", "Contract legs", "Luna shuttle legs", "Positioning legs", "All legs"],
+              [[label(y), x["scheduled"], x["charter"], x["shuttle"], x["positioning"], x["scheduled"] + x["charter"] + x["shuttle"] + x["positioning"]] for y, x in ((y, fly[y["year"]]) for y in years)],
+              widths=[1.4, 1.3, 1.3, 1.4, 1.4, 1.2])
     doc.p(f"{f['slots']['rule']} {f['slots']['why_it_matters']}")
+    doc.table(["Slot", "Who may be on board", "How we get one"], [[k["kind"], k["carries"], k["how"]] for k in f["slots"]["kinds"]], widths=[1.3, 3, 4.5])
+    doc.p(f"**Why one a month.** {f['slots']['why_one_a_month']} {f['slots']['next']}")
     doc.p(f"**Sales books.** {f['books']['rule']} {f['books']['follows']}")
     doc.save()
 
@@ -177,7 +195,7 @@ def build(d) -> None:
                title="Revenue by line", subtitle="Millions of dollars. Scheduled service from the sales books, charter from the contracts, by the year flown.")
     book.sheet("Costs", [{"year": label(y), **{key(line): v for line, v in zip(f["cost_lines"], y["costs"])}, "total": sum(y["costs"])} for y in years],
                title="Costs by line", subtitle="Millions of dollars.")
-    book.sheet("Flying", [{"year": label(y), "routes": x["routes"], "ships": x["ships"], "scheduled_legs": x["scheduled"], "charter_legs": x["charter"], "shuttle_legs": x["shuttle"],
+    book.sheet("Flying", [{"year": label(y), "routes": x["routes"], "ships": x["ships"], "scheduled_legs": x["scheduled"], "contract_legs": x["charter"], "luna_shuttle_legs": x["shuttle"], "positioning_legs": x["positioning"],
                            "seats_offered": y["seats_offered"], "seats_sold": y["seats_sold"], "share_sold": round(y["seats_sold"] / y["seats_offered"], 3)} for y, x in ((y, fly[y["year"]]) for y in years)],
                title="Flying and seats by year", subtitle="A leg is one flight from port to port. Seats are those of the scheduled service: ten a leg.", formats={"share_sold": "0%"})
     book.sheet("Owners and funding", [{"item": o["name"], "share_or_amount": f"{o['share']}%", "note": o["note"]} for o in f["owners"]]
@@ -242,23 +260,44 @@ def page(f: dict, d, rs: list[dict]) -> None:
 
     sec("How a year of flying is made up", f"{f['slots']['rule']} {f['slots']['why_it_matters']}")
     last = f["flying"][-1]
-    add('<div class="cols">' + bars(f"Legs flown, {label(years[-1])}", [("Scheduled legs", last["scheduled"]), ("Charter legs", last["charter"]), ("Shuttle legs, not sold", last["shuttle"])], last["scheduled"])
+    add('<div class="cols">' + bars(f"Legs flown, {label(years[-1])}", [("Scheduled, sold on the site", last["scheduled"]), ("Contract, sold by Sales", last["charter"]),
+                                                                            ("Luna shuttle: freight, contract seats", last["shuttle"]), ("Positioning, not sold", last["positioning"])], last["shuttle"], "All legs")
         + f'<div><p class="cap">Why the booking system starts on 10 August</p><p class="note">{e(f["books"]["rule"])} {e(f["books"]["follows"])}</p></div></div>')
+
+    add('<div class="scroll"><table><tr><th>Slot</th><th class="t">Who may be on board</th><th class="t">How we get one</th></tr>'
+        + "".join(f'<tr><td>{e(k["kind"])}</td><td class="t">{e(k["carries"])}</td><td class="t">{e(k["how"])}</td></tr>' for k in f["slots"]["kinds"]) + "</table></div>")
+    add(f'<p class="note" style="margin-top:8px">{e(f["slots"]["why_one_a_month"])} {e(f["slots"]["next"])}</p>')
+
+    way = f["way_home"]
+    sec("How a traveller gets home", f"{way['rule']} {way['how']}")
+    cards([(f"{x['from']} to {x['to']}", "Included in the fare", x["ride"]) for x in way["legs"]]
+          + [("Mars, Venus, Europa", "A scheduled departure", way["from_mars_venus_europa"]), ("The Luna shuttle", "Free with a ticket", way["luna_connection"]),
+             ("Under contract", "Half the outbound rate", way["under_contract"])])
+    sec("Where we fly under contract only", "Not on the public site. The rate card of Sales has the prices.")
+    cards([(x["name"], x["where"], x["what"]) for x in f["contract_ports"]])
 
     raised = ", ".join(f"{x['year']} ${x['raised']}m" for x in f["funding"])
     sec("Who owns it", f"{f['board']['seats']} {f['board']['meets']} Raised ${sum(x['raised'] for x in f['funding']):,} million in three rounds: {raised}.")
     add('<div class="own">' + "".join(f'<div style="width:{o["share"]}%"></div>' for o in f["owners"]) + "</div>")
     cards([(f"{o['share']}%", o["name"], o["note"]) for o in f["owners"]])
+    add('<p class="cap" style="margin-top:12px">The board</p>')
+    cards([(m["name"], m["seat"], m["from"]) for m in f["board"]["members"]])
 
     dept, site = Counter(p["department"] for p in d.people), Counter(p["location"] for p in d.people)
     crew = sum(c["size"] for c in crews)
     where = ", ".join(f"{k} ({v})" for k, v in site.most_common())
-    sec("How it is organised", f"{len(d.people)} staff: {where}. {crew} flight crew in {len(crews)} crews. Two companies: " + " and ".join(f"{x['name']} ({x['where']})" for x in f["entities"]) + ".")
+    heads, counted = [p for p in d.everyone if p.get("kind") == "station"], sum(x["people"] for x in company["workforce"])
+    assert sum(1 for p in d.everyone if p.get("kind") == "crew") == crew, "people.yaml and fleet.yaml disagree on the flight crew"
+    sec("How it is organised", f"{len(d.people) + crew + len(heads) + counted} people. {len(d.people)} office staff: {where}. {crew} flight crew in {len(crews)} crews. "
+        f"{len(heads) + counted} at the hangar, on the ramp and at the station desks. {company['standby']} Two companies: " + " and ".join(f"{x['name']} ({x['where']})" for x in f["entities"]) + ".")
     add('<div class="grid">' + "".join(f'<div class="card"><span class="who">{e(g)}</span>' + "".join(f'<span class="i">{e(k)} {dept[k]}</span>' for k in names)
                                        + (f'<span class="i">Flight crew {crew}</span>' if g == "Flying" else "") + "</div>" for g, names in GROUPS.items()) + "</div>")
     assert sum(dept[k] for names in GROUPS.values() for k in names) == len(d.people), "a department is missing from GROUPS in companybook.py"
+    add('<div class="scroll" style="margin-top:10px"><table><tr><th>Hangar and stations</th><th>People</th><th class="t">What they do</th><th class="t">Led by</th><th class="t">Paid from</th></tr>'
+        + "".join(f'<tr><td>{e(x["where"])}</td><td>{x["people"]}</td><td class="t">{e(x["what"])}</td><td class="t">{e(x["lead"])}</td><td class="t">{e(x["paid_from"])}</td></tr>' for x in company["workforce"])
+        + "</table></div>")
 
-    sec("Where it stands", f["position"]["what"])
+    sec("Where it stands", f["position"]["what"] + " " + f["position"]["market"])
     cards([(x["name"], x["they"], "We: " + x["we"]) for x in f["position"]["against"]])
 
     sec("History")

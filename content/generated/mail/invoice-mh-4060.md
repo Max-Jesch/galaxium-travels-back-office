@@ -1,17 +1,17 @@
 ---
-subject: 'Invoice MH-3636: Crew accommodation'
+subject: 'Invoice MH-4060: Crew accommodation'
 labels:
 - payables
 - automatic
 ---
 From: Meridian Crew Hotels <groups@meridiancrewhotels.example>
 To: Invoices <invoices@galaxium.example>
-Date: 2099-10-12 12:05
+Date: 2099-10-11 16:05
 
 Dear customer,
 
-Please find attached invoice MH-3636 for crew accommodation.
+Please find attached invoice MH-4060 for crew accommodation.
 
-Amount due: $72,000. Payment terms as agreed.
+Amount due: $93,000. Payment terms as agreed.
 
 Meridian Crew Hotels
