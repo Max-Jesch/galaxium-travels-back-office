@@ -1,0 +1,102 @@
+# The customer stories in sales/case-studies/ of the drive (scripts/documents.py).
+#
+# A customer story is approved by the customer and may be sent to anyone. So it names
+# no price, no discount, no competitor and no deal that was lost, and it promises
+# nothing about a departure we do not yet fly. What it says about the flying has to be
+# true of the contracts in contracts.yaml and of `pattern` in fleet.yaml.
+- file: helix-mining-case-study
+  account: A-101
+  title: A shift calendar that flies
+  flies: Crew rotation charter
+  owner: Jamal Carter
+  modified: 2099-10-14
+  need: "Helix runs its sites on fixed shifts. A crew that arrives a day late is a shift that does not start. What Helix asks of a carrier is not the lowest fare. It is that the ship leaves on the day in the calendar."
+  built: ["A rotation charter on dates fixed a year ahead, agreed with Operations before the contract was signed.", "Whole-ship departures: ten seats, one crew.", "One contact for changes: the customer success manager, with a quarterly review."]
+  quote: "We plan shifts a year ahead. We need a carrier that plans the same way."
+  quote_by: "Oksana Petrenko, Travel Manager, Helix Mining Cooperative"
+  next_title: What we are changing next
+  next: "At the October review Helix asked for invoices by site instead of by traveller. That starts with the January invoice."
+- file: outer-belt-logistics-case-study
+  account: A-104
+  title: The first contract we signed
+  flies: Depot crew changes at Jupiter
+  owner: Jamal Carter
+  modified: 2099-06-18
+  need: "Outer Belt Logistics keeps depots in the Jupiter system. A depot crew is relieved on a date set months before, and the person coming off has been out for a long time. The seat home matters as much as the seat out."
+  built: ["One crew change a month. The person going out has a seat on our monthly leg from Earth to Ganymede Gate.", "The person coming off has a reserved seat on the leg we fly back from Ganymede Gate ten days later.", "A master agreement signed in 2095, so that each year's order is two pages."]
+  quote: "Twelve changes a year, and I know all twelve dates in January."
+  quote_by: "Imani Okeke, Head of Crew Planning, Outer Belt Logistics"
+  next_title: Since 2095
+  next: "Outer Belt Logistics was the first company to sign a contract with Galaxium Travels, in our second year of flying. The contract has been renewed every year since."
+- file: tombaugh-observatory-case-study
+  account: A-120
+  title: A seat home from Pluto
+  flies: Reserved seats home for observers
+  owner: Lena Fischer
+  modified: 2099-09-08
+  need: "An observing run at Tombaugh is planned a year ahead and ends on a known date. What the consortium could not buy was a certain way back to Earth for one observer at a time."
+  built: ["Seven reserved seats home in the year, on the leg our ship flies back from Tombaugh Station every month.", "Outbound, observers book a single seat on our scheduled departure, on the public site, like any traveller.", "Observing runs are planned around the day of the departure. The consortium has that day a year ahead."]
+  quote: "We used to plan the telescope first and the travel last. Now the departure day goes into the schedule before the first target does."
+  quote_by: "Dr. Ansel Brooks, Director, Tombaugh Observatory Consortium"
+  next_title: Also on the Luna shuttle
+  next: "The consortium tests its instruments at a workshop at Tycho. Its instrument teams have ridden our Luna shuttle since 2098."
+- file: venus-atmospheric-institute-case-study
+  account: A-122
+  title: A field season on two legs
+  flies: Field teams to Aphrodite Station
+  owner: Lena Fischer
+  modified: 2099-07-20
+  need: "The institute sends a small team to its field station at Aphrodite Station for the second half of each year. Four people, their instrument cases, fixed dates, and one of them stays the winter."
+  built: ["Seats on the two Venus legs we fly outside the timetable every month: one out from Earth, one back a week later.", "Instrument cases in the hold on the same leg as the team, declared ten days ahead.", "Four seats out and three seats back, because the fourth traveller comes home with the next season."]
+  quote: "The season is planned a year ahead. I want the travel to be the part of it I do not think about."
+  quote_by: "Dr. Paolo Conti, Field Operations, Venus Atmospheric Institute"
+  next_title: Second season
+  next: "2099 is the institute's second field season with Galaxium Travels."
+- file: lunar-polytechnic-case-study
+  account: A-107
+  title: A semester on the night shuttle
+  flies: Semester transfers and field trips
+  owner: Lena Fischer
+  modified: 2099-10-28
+  need: "A third of the institute's students come from Earth. They travel at the start and the end of a semester and on field trips in between, and the institute pays from budgets fixed a year before."
+  built: ["Seats on our Luna shuttle, which leaves Cape Meridian in the evening and docks at Tycho in the night.", "The institute names the travellers and the night three days ahead.", "One invoice per semester. A seat that is not used comes back as travel credit valid twelve months."]
+  quote: "One invoice per semester, and a seat we did not use is not lost. That is all a finance officer wants."
+  quote_by: "Jonas Weber, Finance Officer, Lunar Polytechnic Institute"
+  next_title: Since 2098
+  next: "The institute has travelled with Galaxium Travels every semester since the spring of 2098."
+- file: kepler-media-case-study
+  account: A-110
+  title: A film unit of five
+  flies: Production units to Luna, Mars and Jupiter
+  owner: Dev Malhotra
+  modified: 2099-10-05
+  need: "A documentary unit is four to six people who travel together, stay two to three months and come back together. They carry more equipment than clothes, and their dates follow the story."
+  built: ["A unit out and back on a contract departure: Luna in 2098, Mars each winter, Jupiter in the storm season of 2099.", "Camera cases as cargo on the same leg, arranged through one contact.", "When the production moves its dates, the seats move with it as travel credit."]
+  quote: "A unit of five fits your ship, and the ship leaves on the day you said."
+  quote_by: "Arjun Desai, Production Travel, Kepler Media Group"
+  next_title: On board
+  next: "Filming on board is possible with the written sign-off of our safety manager before each leg."
+- file: lagrange-medical-relief-case-study
+  account: A-128
+  title: Where they are needed in June
+  flies: Deployments at short notice
+  owner: Jamal Carter
+  modified: 2099-08-11
+  need: "Lagrange Medical Relief staffs clinics at stations and settlements. It learns where a team is needed a few weeks before the team has to be there, and it cannot run a tender each time."
+  built: ["A framework: an amount paid in advance at the start of the year, drawn down seat by seat at the published rate.", "A deployment is booked through one contact, up to three days before departure.", "Flying beyond Mars is ordered on its own. In 2099 a clinic team of five flew with us to Ganymede Gate."]
+  quote: "I cannot tell you in January where we will be needed in June. I can tell you that we will be."
+  quote_by: "Dr. Naledi Khumalo, Deployments, Lagrange Medical Relief"
+  next_title: Since 2098
+  next: "The framework was renewed and raised for 2099."
+- file: red-sands-hospitality-case-study
+  account: A-109
+  title: The trip is part of the stay
+  flies: Winter guests to Mars
+  owner: Lena Fischer
+  modified: 2099-09-14
+  need: "Red Sands sells a winter in the dunes of Mars. For its guests the stay begins at the departure port, and for its top guest tier the cabin has to match the lodge."
+  built: ["Guests out to Mars and back on our contract rotation, in the winter months.", "For the top guest tier, the pod: one on every ship, across the full width of row 1, with a door.", "Lounge before departure at Cape Meridian, and one named person at the port from booking until the guest is on board."]
+  quote: "Our winter guests do not ask what the seat costs. They ask who meets them at the port."
+  quote_by: "Carla Mendes, Guest Travel, Red Sands Hospitality"
+  next_title: Third winter
+  next: "The winter of 2099 to 2100 is the third for which Red Sands and Galaxium Travels sell the stay and the trip together."
