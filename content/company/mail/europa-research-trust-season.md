@@ -8,7 +8,7 @@ Date: 2099-10-21 17:40
 
 Dear Lena,
 
-Thank you for the call today. To put it in writing: our 2100 field season on Pluto runs from March to June with crews of eight rotating every two weeks. With one departure a month we cannot rotate them. With two we can, and we would commit to the whole season.
+Thank you for the call today. To put it in writing: our 2100 field season on Pluto runs from March to June. The team at Tombaugh is four, and half of it is relieved every two weeks. With one departure a month we cannot do that. With two we can, and we would commit to the whole season: two seats on every departure.
 
 We need to decide by mid December.
 

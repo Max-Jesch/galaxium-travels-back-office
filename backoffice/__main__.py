@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import os
 import sys
+import threading
 
 from . import store
 
@@ -55,6 +56,7 @@ def main() -> None:
         f"  Desk       {store.persona()['name']}, {store.persona()['role']}\n",
         file=sys.stderr,
     )
+    threading.Thread(target=store.warm_drive_text, daemon=True).start()
     mcp.run(transport="streamable-http")
 
 

@@ -19,14 +19,15 @@
   kind: Surface spaceport on the equator
   handler: Own staff
   contract_ends: ""
-  contact: Lucia Bianchi
-  our_presence: "Earth HQ, operations control, the maintenance base and our own ground staff."
+  contact: Deepak Varma
+  our_presence: "Earth HQ, operations control, the crew base, the maintenance base with 38 engineers and technicians, and 26 ground staff of our own."
   gravity: "9.81 m/s²"
   local_time: "Earth HQ time. Luna runs two hours behind."
   facilities:
     - "Two stands and the maintenance hangar. Halcyon, Perihelion and the Kestrel class ships have their checks here."
     - "Galaxium lounge in the departures building, for galaxium travellers."
     - "Cabin catering is loaded here by Lagrange Catering."
+    - "The Luna shuttle leaves at 21:50 and is back at 07:20 the next morning, ten nights a month."
   beyond:
     - {name: Earth, what: "Home port. Travellers arrive from, and leave for, everywhere else by ordinary transport."}
   transfer: "None. The terminal is the destination."
@@ -46,7 +47,7 @@
   handler: Tycho Ground Services
   contract_ends: "2099-12-31"
   contact: Rafael Ortega
-  our_presence: "The Luna Station office on level 3 of the terminal, and the Luna desk of Support."
+  our_presence: "The Luna Station office on level 3 of the terminal, the Luna desk of Support, and a passage desk of two for travellers on the shuttle."
   gravity: "1.62 m/s²"
   local_time: "Luna time, two hours behind Earth HQ."
   facilities:
@@ -63,7 +64,10 @@
     - "A sixth of Earth's weight: most people need a day to walk normally."
   operations:
     - "A turnaround is complete within 90 minutes of docking. Fuelling is on the critical path."
-    - "About fourteen turnarounds a month: one scheduled Earth to Moon, the rest shuttles and charters."
+    - "About fourteen turnarounds a month: two with a scheduled leg (the 5th and the 15th), ten Luna shuttles and two contract departures."
+    - "A slip crew is always here: the crew that flies a shuttle up rests in the crew lounge and flies the next one down."
+    - "Hadley Yards is in orbit above the port. Parts come down on the yard tender and go to Cape Meridian in the shuttle's hold. Perihelion is in refit there."
+    - "The public seats between Earth and Luna belong to the Free Port's franchise carriers. We hold one public slot a month, Earth to Moon; the shuttle carries freight, contract travellers and our own travellers going home or connecting."
     - "Assistance requests go to assistance@tychoground.example, read daily since 20 October."
   known:
     - "The ground handling agreement ends on 31 December 2099. The renewal is under review by Legal."
@@ -77,7 +81,7 @@
   handler: Olympus Port Authority
   contract_ends: "2100-06-30"
   contact: Port operations desk
-  our_presence: "The Mars office in the operations building, and the Galaxium desk in the arrivals hall, open 06:00 to 22:00 local time."
+  our_presence: "The Mars office in the operations building, the Galaxium desk in the arrivals hall with five agents, open 06:00 to 22:00 local time, a line maintenance team of five, and the crew base of Outer B."
   gravity: "3.72 m/s²"
   local_time: "Mars office time. A Mars day is 39 minutes longer than an Earth day."
   facilities:
@@ -94,6 +98,8 @@
     - "The soil is toxic. Gloves stay on outdoors."
   operations:
     - "Dust storms can stop surface operations for weeks. The port issues notices to operators; they go to operations control."
+    - "The Belt call leaves from here on the 1st: Aurora to Vesta Yard and Ceres Station, under contract, and back the next day."
+    - "The port's third pad was certified for scheduled traffic this year. Its new public slots for March to August 2100 are given out at the Slot Conference of 23 November."
   known:
     - "Pad 2 closed 16 to 20 November 2099."
 
@@ -131,7 +137,7 @@
   called: Jupiter
   port: Ganymede Gate
   kind: Orbital port at Ganymede
-  handler: Outer Belt Port Services
+  handler: Galilean Port Services
   contract_ends: "2100-12-31"
   contact: ""
   our_presence: "No office."
@@ -150,6 +156,7 @@
   operations:
     - "Aurora's hull is certified for the belts as far as Ganymede."
     - "The leg from here to Europa is flown by Halcyon, not Aurora."
+    - "Halcyon arrives from Earth on the 10th and leaves for Europa on the 11th. Aurora arrives on the 17th and leaves for Mars on the 19th, with travellers going home."
   known: []
 
 - slug: icebreaker
@@ -164,7 +171,7 @@
   gravity: "1.315 m/s²"
   local_time: "Programme time, set by the Trust."
   facilities:
-    - "One landing pad anchored in the ice, shared with the Trust's supply flights."
+    - "One landing pad anchored in the ice, shared with the Trust's supply flights, and a hardstand beside it."
     - "No terminal. Travellers walk a covered way from the pad to the station."
   beyond:
     - {name: Research Station Icebreaker, what: "The surface station and its drill array. Drilling missions descend toward the ocean below the ice."}
@@ -175,6 +182,7 @@
     - "No surface material leaves containment. Bags are inspected on departure."
   operations:
     - "Only a hull with the outer-system package lands here."
+    - "Halcyon stays on the hardstand from the 11th to the 19th, between her two scheduled legs. Her crew lives aboard and eats at the station, as guests of the Trust."
     - "Ice-quakes can crack the pad anchorings. The Trust inspects them before every arrival and may close the pad at short notice."
     - "Plumes vent without warning near the fracture lines. No work outside near them."
   known: []
@@ -201,7 +209,7 @@
     - "Methane frost makes pads and walkways slippery."
     - "A message to Earth takes more than four hours each way. Nobody can be called for help."
   operations:
-    - "One scheduled departure a month, flown by Halcyon."
+    - "One scheduled departure a month, flown by Halcyon. She arrives on the 22nd and leaves for Earth on the 24th with travellers going home; the crew rests aboard."
     - "Crew rest after a Pluto leg is 26 hours, and 48 hours before the next Pluto leg."
     - "The station is self-reliant in an emergency, and so is the ship."
   known:

@@ -23,10 +23,22 @@ drive_owners:
 # are those of fleet.yaml; money, owners and the reason for founding are in finance.yaml.
 founded: 2092
 history:
-  - {when: "2092", what: "Founded at Cape Meridian. Three Kestrel class ships ordered from Hadley Yards."}
-  - {when: "2094", what: "Kestrel enters service. First scheduled departures: Earth, Luna and Mars."}
-  - {when: "2095", what: "Meridian enters service. Venus. The first corporate account."}
-  - {when: "2096", what: "Solstice, Aurora and Perihelion. Jupiter. Offices on Luna and Mars."}
-  - {when: "2097", what: "Halcyon enters service with the outer-system package. Europa."}
-  - {when: "2098", what: "No new route. The first year with a profit."}
-  - {when: "2099", what: "Pluto from the spring. Perihelion into refit in June. Seat holds on the public site from October."}
+  - {when: "2092", what: "Founded at Cape Meridian by Renata Castellanos, Olu Adeyemi and Farid Nazari. Three Kestrel class ships ordered from Hadley Yards."}
+  - {when: "2094", what: "Kestrel enters service. First scheduled departures in March: Earth, Luna and Mars, on the slots of the new-entrant pool."}
+  - {when: "2095", what: "Meridian enters service. Venus. The first corporate account, Outer Belt Logistics."}
+  - {when: "2096", what: "Solstice, Aurora and Perihelion. Jupiter. Offices on Luna and Mars, and the Luna shuttle."}
+  - {when: "2097", what: "Halcyon enters service with the outer-system package. Europa. In the autumn eleven weeks of cash are left: the lessor takes shares instead of lease payments and the third round closes in December."}
+  - {when: "2098", what: "No new route. Fuller ships. The first year with a profit."}
+  - {when: "2099", what: "Pluto from April. Perihelion into refit in June. Seat holds on the public site from October."}
+
+# Who works here besides the office staff of people.yaml. Flight crews and the heads of
+# the hangar and the stations are in people.yaml too, marked with `kind`. The rest are
+# counted here. Finance pays them from the cost lines named in finance.yaml.
+workforce:
+  - {where: "Cape Meridian, maintenance base", people: 38, what: "Licensed engineers and technicians in three shifts. Routine checks of Halcyon, Perihelion and the Kestrel class.", lead: Ragnhild Aasen, paid_from: Maintenance}
+  - {where: "Cape Meridian, ramp and terminal", people: 26, what: "Ramp, fuelling, baggage, the departure desks and the galaxium lounge with its three hosts.", lead: Deepak Varma, paid_from: Ports and ground handling}
+  - {where: "Cape Meridian, operations control", people: 4, what: "Duty controllers on the night and weekend roster.", lead: Sofia Lindgren, paid_from: "Staff, non-crew"}
+  - {where: "Olympus Port, line maintenance", people: 5, what: "Aurora's routine checks and the turnaround checks of every ship that calls.", lead: Tomasz Zielinski, paid_from: Maintenance}
+  - {where: "Olympus Port, Galaxium desk", people: 5, what: "The desk in the arrivals hall, 06:00 to 22:00 local time, and lost property.", lead: Ximena Rojas, paid_from: Ports and ground handling}
+  - {where: "Tycho, passage desk", people: 2, what: "The Luna desk for travellers connecting on the shuttle. Employed by Galaxium Travels Luna Ltd.", lead: Lucia Bianchi, paid_from: Ports and ground handling}
+standby: "Four standby officers on call at Cape Meridian, two for the flight deck and two for the cabin, on day contracts. They are not counted in the six crews."

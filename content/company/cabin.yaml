@@ -42,9 +42,11 @@ for_everyone:
   medical: "Medical equipment is noted on the booking and the crew is told."
   assistance: "Assistance on arrival is booked through Support and passed to the ground handler, at the latest 48 hours before arrival."
   holds: "A seat is held for fifteen minutes at the price shown. Paying inside the hold books it."
+  way_home: "The fare to the Moon, to Jupiter and to Pluto includes the way home. We fly back from there without seats for sale, and we take our own travellers with us: from the Moon on any Luna shuttle, from Jupiter on the 19th, from Pluto on the 24th. Ask Support at least 48 hours ahead. From Mars, Venus and Europa the way home is a departure on the site."
+  connection: "A traveller with a ticket for one of our departures rides the Luna shuttle free to reach it or to get home after it. The shuttle leaves Earth at 21:50 and the Moon at 03:20, on ten nights a month. Ask Support."
 
 before_you_fly:
-  - {when: When you book, what: "Tell us about special meals, medical equipment and assistance on arrival."}
+  - {when: When you book, what: "Tell us about special meals, medical equipment and assistance on arrival. If your trip ends on the Moon, at Jupiter or on Pluto, tell us when you want to come home."}
   - {when: The day before, what: "Pack heavy items in checked bags. In the cabin, heavy items go under the seat."}
   - {when: At the port, what: "Bags are weighed. Galaxium travellers are met at the lounge."}
   - {when: On board, what: "Seated and strapped in for the departure burn, for turnover and from the approach call."}

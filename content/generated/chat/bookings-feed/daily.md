@@ -165,8 +165,8 @@
 ## 2099-11-01
 [07:00] Bookings Bot: Sat 31 October: no new bookings on the scheduled service.
 ## 2099-11-02
-[07:00] Bookings Bot: Sun 1 November: no new bookings on the scheduled service.
+[07:00] Bookings Bot: Sun 1 November: no new bookings. Sales are closed for the registry changeover until Thursday 5 November, 06:00 UTC.
 ## 2099-11-03
-[07:00] Bookings Bot: Mon 2 November: no new bookings on the scheduled service.
+[07:00] Bookings Bot: Mon 2 November: no new bookings. Sales are closed for the registry changeover until Thursday 5 November, 06:00 UTC.
 ## 2099-11-04
-[07:00] Bookings Bot: Tue 3 November: no new bookings on the scheduled service.
+[07:00] Bookings Bot: Tue 3 November: no new bookings. Sales are closed for the registry changeover until Thursday 5 November, 06:00 UTC.

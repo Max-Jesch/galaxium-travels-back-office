@@ -8,7 +8,7 @@
   amount: 46000000
   close_date: 2099-07-14
   notes:
-    - {author: Dev Malhotra, date: 2099-06-30, text: "Oksana compared us with Orbitway. We won on the fixed Earth to Mars slots and the group hold. Price was 6% above Orbitway and it did not matter."}
+    - {author: Dev Malhotra, date: 2099-06-30, text: "Oksana compared us with Orbitway. We won on the fixed dates of the Earth to Mars rotation and on holding the whole block for the year. Price was 6% above Orbitway and it did not matter."}
 - id: D-2002
   name: Ceres Agritech, harvest rotation
   account_id: A-102

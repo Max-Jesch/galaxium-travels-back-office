@@ -5,6 +5,8 @@
 - {name: random, section: Company, purpose: "Not work. Lunch, pets, launch photos."}
 - {name: office-earth, section: Company, purpose: "Earth HQ: deliveries, desks, the coffee machine"}
 - {name: help-it, section: Company, purpose: "Ask IT. Laptops, access, the VPN. For anything urgent open a ticket too."}
+- {name: office-luna, section: Company, purpose: "Luna Station office, level 3 at Tycho: the airlock, the shuttle parcels, the view"}
+- {name: office-mars, section: Company, purpose: "Mars office and the desk at Olympus Port. Our clock is not yours."}
 
 - {name: ops-routes, section: Operations, purpose: Route planning and the Monday route review}
 - {name: ops-control, section: Operations, purpose: "Live operations log: departures, arrivals, delays"}

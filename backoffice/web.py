@@ -21,8 +21,8 @@ async def index(request: Request) -> Response:
     return HTMLResponse(PAGE.read_text(encoding="utf-8"))
 
 
-@mcp.custom_route("/api/state", methods=["GET"])
-async def state(request: Request) -> Response:
+@mcp.custom_route("/api/state", methods=["GET"])  # plain def: Starlette runs it in a worker thread
+def state(request: Request) -> Response:
     perms = store.permissions()
     me = store.persona()
     bookings = store.snapshot("bookings")
@@ -69,7 +69,7 @@ async def version(request: Request) -> Response:
 
 
 @mcp.custom_route("/api/drive-preview/{path:path}", methods=["GET"])
-async def drive_preview(request: Request) -> Response:
+def drive_preview(request: Request) -> Response:
     try:
         body = json.dumps(store.drive_preview(request.path_params["path"]), default=str)
         return Response(body, media_type="application/json")

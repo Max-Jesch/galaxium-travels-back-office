@@ -1,0 +1,250 @@
+# The account plans in sales/accounts/ of the drive, one per corporate account.
+#
+# scripts/documents.py writes account-plan-<name>.md from this file. It adds the signed
+# contracts from contracts.yaml and the open deals from the CRM, so neither is typed
+# here. Nimbus Freight (A-105) and Outer Belt Logistics (A-104) have hand-written plans
+# in content/company/drive/sales/accounts/ and are not in this file.
+#
+# A plan says how the customer travels, how the account stands and what happens next.
+# It does not say why a deal of the third quarter of 2099 was won or lost: that is the
+# question of the win-loss pack.
+A-101:
+  by: Jamal Carter
+  modified: 2099-10-13
+  about: "A cooperative of eleven mining sites in the Tharsis region of Mars. About 900 people on site, on fixed shifts of six months."
+  travel: "Two whole ships a year: one out from Earth in the spring, one home in the autumn. From 2100 also a block on the monthly Mars rotation. Directors fly four times a year and buy those seats elsewhere."
+  health: [Good, "Our largest mining account. Quarterly review held on 12 October."]
+  says: "Oksana Petrenko, 12 October: happy with the rotation charter. Wants invoices by site instead of by traveller."
+  plan: ["Invoices by site from the January invoice. Jamal with Finance.", "Agree the two whole-ship dates of 2100 with Operations before the end of November.", "Do not reopen executive travel before their board asks."]
+A-102:
+  by: Dev Malhotra
+  modified: 2099-10-28
+  about: "Farms under glass at Ceres. Crews of thirty to forty go out for planting and for harvest and come back between them."
+  travel: "Seats on the Belt call from Olympus Port to Ceres Station. Customer in 2098 and in the spring of 2099, when the call was flown twice a month."
+  health: [At risk, "No contract running. Two harvest tenders went to another carrier in 2099."]
+  says: "Luis Carvalho: in harvest season he needs a departure every week."
+  plan: ["Keep the planting crews, which need less frequency: offer March to May 2100 in December.", "Tell Luis the date Perihelion returns to service as soon as Operations confirms it.", "Do not discount. He has said twice that price is not the point."]
+A-103:
+  by: Bastien Moreau
+  modified: 2099-10-21
+  about: "Engineering contractor at Olympus Port. Builds and maintains plant on Mars and, from 2100, a construction site on Ganymede."
+  travel: "Engineers between Earth and Mars on the contract rotation. Site teams of six to Ganymede from February 2100, if we win the rotations."
+  health: [Watch, "The Earth to Mars travel is steady. The Ganymede site is the larger part of their travel from 2100 and is not signed."]
+  says: "Bao Nguyen, 19 October: asks for longer holds for group bookings and for names to be supplied late."
+  plan: ["Quote for the Ganymede rotations by 6 November (D-2103).", "Operations to confirm Aurora's dates before the quote goes out.", "Dev stays on the open items until year end; the account is Bastien's since 1 October."]
+A-106:
+  by: Lena Fischer
+  modified: 2099-10-22
+  about: "Research foundation that runs the station on Europa and shares its facility with us as our handler there. Field seasons from March to September."
+  travel: "Seats out to Jupiter on Halcyon's monthly leg, then the scheduled hop to Europa, which they book on the site. For Pluto they use another carrier."
+  health: [Watch, "A key account whose work is moving outward. The 2099 field season ended in August and no contract is running."]
+  says: "Dr. Selma Aydin, 21 October: a team of four at Tombaugh in 2100, half of it relieved every two weeks. One departure a month does not work for that."
+  plan: ["Revised proposal for the Pluto field season (D-2101) once the second monthly Pluto departure is decided.", "Offer the Europa season of 2100 on its own in the meantime, so that it does not wait for the Pluto decision.", "Price lock for 2100 asked for in the deal desk: needs a signed commitment for the period."]
+A-107:
+  by: Lena Fischer
+  modified: 2099-10-26
+  about: "Technical university at Tycho with about 4,000 students, a third of them from Earth."
+  travel: "Seats on the Luna shuttle at the start and end of each semester and for field trips. One invoice per semester."
+  health: [Good, "Three contracts in a row for transfers and field trips."]
+  says: "Jonas Weber, Finance Officer: one invoice per semester, and a seat not used comes back as travel credit."
+  plan: ["Spring transfers 2100: proposal in January.", "Research cohorts are paid from grants that can be withdrawn. Offer them only with the credit terms of the field trips.", "Ask Jonas for a reference for the Riverside School Trust."]
+A-108:
+  by: Lena Fischer
+  modified: 2099-10-19
+  about: "Contract laboratory on Earth with a low-gravity facility at Tycho. Samples go up and results come down with a courier."
+  travel: "Courier seats on the Luna shuttle, about one a month. The sample rides in the cabin with a named courier."
+  health: [Watch, "The courier contract runs to August 2100. Everything with movable dates has gone elsewhere."]
+  says: "Mei Sato: experiments slip, and she needs to cancel a day before without losing the fare."
+  plan: ["Named contact in Support for the couriers, as asked: Jamal to arrange with Nadia.", "Bring the question of a flexible corporate tariff to the deal desk with this account as the example."]
+A-109:
+  by: Lena Fischer
+  modified: 2099-11-03
+  about: "Hotel group at Olympus Port. Its first lodge out in the dune fields opened on 29 October 2099. Our partner for Winter on Mars."
+  travel: "Guests out to Mars and back on the contract rotation in the winter. The top guest tier flies in the pod. Budget guests in summer and spring buy the cheapest seat on the market."
+  health: [Good, "Partner since 2097. Winter guest packages for the third winter."]
+  says: "Carla Mendes: the winter guests do not compare fares."
+  plan: ["Sign the group rate sheet approved on 3 November (D-2108): 10% for groups of eight or more, at most 16 seats a month.", "Campaign launch 10 November with Marketing.", "Festival and shoulder-season groups arrive over many days. Do not quote them on a monthly rotation."]
+A-110:
+  by: Dev Malhotra
+  modified: 2099-10-30
+  about: "Producer of documentary series. Sends units of four to six for two to three months."
+  travel: "A unit out and back on a contract departure: Luna in 2098, Mars each winter, Jupiter in the spring of 2099."
+  health: [Good, "Five productions flown since 2098. Co-marketing for Winter on Mars agreed in principle."]
+  says: "Arjun Desai: a unit of five fits the ship. Shooting dates move, and he needs to move seats with them."
+  plan: ["Co-marketing agreement: draft from Legal due 6 November.", "Safety sign-off for filming on board before the December rotation: Dev with Kwame.", "Series beyond Jupiter need crews in and out every two weeks. Raise them again when the fleet allows it."]
+A-111:
+  by: Lena Fischer
+  modified: 2099-10-30
+  about: "Resort at the rim of Tycho, opening in December 2099."
+  travel: "Guests on Luna departures under contract for the launch season. Staff travel on the public franchise carriers."
+  health: [Good, "Partner since this year. Launch season signed, new year packages with their counsel."]
+  says: "Freya Nilsson: staff travel is bought on price, guests are a different conversation."
+  plan: ["Close the new year packages (D-2119).", "The departure of 31 December: Operations to say whether the observation side can face Earth at midnight.", "Renewal conversation in February, as Freya asked."]
+A-112:
+  by: Dev Malhotra
+  modified: 2099-10-12
+  about: "Repair yard at Vesta with its own dock, Vesta Yard. About 120 people."
+  travel: "One relief a month on the Belt call from Olympus Port in 2100. In the first half of 2099 two a month."
+  health: [Good, "Signed for 2100 on 9 October, payment by quarter in advance."]
+  says: "Tariq Hassan: one departure a month is enough now that the yard is on a monthly cycle."
+  plan: ["First instalment due before 1 January.", "Send the dates of the Belt call for 2100 as Annex A once Operations has confirmed them.", "Ask in June whether the yard stays on the monthly cycle."]
+A-113:
+  by: Bastien Moreau
+  modified: 2099-10-27
+  about: "Drilling company on Ganymede. Shifts of forty, eight weeks on."
+  travel: "A survey team of four flew Mars to Jupiter with us in the summer of 2099. Shift travel is with another carrier."
+  health: [Prospect for shift travel, "One small contract flown without complaint."]
+  says: "Milos Petrovic: wants to see the ship before he puts a shift on it."
+  plan: ["Site visit on Ganymede, 24 November.", "Bring the dates of Aurora for 2100. Shift travel is a question of how often we come."]
+A-114:
+  by: Bastien Moreau
+  modified: 2099-10-20
+  about: "Quarry on Phobos, run from an office at Olympus Port. Fewer than thirty people."
+  travel: "A relief each quarter between Earth and Mars on the contract rotation."
+  health: [Good, "Renewed once. Small and no trouble."]
+  says: "Dana Whitfield: one invoice a quarter and nothing else."
+  plan: ["Renewal for 2100 (D-2118) after their board on 18 November."]
+A-115:
+  by: Dev Malhotra
+  modified: 2099-10-29
+  about: "Prospecting company in the Belt. Met at the Expo of 2098 and again through the organisers this autumn."
+  travel: "Survey teams to the Belt, by their account on a three-week cycle."
+  health: [Prospect, "No contract yet."]
+  says: "Kwabena Owusu: has heard that we call at the Belt once a month."
+  plan: ["Meeting on 25 November at the Expo.", "A three-week cycle does not fit a monthly call. Be plain about that and ask what they do in the weeks between."]
+A-116:
+  by: Dev Malhotra
+  modified: 2099-10-30
+  about: "Parcel carrier. Its freight flies on freighters; its couriers with documents and valuables fly as travellers."
+  travel: "Courier seats Earth to Mars on the contract rotation, seven in 2099."
+  health: [Good, "Mars courier seats since 2098. Luna and Venus they buy elsewhere."]
+  says: "Sara Okabe: a courier seat to Luna is a commodity, a courier seat to Mars on a fixed date is not."
+  plan: ["Follow up the proposal for 2100 (D-2111) on 10 November.", "Do not bid for Luna courier seats again."]
+A-117:
+  by: Bastien Moreau
+  modified: 2099-10-28
+  about: "Refrigerated storage and transport in the Jupiter system, based on Callisto."
+  travel: "Technicians from Mars to Jupiter. Not yet a customer."
+  health: [Prospect, "First call booked."]
+  says: "Nothing yet."
+  plan: ["First call on 12 November."]
+A-118:
+  by: Lena Fischer
+  modified: 2099-10-15
+  about: "Freight forwarder at Tycho with eleven staff. A customer of our hold as well as of our cabin."
+  travel: "Five seats a year on the Luna shuttle for staff who ride with their freight."
+  health: [Good, "Renewed in June, late and backdated to April."]
+  says: "Aoife Brennan: she renews when someone reminds her."
+  plan: ["Send the rate card for 2100 (D-2120).", "Remind her in February, not in June."]
+A-119:
+  by: Lena Fischer
+  modified: 2099-10-23
+  about: "University with a planetary sciences department that runs a field course on Luna every spring."
+  travel: "Six seats on the Luna shuttle in the spring of 2099. For 2100 a graduate field school."
+  health: [Watch, "One contract flown. The next is compared with another carrier on refund terms."]
+  says: "Prof. Chiamaka Nwosu: students withdraw, and the department cannot carry the fare."
+  plan: ["Offer travel credit valid twelve months for withdrawn students (D-2110).", "Decision expected by 4 December."]
+A-120:
+  by: Lena Fischer
+  modified: 2099-10-15
+  about: "Consortium of nine institutes that runs the observatory at Tombaugh. Its instrument workshop is at Tycho."
+  travel: "Instrument teams on the Luna shuttle since 2098. Since May 2099 reserved seats home from Pluto for observers. Outbound the observers book our scheduled departure on the site and plan their runs around it."
+  health: [Good, "Key account. Two contracts running."]
+  says: "Dr. Ansel Brooks, 14 October: would add a second observing team if there were two departures a month."
+  plan: ["Revised proposal for the 2100 observing runs (D-2105) after the decision on a second Pluto departure.", "Renew the instrument teams for 2100 in December; it does not depend on Pluto."]
+A-121:
+  by: Lena Fischer
+  modified: 2099-11-03
+  about: "A secondary school on Earth. A physics teacher wants to take a class to the Moon in May 2100."
+  travel: "27 travellers, which is three shuttle nights."
+  health: [Prospect, "She has not seen a price."]
+  says: "Marguerite Ashby: the school has a travel fund and a sponsor in mind."
+  plan: ["Call Ms Ashby this week (D-2107).", "Ask the Lunar Polytechnic Institute whether the class can visit: it may help with the sponsor."]
+A-122:
+  by: Lena Fischer
+  modified: 2099-10-08
+  about: "Research institute with a field station at Aphrodite Station. Field seasons in the second half of the year."
+  travel: "Field teams on the two Venus legs we fly outside the timetable, on the 7th and the 14th. One of the team winters at the station."
+  health: [Good, "Second field season with us."]
+  says: "Dr. Paolo Conti: the season is planned a year ahead. What cannot be planned is a failed probe."
+  plan: ["Field season 2100: proposal in April.", "Ask in March whether the colleague who winters at the station needs a seat home before the season."]
+A-123:
+  by: Bastien Moreau
+  modified: 2099-10-16
+  about: "Guided ascents of Olympus Mons. Owner-run, about 60 guests a winter."
+  travel: "An allotment of economy seats to Mars on the winter contract rotations, at the partner rate."
+  health: [Good, "Partner since 2098. Second winter signed in June."]
+  says: "Rosa Delgado: her guests book a year ahead and so does she."
+  plan: ["Names for the December rotation by 8 December.", "Introduce Rosa to Pilar for the Winter on Mars campaign."]
+A-124:
+  by: Dev Malhotra
+  modified: 2099-10-22
+  about: "Independent film production on Luna."
+  travel: "Small units to Luna and now and then to Mars. Three tenders since 2098, none won."
+  health: [Prospect, "Buys the cheapest seat."]
+  says: "Theo Marchetti: a small production takes the cheapest seat."
+  plan: ["Wait for the shooting schedule of the feature (D-2112).", "Quote only if the shoot needs fixed dates or the pod."]
+A-125:
+  by: Lena Fischer
+  modified: 2099-10-29
+  about: "Hotel at Aphrodite Station, opened in 2099."
+  travel: "Opening staff flew out with us in the spring and summer of 2099. Now guest packages."
+  health: [Good, "One contract flown, the next in negotiation."]
+  says: "Ingeborg Aas: wants the later Venus departure written into the contract."
+  plan: ["Close the guest packages (D-2113). Operations has confirmed the later departure from 13 December."]
+A-126:
+  by: Dev Malhotra
+  modified: 2099-10-14
+  about: "Organiser of the Interplanetary Games, held every two years. The Games of 2100 are on Mars."
+  travel: "Delegations of several hundred, and smaller groups for trials and qualifiers. Three tenders since 2098, none won."
+  health: [Prospect, "A tender for 2100 is expected in January."]
+  says: "Marcus Oyelaran: one budget line, several hundred people, arriving over three weeks."
+  plan: ["Read the tender before deciding to bid. Delegations do not fit a ship of ten.", "What may fit: officials and medical staff on fixed dates, and the pod."]
+A-127:
+  by: Bastien Moreau
+  modified: 2099-10-26
+  about: "Water plant in the Hellas basin on Mars, commissioned in 2099."
+  travel: "Commissioning engineers flew out with us from May to July 2099. From 2100 a permanent plant crew."
+  health: [Good, "One small contract flown."]
+  says: "Fatima Zahra: the plant crew changes twice a year."
+  plan: ["Bastien presents on site on 19 November (D-2115)."]
+A-128:
+  by: Jamal Carter
+  modified: 2099-10-20
+  about: "Medical charity that staffs clinics at stations and settlements, usually at short notice."
+  travel: "A framework paid in advance and drawn down at the rate card as teams deploy, to Luna and Mars. Flying beyond Mars is ordered separately."
+  health: [Good, "Framework since 2098, raised for 2099. A clinic team flew to Ganymede with us this year."]
+  says: "Dr. Naledi Khumalo: she cannot say in January where they will be needed in June."
+  plan: ["Framework for 2100 (D-2116): Legal is reading their standard terms.", "Statement of what is drawn from the 2099 framework, at 31 October, to Dr. Khumalo."]
+A-129:
+  by: Dev Malhotra
+  modified: 2099-07-02
+  about: "Survey company working the Belt from Vesta. Teams on a two-week cycle."
+  travel: "Seats on the Belt call from 2097 to June 2099."
+  health: [Former customer, "Left at the end of June 2099."]
+  says: "Kofi Mensah, May 2099: his teams change every two weeks, and from June we call once a month."
+  plan: ["Call Kofi when the date of Perihelion's return to service is confirmed.", "Nothing else until then."]
+A-130:
+  by: Lena Fischer
+  modified: 2099-10-01
+  about: "Congress centre at Tycho. Two large congresses a year and many smaller meetings."
+  travel: "Seats on the Luna shuttle for invited speakers. Delegates buy their own seats on the public franchise carriers."
+  health: [Watch, "The speaker programme ended in September and has not been renewed."]
+  says: "Halima Yusuf: speakers do not cancel, delegates do."
+  plan: ["Offer the speaker programme for 2100 this month.", "Do not bid for delegate seats without a tariff that refunds in cash."]
+A-131:
+  by: Dev Malhotra
+  modified: 2099-10-19
+  about: "Haulier in the Jupiter system with depots at Ganymede and in the Trojans."
+  travel: "Depot crews from Mars to Jupiter on Aurora, five seats in 2099. Dispatchers and the second depot travel with another carrier."
+  health: [At risk, "The contract ends on 31 December. Three tenders lost since March."]
+  says: "Stefan Lindqvist, June: asked whether we will ever fly to Jupiter more than once a month."
+  plan: ["Offer the first depot's renewal for 2100 in November.", "Answer Stefan's question when the timetable for March to August 2100 is known."]
+A-132:
+  by: Lena Fischer
+  modified: 2099-06-08
+  about: "Technical university on Earth with exchange programmes on Luna and Mars."
+  travel: "Not a customer. Three tenders since 2098."
+  health: [Prospect, "Lost three times on the same point."]
+  says: "Dr. Irene Castell: no cash refund for a student who withdraws, no contract."
+  plan: ["Do not bid again under the present refund terms.", "Tell Dr. Castell if the terms change."]

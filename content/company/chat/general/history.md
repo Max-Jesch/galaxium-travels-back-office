@@ -4,7 +4,7 @@
 [09:11] Felix Braun: Thank you! I sit next to the window on the third floor. If you maintain a spreadsheet that starts with "export", I would like to meet you.
     [09:14] Tomás Rivera: That is me. I will bring coffee.
     [09:20] Yuki Tanaka: And me. Mine has macros.
-[14:30] Renata Castellanos: Third quarter is nearly done. We flew every scheduled departure in August for the first time since we added the Pluto route. Thank you, Operations.
+[14:30] Renata Castellanos: Third quarter is nearly done. We flew every scheduled departure in its slot in August, for the first time since we added the Pluto route. Thank you, Operations.
     + 🚀 21, 👏 9
 
 ## 2099-09-28

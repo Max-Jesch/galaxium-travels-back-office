@@ -4,7 +4,9 @@ registers, plans, contracts, guides.
 `routine.build()` calls `build()` after its own drive files. Everything lands in
 `content/generated/drive/`. The documents about the ships, the ports and the cabin are
 in `worldbook.py`, written from `content/company/fleet.yaml`, `ports.yaml` and
-`cabin.yaml`; the same rules apply there. The rules for what may be said here:
+`cabin.yaml`; the contract register, the charter orders, the customer stories, the
+account plans and the quarterly trackers are in `salesbook.py`, written from
+`content/company/crm/`. The same rules apply there. The rules for what may be said here:
 
 - Bookings, quotes and flights are read from the snapshot, deals from the CRM file.
   Nothing about them is typed in.
@@ -25,6 +27,7 @@ from pathlib import Path
 import yaml
 
 import companybook
+import salesbook
 import worldbook
 from office import AMBER, OK, WARN, Book, Brand, Deck, Doc, F
 
@@ -55,7 +58,7 @@ SAFETY = [
     ("SR-2099-037", "2099-09-19", "Kestrel", "Cabin", "Overhead restraint latch opened during the departure burn, row 5. Bag stayed in place.", "Medium", "Open: bulletin 2099-07"),
     ("SR-2099-038", "2099-09-23", "Aphrodite Station", "Ground", "Pressure seal warning at berth 3 on docking. Cleared after the seal was reseated.", "Low", "Closed"),
     ("SR-2099-039", "2099-10-17", "Tycho", "Passenger", "Booked wheelchair assistance not provided on arrival. Cabin crew assisted. Third case in October (ticket GT-1019).", "Medium", "Closed 20 October"),
-    ("SR-2099-040", "2099-10-24", "Halcyon", "Technical", "Wear on the number 2 coolant valve at the routine inspection. Inside limits. Assembly replaced 26 to 29 October.", "Medium", "Closed 29 October"),
+    ("SR-2099-040", "2099-10-25", "Halcyon", "Technical", "Wear on the number 2 coolant valve at the routine inspection after the return from Pluto. Inside limits. Assembly replaced 26 to 29 October.", "Medium", "Closed 29 October"),
 ]
 
 
@@ -127,8 +130,10 @@ def decks(w: World) -> None:
                rows(by_class) + total(rows(by_class)), widths=[3, 1, 1, 2], total=True, source="Finance",
                note="Each departure has ten seats: 6 economy, 3 business, 1 galaxium.")
     deck.table("Charter: contracts decided in the second quarter", ["Deal", "Account", "Owner", "Outcome", "Value (dollars)"],
-               [[x["id"], w.account(x), x["owner"], x["stage"].capitalize(), x["amount"]] for x in sorted(q2, key=lambda x: str(x["close_date"]))],
-               widths=[1, 3.2, 1.6, 1, 1.6], source="Sales", note="Charter flying is sold under contract and never appears in the booking system.")
+               [[x["id"], w.account(x), x["owner"], x["stage"].capitalize(), x["amount"]] for x in sorted(q2, key=lambda x: str(x["close_date"])) if x["amount"] >= 8000000],
+               widths=[1, 3.2, 1.6, 1, 1.6], source="Sales", size=13,
+               note=f"Contracts of $8,000,000 and more. All {len(q2)} decided in the quarter: {sum(x['stage'] == 'won' for x in q2)} won for ${sum(x['amount'] for x in q2 if x['stage'] == 'won'):,}, "
+                    f"{sum(x['stage'] == 'lost' for x in q2)} lost for ${sum(x['amount'] for x in q2 if x['stage'] == 'lost'):,}. Charter flying never appears in the booking system.")
     cash = [["Operating account", 1096200000], ["Payroll account", 41300000], ["Luna entity", 28300000], ["Maintenance reserve", 18500000]]
     deck.table("Cash at 31 July", ["Account", "Balance (dollars)"], cash + [["Total", sum(r[1] for r in cash)]], widths=[3, 2], total=True, source="Finance")
     ageing = [["Not yet due", 14820000], ["1 to 30 days overdue", 3260000], ["31 to 60 days overdue", 410000], ["More than 60 days overdue", 0]]
@@ -184,7 +189,7 @@ def decks(w: World) -> None:
     deck.timeline("Dates", [("10 November", "Launch, 09:00."), ("10 December", "First departures at the group rate."), ("28 February", "Campaign and group rate end.")])
     deck.table("The offer", ["Where", "Price", "Conditions"],
                [["Public booking site", "No discount", "Prices follow the pricing policy."],
-                ["Groups of eight or more, through Sales", "10% off", "Departures 10 December to 28 February. At most 40 seats a month at that rate."]],
+                ["Groups of eight or more, through Sales", "10% off", "Departures 10 December to 28 February. At most 16 seats a month at that rate. Groups fly on the contract rotation, not on the scheduled departure."]],
                widths=[2.2, 1.2, 4], source="marketing/campaigns/winter-on-mars/campaign-brief.md", size=14)
     deck.table("Scheduled departures to Mars in the campaign", ["Flight", "Route", "Departure (UTC)", "Seats"],
                [[d.gx(f["flight_id"]), d.route(f["flight_id"]), f["departure_time"].replace("T", " ")[:16], 10] for f in mars],
@@ -199,7 +204,7 @@ def decks(w: World) -> None:
     deck.save()
 
     # ---- Corporate overview, for customers
-    routes = sorted({(f["origin"], f["destination"], w.hours(f)) for f in w.flights.values()}, key=lambda r: (r[2], r[0]))
+    routes = sorted({(f["origin"], f["destination"], w.hours(f)) for f in w.flights.values()}, key=lambda r: (r[2], r[0], r[1]))
     places = sorted({p for r in routes for p in r[:2]})
     deck = Deck(path("sales/corporate-overview-deck.pptx"), "Galaxium Travels for corporate travel", "Crew rotations, research seasons and productions · 2099",
                 owner="Amara Okafor", modified="2099-10-05")
@@ -207,11 +212,11 @@ def decks(w: World) -> None:
     deck.figures("At a glance", [("6", "ships"), ("10", "scheduled routes"), (str(len(places)), "destinations, Earth to Pluto"), ("3", "stations with our own staff")],
                  items=["Earth HQ at Cape Meridian, an office on Luna at Tycho and one on Mars at Olympus Port.", "A named account executive and a customer success manager for every contract."])
     deck.table("Where we fly", ["From", "To", "Flight time", "Scheduled service"], [[o, dst, f"{h} hours", "One departure a month"] for o, dst, h in routes],
-               widths=[1.5, 1.5, 1.2, 2], note="Charter rotations fly on your dates, on any of these routes.")
+               widths=[1.5, 1.5, 1.2, 2], note="Contract departures fly on dates fixed with you. Where we fly back without seats for sale, the way home is in the fare.")
     deck.chart("A small ship, a quiet cabin", "doughnut", ["Economy", "Business", "Galaxium"], {"Seats": [6, 3, 1]}, labels=False,
-               aside=("Ten seats per departure", ["6 economy, 3 business, 1 galaxium.", "A whole ship is a crew, a field team or a production unit.", "Whole-ship charters are priced as ten business seats less 20%."]))
+               aside=("Ten seats per departure", ["6 economy, 3 business, 1 galaxium.", "A whole ship is a crew, a field team or a production unit.", "Whole-ship charters are priced as ten business seats less 20%.", "Most customers take a block of a few seats instead."]))
     deck.two("Two ways to fly with us", ("Scheduled service", ["One departure per route per month.", "Booked on the public site, one seat at a time.", "A seat hold of 15 minutes: see the price, then decide."]),
-             ("Charter rotations", ["Whole-ship or block bookings under a contract.", "Fixed dates that match your shift calendar.", "Invoices the way your finance team wants them: by site, by month, by traveller."]))
+             ("Charter rotations", ["A block of seats or a whole ship under a contract.", "Earth to Mars every month, the Belt call from Mars, Luna ten nights a month.", "Fixed dates that match your shift calendar.", "Invoices the way your finance team wants them: by site, by month, by traveller."]))
     deck.table("Who we fly for", ["Segment", "Typical need", "What we build"],
                [["Mining and Resources", "Crew rotations on fixed cycles", "Departure days that match the shift calendar"],
                 ["Logistics", "Crew changes", "Block charters on crew change days"],
@@ -240,7 +245,7 @@ def decks(w: World) -> None:
                source="support/weekly-numbers.md", aside=("Top reason each week", [f"{k}: {reason}" for k, _, _, _, reason in SUPPORT_WEEKS[:3]]))
     deck.two("What corporate bookers ask for", ("Asked", ["A hold longer than 15 minutes for a group (Tharsis Engineering, 19 October).", "Names 72 hours before departure instead of at booking (same request)."]),
              ("Our answer today", ["Group holds are planned for early 2100. Until then Sales reserves group blocks by hand.", "Names stay required at booking: the traveller must match the account. Changes are cancel and rebook."]),
-             source="Mail thread \"Request for quote, 40 rotations Mars to Jupiter in 2100\"")
+             source="Mail thread \"Request for quote, four rotations Mars to Jupiter in 2100\"")
     deck.bullets("Not on this roadmap", ["Discounts on the public site. Its prices follow the pricing policy.", "Charter flying. It is not in the booking system at all.",
                                          "Changing a booking in place. Cancel and rebook stays."])
     deck.save()
@@ -273,9 +278,11 @@ def decks(w: World) -> None:
     dept = sorted(by_dept.items(), key=lambda kv: -kv[1])
     deck.chart("Who we are", "bar", [k for k, _ in dept], {"People": [v for _, v in dept]}, source="people/org/headcount-2099-10.xlsx",
                aside=("Office staff", [f"{len(w.people)} people in ten teams.", "Flight and cabin crew are rostered by Operations and are not in this count."]))
-    deck.table("Three kinds of flying", ["Kind", "What it is", "Where the numbers are"],
+    deck.table("Four kinds of flying", ["Kind", "What it is", "Where the numbers are"],
                [["Scheduled service", "One departure per route per month on ten routes. Ten seats.", "The booking system"],
-                ["Charter rotations", "Whole-ship or block bookings for corporate accounts.", "The CRM and Finance"], ["Shuttles", "Crew and positioning hops between Earth and Luna. Not sold.", "Operations control log"]],
+                ["Contract flying", "A block of seats or a whole ship for a corporate account, on a contract departure.", "The CRM and Finance"],
+                ["Luna shuttle", "Ten nights a month. Freight, crews, contract seats, and our own travellers connecting or going home.", "Operations control log"],
+                ["Positioning", "The way back from where we hold no public slot. Not sold: our travellers ride home on it.", "Operations control log"]],
                widths=[1.6, 4, 2], source="ops/how-we-fly.md", size=14,
                note="When somebody says \"bookings\", they mean the scheduled service. \"A deal\" is charter flying and never appears in the booking system.")
     deck.timeline("Your first week", [("Day 1", "Laptop and badge from the IT desk, third floor. Lunch with your manager. Enrol a second factor."), ("Day 2", "The handbook, the code of conduct and \"How we fly\"."),
@@ -378,7 +385,7 @@ def decks(w: World) -> None:
                                                                              "Cabin crew check every latch by hand before departure, on Kestrel and Meridian.",
                                                                              "48 replacement latches are due on 14 November. Kestrel first.", "Until then, heavy items go under the seat."],
                  source="ops/safety/bulletin-2099-07.md")
-    deck.two("October, for discussion", ("Halcyon, coolant valve", ["Wear found at the routine inspection after the Pluto return of 23 October. Inside limits.",
+    deck.two("October, for discussion", ("Halcyon, coolant valve", ["Wear found at the routine inspection after the Pluto return of 25 October. Inside limits.",
                                                                     "Assembly replaced, pressure tested for 12 hours, signed off 29 October.", "No departure moved. One week later it would have cancelled a Pluto departure."]),
              ("Tycho, assistance on arrival", ["Three travellers in October booked wheelchair assistance and nobody was there.", "The handler's assistance mailbox was not read at weekends. Changed on 20 October.",
                                                "Lucia checks the requests the day before each arrival until the end of the year."]),
@@ -426,7 +433,7 @@ def workbooks(w: World) -> None:
     # ---- Departure plan, November
     rotation = {(r["origin"], r["destination"]): r for r in yaml.safe_load((COMPANY / "fleet.yaml").read_text(encoding="utf-8"))["rotations"]}
     handler = {"Earth": "Own staff, Cape Meridian", "Moon": "Tycho Ground Services", "Mars": "Olympus Port Authority", "Venus": "Aphrodite Station Operations",
-               "Jupiter": "Outer Belt Port Services", "Europa": "Europa Research Trust"}
+               "Jupiter": "Galilean Port Services", "Europa": "Europa Research Trust"}
     note = {21: "Sold out.", 28: "Olympus pad 2 is closed 16 to 20 November.", 30: "Halcyon back in service since 29 October.", 26: "Last 07:00 departure. From 13 December: 08:30."}
     rows = []
     for f in w.flights.values():
@@ -443,6 +450,24 @@ def workbooks(w: World) -> None:
                               {"after": "Venus (counts as outer-system for rest)", "minimum_rest_hours": 26}, {"after": "Outer-system leg (Jupiter, Europa)", "minimum_rest_hours": 26},
                               {"after": "Pluto", "minimum_rest_hours": 26}],
                title="Minimum crew rest at destination", subtitle="From ops/crew/crew-rest-rules.md. A crew flies at most three outer-system legs in thirty days. 48 hours before the next Pluto leg.")
+    # Everything else the ships fly in the month, from the pattern of fleet.yaml.
+    pattern, place = d.fleet["pattern"], {"Earth": "Cape Meridian", "Moon": "Tycho", "Mars": "Olympus Port", "Venus": "Aphrodite Station", "Jupiter": "Ganymede Gate", "Pluto": "Tombaugh Station",
+                                         "Belt": "Vesta Yard, Ceres Station"}
+    other = [{"departure_utc": f"2099-11-{x['day']:02d} {x['dep']}", "hours": x["hours"], "from": place[x["origin"]], "to": place[x["destination"]], "ship": x["ship"], "crew": x["crew"],
+              "kind": x["kind"], "what": x["what"]} for x in pattern["legs"]]
+    for kind, mornings in (("Luna shuttle", pattern["shuttle"]["mornings"]), ("Contract", pattern["contract_mornings"])):
+        for day in mornings:
+            turn = datetime(2099, 11, day)
+            other.append({"departure_utc": f"{turn - timedelta(hours=2, minutes=10):%Y-%m-%d %H:%M}", "hours": 4, "from": "Cape Meridian", "to": "Tycho", "ship": "Solstice", "crew": "The crew that rests at Tycho next",
+                          "kind": kind, "what": "Up. Docks at 01:50." if kind == "Luna shuttle" else "A Luna departure under contract, up."})
+            other.append({"departure_utc": f"{turn + timedelta(hours=3, minutes=20):%Y-%m-%d %H:%M}", "hours": 4, "from": "Tycho", "to": "Cape Meridian", "ship": "Solstice", "crew": "Slip crew",
+                          "kind": kind, "what": "Down. At Cape Meridian at 07:20."})
+    other.sort(key=lambda r: r["departure_utc"])
+    book.sheet("Other legs", other, title="Everything else we fly in November 2099",
+               subtitle="Contract departures, the Luna shuttle and positioning legs, from the monthly pattern. None of these seats is on the public site. Passage lists: operations control.",
+               status={"kind": {"Contract": OK, "Positioning": AMBER}}, widths={"what": 70, "from": 26, "to": 26, "crew": 30})
+    waits = [{"ship": x["ship"], "where": x["where"], "days": x["days"], "what": x["what"]} for x in pattern["waits"]]
+    book.sheet("Where ships wait", waits, title="Ships that are not at their home port", subtitle="Every month of the winter book.", widths={"what": 80, "where": 32, "days": 28})
     book.close()
 
     # ---- Maintenance plan and reserve
@@ -467,7 +492,7 @@ def workbooks(w: World) -> None:
     book.close()
 
     # ---- Sales forecast from the CRM
-    prob = {"prospect": 0.1, "proposal": 0.3, "negotiation": 0.6}
+    prob = yaml.safe_load((COMPANY / "finance.yaml").read_text(encoding="utf-8"))["stage_probability"]
     rows = [{"deal": x["id"], "name": x["name"], "account": w.account(x), "owner": x["owner"], "stage": x["stage"], "amount": x["amount"], "close_date": str(x["close_date"]),
              "probability": prob[x["stage"]], "weighted": F("=F{r}*H{r}", round(x["amount"] * prob[x["stage"]])), "next_step": x.get("next_step", "")} for x in w.open_deals]
     book = Book(path("sales/forecast-2099-q4.xlsx"), owner="Sinead Byrne", modified="2099-11-02")
@@ -572,18 +597,19 @@ def workbooks(w: World) -> None:
     book.close()
 
     # ---- Turnaround scorecard, third quarter
-    stations = [("Earth, Cape Meridian", "Own staff", [(31, 1), (33, 0), (32, 1)]), ("Luna, Tycho", "Tycho Ground Services", [(13, 0), (15, 0), (14, 0)]),
-                ("Mars, Olympus Port", "Olympus Port Authority", [(9, 0), (10, 1), (9, 0)]), ("Venus, Aphrodite Station", "Aphrodite Station Operations", [(4, 0), (4, 0), (5, 1)]),
-                ("Jupiter, Ganymede Gate", "Outer Belt Port Services", [(5, 0), (5, 0), (6, 0)]), ("Europa", "Europa Research Trust", [(2, 0), (2, 0), (2, 0)]),
+    stations = [("Earth, Cape Meridian", "Own staff", [(20, 1), (21, 0), (20, 1)]), ("Luna, Tycho", "Tycho Ground Services", [(13, 0), (15, 0), (14, 0)]),
+                ("Mars, Olympus Port", "Olympus Port Authority", [(5, 0), (6, 1), (5, 0)]), ("Venus, Aphrodite Station", "Aphrodite Station Operations", [(2, 0), (2, 0), (3, 1)]),
+                ("Jupiter, Ganymede Gate", "Galilean Port Services", [(2, 0), (2, 0), (2, 0)]), ("Europa", "Europa Research Trust", [(1, 0), (1, 0), (1, 0)]),
                 ("Pluto, Tombaugh Station", "Tombaugh Station Cooperative", [(1, 0), (1, 0), (1, 0)])]
     rows = []
     for station, who, months in stations:
         for label, (handled, late) in zip(("July", "August", "September"), months):
             rows.append({"station": station, "handler": who, "month": label, "turnarounds": handled, "over_target": late, "within_target": F("=(D{r}-E{r})/D{r}", (handled - late) / handled)})
     book = Book(path("ops/ground/turnaround-scorecard-2099-q3.xlsx"), owner="Lucia Bianchi", modified="2099-10-06")
-    book.sheet("Third quarter", rows, title="Turnarounds by station, third quarter 2099", subtitle="Source: operations control log. Scheduled service, charters and shuttles together. The target at every station is the one in its contract.",
+    book.sheet("Third quarter", rows, title="Turnarounds by station, third quarter 2099", subtitle="Source: operations control log. A turnaround is one docking and the departure that follows it. Scheduled service, contract flying, the Luna shuttle and positioning together. The target at every station is the one in its contract.",
                total={"turnarounds": "sum", "over_target": "sum"}, formats={"within_target": "0%"}, status={"over_target": {"1": AMBER}}, widths={"station": 28, "handler": 32})
-    book.notes("Notes", ["Ground handlers count turnarounds, not departures. Tycho handles about fourteen of ours a month: one scheduled Earth to Moon, the rest shuttles and charters.",
+    book.notes("Notes", ["Ground handlers count turnarounds, not departures. Tycho handles about fourteen of ours a month: two with a scheduled leg, ten Luna shuttles and two contract departures.",
+                         "Venus had one contract call in September on top of Meridian's two. Mars had one in August.",
                          "Tycho had no turnaround over 90 minutes in the quarter.", "October is in ops/ground/tycho-turnarounds-2099-10.xlsx."])
     book.close()
 
@@ -668,8 +694,9 @@ def documents(w: World) -> None:
     doc.save()
 
     # ---- Tycho's service report for September, the document that was missing from the October invoice
-    turns = [(1, "Luna shuttle", 71), (3, "Luna shuttle", 68), (5, "Scheduled service", 84), (8, "Charter", 79), (10, "Luna shuttle", 66), (12, "Luna shuttle", 73), (15, "Scheduled service", 81),
-             (17, "Charter", 88), (19, "Luna shuttle", 70), (22, "Luna shuttle", 64), (24, "Charter", 77), (26, "Luna shuttle", 69), (28, "Luna shuttle", 75), (30, "Charter", 82)]
+    turns = [(2, "Luna shuttle", 71), (3, "Luna shuttle", 68), (5, "Scheduled service, then shuttle", 84), (7, "Contract", 79), (9, "Luna shuttle", 66), (13, "Luna shuttle", 73), (15, "Shuttle, then scheduled service", 81),
+             (17, "Luna shuttle", 88), (19, "Luna shuttle", 70), (21, "Luna shuttle", 64), (23, "Contract", 77), (26, "Luna shuttle", 69), (28, "Luna shuttle", 75), (30, "Luna shuttle", 82)]
+    assert [t[0] for t in turns] == sorted(w.d.fleet["pattern"]["shuttle"]["mornings"] + w.d.fleet["pattern"]["contract_mornings"] + [5, 15])
     doc = Doc(path("finance/ap/tycho-service-report-2099-09.docx"), "Monthly service report", subtitle="Galaxium Travels · September 2099", brand=TYCHO, label="Service report · Attached to invoice TG-2099-09",
               meta=[("Customer", "Galaxium Travels"), ("Period", "1 to 30 September 2099"), ("Agreement", "Ground Handling Agreement of 12 December 2097"), ("Prepared by", "Rafael Ortega, 1 October 2099")],
               owner="Beatrix Novak", modified="2099-10-02")
@@ -707,9 +734,16 @@ def documents(w: World) -> None:
               meta=[("Customer", "Vesta Shipwrights, Asteroid Belt"), ("Customer contact", "Tariq Hassan, Yard Manager"), ("Account executive", "Dev Malhotra"), ("Deal", "D-2019"),
                     ("Signed", long(vesta["close_date"])), ("Term", "1 January to 31 December 2100")], owner="Dev Malhotra", modified=str(vesta["close_date"]))
     doc.h1("1. What we fly")
-    doc.p("One crew rotation a month for the yard, on dates fixed for the year in Annex A. The yard works a monthly cycle, so one departure a month covers every crew change.")
+    doc.p("One seat a month for the yard on the Belt call from Olympus Port to Vesta Yard, on the dates of Annex A. The yard works a monthly cycle: one relief goes out each month, "
+          "and the person relieved rides home on the same call. The way home is included in the fare.")
     doc.h1("2. Price and payment")
-    doc.table(["Item", "Dollars"], [["Contract value for twelve months, after discount", vesta["amount"]], ["Payable by quarter in advance, four instalments of", quarter]], widths=[4, 1.5])
+    seats, rate, discount = 12, 1300000, 0.08
+    fares = seats * rate
+    dock = vesta["amount"] - int(fares * (1 - discount))
+    assert 0 < dock < 200000, "the Vesta order no longer follows from the rate card"
+    doc.table(["Item", "Dollars"], [[f"Base fares: {seats} seats, Mars to the Belt, at {rate:,}", fares], ["Discount of 8% on the base fares", -int(fares * discount)],
+                                    ["Dock fees at Vesta Yard, charged at cost", dock], ["Contract value for twelve months", vesta["amount"]],
+                                    ["Payable by quarter in advance, four instalments of", quarter]], widths=[4, 1.5])
     doc.p("The price is the rate card price less 8%. The discount was approved in the deal desk on condition of payment by quarter in advance (policies/discount-policy.md). It applies to the base fare, not to fuel surcharges or port fees.")
     doc.h1("3. Names and changes")
     doc.bullets(["Names are supplied at booking and must match the travel document.", "A change of traveller is a cancellation and a new booking. Inside the contract it carries no fee up to 72 hours before departure.",
@@ -719,22 +753,6 @@ def documents(w: World) -> None:
     doc.h1("5. General terms")
     doc.p("The Galaxium master terms for corporate customers apply. Liability is limited to the fees for the affected bookings.")
     doc.signatures([("For Galaxium Travels", "Amara Okafor", "Head of Sales", f"Signed {long(vesta['close_date'])}"), ("For Vesta Shipwrights", "Tariq Hassan", "Yard Manager", f"Signed {long(vesta['close_date'])}")])
-    doc.save()
-
-    # ---- Case study
-    doc = Doc(path("sales/case-studies/helix-mining-case-study.docx"), "A shift calendar that flies", subtitle="Helix Mining Cooperative and Galaxium Travels", label="Customer story · Approved for external use",
-              meta=[("Customer", "Helix Mining Cooperative, Mars"), ("Segment", "Mining and Resources"), ("Customer since", "2096"), ("What we fly", "Crew rotation charter")],
-              owner="Jamal Carter", modified="2099-10-14")
-    doc.h1("The need")
-    doc.p("Helix runs its sites on fixed shifts. A crew that arrives a day late is a shift that does not start. What Helix asks of a carrier is not the lowest fare. It is that the ship leaves on the day in the calendar.")
-    doc.h1("What we built")
-    doc.bullets(["A rotation charter on dates fixed a year ahead, agreed with Operations before the contract was signed.", "Whole-ship departures: ten seats, one crew.",
-                 "One contact for changes: the customer success manager, with a quarterly review."])
-    doc.callout("\"We plan shifts a year ahead. We need a carrier that plans the same way.\"  Oksana Petrenko, Travel Manager, Helix Mining Cooperative", "In the customer's words")
-    doc.h1("What we are changing next")
-    doc.p("At the October review Helix asked for invoices by site instead of by traveller. That starts with the January invoice.")
-    doc.h1("About Galaxium Travels")
-    doc.p("Six ships, ten scheduled routes from Earth to Pluto, and charter rotations built around the customer's calendar. sales@galaxium.example")
     doc.save()
 
     # ---- Job description and scorecard
@@ -909,7 +927,7 @@ def documents(w: World) -> None:
 
     # ---- Board minutes, August
     doc = Doc(path("leadership/board/board-minutes-2099-08-20.docx"), "Minutes of the board meeting", subtitle="Thursday 20 August 2099, 09:00 to 12:10 · Boardroom, Earth HQ", label="Board · Confidential",
-              meta=[("Chair", "Margit Halvorsen"), ("Directors", "Desmond Achebe, Katarzyna Lis, Renata Castellanos"), ("In attendance", "Ingrid Solberg, Olu Adeyemi, Farid Nazari"), ("Secretary", "Helena Vogt")],
+              meta=[("Chair", "Margit Halvorsen"), ("Directors", "Desmond Achebe (Perigee Capital Partners), Katarzyna Lis (Lowell Ship Finance), Renata Castellanos"), ("In attendance", "Ingrid Solberg, Olu Adeyemi, Farid Nazari"), ("Secretary", "Helena Vogt")],
               owner="Helena Vogt", modified="2099-08-27")
     doc.h1("1. Minutes and matters arising")
     doc.p("The minutes of the meeting of 21 May 2099 were approved. No matters arising.")
@@ -937,6 +955,7 @@ def build(d) -> None:
     decks(w)
     workbooks(w)
     documents(w)
+    salesbook.build("2099-11-04")
     worldbook.build(d)
     companybook.build(d)
     print(f"documents: {sum(1 for _ in DRIVE.rglob('*.pptx'))} decks, {sum(1 for _ in DRIVE.rglob('*.docx'))} documents, {sum(1 for _ in DRIVE.rglob('*.xlsx'))} workbooks in the generated drive")

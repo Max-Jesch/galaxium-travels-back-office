@@ -7,7 +7,7 @@
     [10:58] Amara Okafor: I will take it to Priya. Do not promise it.
     [11:00] Lena Fischer: I have not.
 ## 2099-10-20
-[10:35] Bastien Moreau: Tharsis Engineering want a quote for 40 rotations Mars to Jupiter next year. Their procurement lead asks whether a seat hold can be longer than 15 minutes for group bookings.
+[10:35] Bastien Moreau: Tharsis Engineering want a quote for four rotations Mars to Jupiter next year, a site team of six each. Their procurement lead asks whether a seat hold can be longer than 15 minutes for group bookings.
     [10:44] Maya Goldberg: Not today. Group holds are on the roadmap for the first quarter. I will note the request.
 [15:10] Dev Malhotra: Outer Belt Logistics renewal is with Legal for the redline. Verbal yes on price.
 ## 2099-10-27

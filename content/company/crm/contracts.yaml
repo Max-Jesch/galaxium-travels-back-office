@@ -1,0 +1,218 @@
+# What Sales signed: the term of every won deal since January 2098, and the contracts
+# whose signed document is in the drive.
+#
+# Source for sales/contracts/contract-register.xlsx, for the charter orders in
+# sales/contracts/, for the account plans in sales/accounts/ and for
+# finance/analysis/charter-revenue-by-quarter.xlsx (scripts/documents.py). A contract
+# has the number of its deal: deal D-1744 is contract GC-1744. Amounts, accounts and
+# signing dates are read from the CRM and are not repeated here.
+#
+# `terms` gives the first and the last month of travel. It lists the won deals of the
+# win-loss pack too (D-2001 to D-2017), because a signed contract runs whether or not a
+# scenario is switched on. The build fails if a won deal has no term.
+terms:
+  D-1701: [2098-02, 2099-01]
+  D-1702: [2098-01, 2098-12]
+  D-1704: [2098-02, 2098-12]
+  D-1705: [2098-03, 2098-12]
+  D-1707: [2098-03, 2098-06]
+  D-1709: [2098-04, 2099-03]
+  D-1711: [2098-04, 2098-12]
+  D-1712: [2098-04, 2098-08]
+  D-1714: [2098-04, 2099-03]
+  D-1715: [2098-05, 2098-10]
+  D-1716: [2098-06, 2098-11]
+  D-1718: [2098-06, 2099-05]
+  D-1720: [2098-12, 2099-02]
+  D-1721: [2098-06, 2098-09]
+  D-1722: [2098-07, 2098-12]
+  D-1724: [2098-07, 2098-12]
+  D-1725: [2098-07, 2098-12]
+  D-1727: [2098-12, 2099-02]
+  D-1728: [2098-09, 2099-02]
+  D-1730: [2098-08, 2098-12]
+  D-1731: [2098-09, 2098-11]
+  D-1733: [2098-09, 2098-12]
+  D-1734: [2098-09, 2098-12]
+  D-1738: [2098-10, 2099-09]
+  D-1739: [2098-11, 2099-01]
+  D-1740: [2099-03, 2099-08]
+  D-1741: [2099-01, 2099-12]
+  D-1744: [2099-01, 2099-12]
+  D-1745: [2098-12, 2099-02]
+  D-1746: [2099-01, 2099-12]
+  D-1747: [2099-01, 2099-12]
+  D-1748: [2099-01, 2099-12]
+  D-1750: [2099-01, 2099-06]
+  D-1752: [2099-01, 2099-12]
+  D-1901: [2099-01, 2099-06]
+  D-1902: [2099-02, 2100-01]
+  D-1903: [2099-03, 2099-04]
+  D-1904: [2099-03, 2099-08]
+  D-1906: [2099-03, 2099-06]
+  D-1908: [2099-03, 2099-05]
+  D-1909: [2099-04, 2099-06]
+  D-1912: [2099-04, 2099-09]
+  D-1915: [2099-04, 2099-09]
+  D-1941: [2099-04, 2100-03]
+  D-1943: [2099-05, 2099-07]
+  D-1944: [2099-05, 2100-04]
+  D-1945: [2099-06, 2099-08]
+  D-1948: [2099-07, 2099-08]
+  D-1950: [2099-04, 2100-03]
+  D-1952: [2099-07, 2099-12]
+  D-1955: [2099-12, 2100-02]
+  D-2001: [2100-01, 2100-12]
+  D-2003: [2099-09, 2100-02]
+  D-2005: [2099-12, 2100-02]
+  D-2008: [2099-09, 2100-08]
+  D-2010: [2099-12, 2100-03]
+  D-2012: [2099-09, 2100-08]
+  D-2015: [2099-11, 2100-04]
+  D-2017: [2099-11, 2100-10]
+  D-2019: [2100-01, 2100-12]
+  D-2020: [2100-03, 2100-05]
+  D-2021: [2099-12, 2100-02]
+
+# The charter orders in the drive. `lines` are seats times a rate of the rate card,
+# `discount` is a percentage of the base fares, `extras` are amounts that are not base
+# fares. The build fails if they do not add up to the amount of the deal.
+# The order of Vesta Shipwrights for 2100 (D-2019) is written by documents.py itself.
+documents:
+  - deal: D-1711
+    file: pallas-survey-group-belt-rotations-2098
+    signer: [Kofi Mensah, Survey Operations]
+    flying: "Eighteen seats for survey staff on the Belt call from Olympus Port, from April to December 2098. The call is flown twice a month. The relieved surveyor rides home on the same call: the way home is included in the fare."
+    lines: [[18, "Mars to the Belt, economy", 1300000]]
+    payment: "Monthly in arrears, 30 days net."
+    special: ["The dates of the Belt call are those of Annex A. Galaxium gives 14 days' written notice of a change.", "The customer's own dock is not used: surveyors transfer at Vesta Yard."]
+  - deal: D-1714
+    file: helix-mining-rotation-charter-2098
+    signer: [Grigor Abashidze, Chief Operating Officer]
+    flying: "Two whole-ship departures on dates fixed in Annex A: one from Cape Meridian to Olympus Port in the spring and one from Olympus Port to Cape Meridian in the autumn. Ten seats each, one crew."
+    lines: [[1, "Whole ship, Earth to Mars", 20000000], [1, "Whole ship, Mars to Earth", 19000000]]
+    payment: "Half on signing, half 30 days before the second departure."
+    special: ["The dates of Annex A are fixed for the term. Neither party may move a departure.", "Names are supplied seven days before each departure."]
+  - deal: D-1715
+    file: ceres-agritech-harvest-crews-2098
+    signer: [Luis Carvalho, Operations Director]
+    flying: "Sixteen seats for harvest crews on the Belt call from Olympus Port to Ceres Station, from May to October 2098. The call is flown twice a month. The way home is included in the fare."
+    lines: [[16, "Mars to the Belt, economy", 1300000]]
+    payment: "Monthly in arrears, 30 days net."
+    special: ["The dates of the Belt call are those of Annex A. Galaxium gives 14 days' written notice of a change."]
+  - deal: D-1721
+    file: europa-research-trust-summer-relief-2098
+    signer: [Selma Aydin, Programme Office]
+    flying: "Six seats from Cape Meridian to Ganymede Gate on the monthly leg of the Halcyon, from June to September 2098. From Ganymede Gate the travellers continue to Europa on the scheduled service, which they book on the public site and which is not part of this order."
+    lines: [[6, "Earth to Jupiter, economy", 3000000]]
+    payment: "By quarter in arrears, 30 days net."
+    special: ["Scientific equipment above the baggage allowance travels as cargo and is arranged through Support."]
+  - deal: D-1727
+    file: red-sands-hospitality-winter-guests-2098-99
+    signer: [Yusuf Demir, Commercial Director]
+    flying: "Nine guests from Cape Meridian to Olympus Port and back on the contract rotation, between December 2098 and February 2099."
+    lines: [[9, "Earth to Mars and Mars to Earth, economy", 1950000]]
+    discount: 10
+    discount_why: "The partner rate. Red Sands sells the stay and Galaxium the trip, and each names the other in its offer."
+    payment: "By quarter in advance."
+    special: ["Guest names are supplied 72 hours before departure.", "A guest may be moved to another rotation of the same winter at no fee up to 72 hours before departure."]
+  - deal: D-1728
+    file: lunar-polytechnic-semester-transfers-2098-99
+    signer: [Jonas Weber, Finance Officer]
+    flying: "Seventeen seats on the Luna shuttle between Cape Meridian and Tycho Spaceport for students and staff, from September 2098 to February 2099. The shuttle leaves Cape Meridian in the evening and docks at Tycho in the night. The way home is included in the fare."
+    lines: [[17, "Earth to Moon, economy", 500000]]
+    payment: "One invoice per semester, 30 days net."
+    special: ["The institute names the travellers and the shuttle night 72 hours ahead."]
+  - deal: D-1740
+    file: europa-research-trust-field-season-2099
+    signer: [Selma Aydin, Programme Office]
+    flying: "Ten seats from Cape Meridian to Ganymede Gate on the monthly leg of the Halcyon, from March to August 2099. The continuation to Europa and the way home from Europa are scheduled departures, which the travellers book on the public site and which are not part of this order."
+    lines: [[10, "Earth to Jupiter, economy", 3000000]]
+    payment: "By quarter in arrears, 30 days net."
+    special: ["Scientific equipment above the baggage allowance travels as cargo and is arranged through Support.", "No more than three seats on one departure."]
+  - deal: D-1744
+    file: outer-belt-logistics-crew-rotation-2099
+    signer: [Imani Okeke, Head of Crew Planning]
+    flying: "Twelve depot crew changes in 2099, one a month. The crew member going out has a seat on the monthly leg of the Halcyon from Cape Meridian to Ganymede Gate. The crew member coming off has a reserved seat on the Aurora's way back from Ganymede Gate to Olympus Port."
+    lines: [[12, "Earth to Jupiter, economy", 3000000], [12, "Jupiter to Mars, reserved seat home, economy", 1250000]]
+    payment: "Monthly in arrears, 30 days net, as in the master agreement of 2095."
+    special: ["The master agreement between the parties of 2095 applies in place of the Galaxium master terms where the two differ.", "Travel between Olympus Port and Earth is on the scheduled service and is not part of this order."]
+  - deal: D-1748
+    file: lagrange-medical-relief-framework-2099
+    kind: Framework order
+    signer: [Naledi Khumalo, Deployments]
+    flying: "Seats on contract departures, on the Luna shuttle and on the legs of the second sheet of the rate card, booked by Lagrange Medical Relief as its teams deploy, at the rate card of the day of booking. Each booking is drawn from the amount paid in advance."
+    extras: [["Amount paid in advance for 2099, drawn down at the rate card", 14000000]]
+    payment: "In advance, on signing."
+    special: ["A deployment is booked through the customer success manager, at the latest 72 hours before departure.", "An amount not drawn by 31 December 2099 is carried into a framework for 2100, or returned as travel credit valid twelve months.", "Flying beyond Mars is not part of the framework and is ordered separately."]
+  - deal: D-1901
+    file: vesta-shipwrights-yard-crew-travel-2099-h1
+    signer: [Tariq Hassan, Yard Manager]
+    flying: "Two seats a month for the yard on the Belt call from Olympus Port to Vesta Yard, from January to June 2099. The yard changes shifts every two weeks and the call is flown twice a month. The person relieved rides home on the same call: the way home is included in the fare."
+    lines: [[12, "Mars to the Belt, economy", 1300000]]
+    payment: "Monthly in arrears, 30 days net."
+    special: ["The order ends on 30 June 2099. The Belt call is flown once a month from June 2099, when the ship that flies the second call goes into refit."]
+  - deal: D-1902
+    file: nimbus-freight-crew-travel-2099
+    signer: [Peter Lindholm, Travel Buyer]
+    flying: "Eight crew changes between 1 February 2099 and 31 January 2100: a seat from Cape Meridian to Olympus Port and a seat back on the contract rotation."
+    lines: [[8, "Earth to Mars and Mars to Earth, economy", 1950000]]
+    discount: 5
+    discount_why: "Given by the account executive for a renewal on unchanged terms."
+    payment: "Monthly in arrears, 30 days net."
+    special: ["The rotation's departure times are those of Annex A. A seat not used in a month may be used in a later month of the term."]
+  - deal: D-1912
+    file: lagrange-medical-relief-ganymede-clinic-staff-2099
+    signer: [Naledi Khumalo, Deployments]
+    flying: "Five clinic staff from Cape Meridian to Ganymede Gate on the monthly leg of the Halcyon, between April and September 2099. The way home is not part of this order."
+    lines: [[5, "Earth to Jupiter, economy", 3000000]]
+    payment: "Half on signing, half on departure."
+    special: ["Medical equipment above the baggage allowance travels as cargo and is arranged through Support.", "This order is outside the deployment framework of 2099."]
+  - deal: D-1941
+    file: helix-mining-rotation-charter-2099
+    signer: [Grigor Abashidze, Chief Operating Officer]
+    flying: "Two whole-ship departures on dates fixed in Annex A: one from Cape Meridian to Olympus Port in the spring and one from Olympus Port to Cape Meridian in the autumn. Ten seats each, one crew."
+    lines: [[1, "Whole ship, Earth to Mars", 20000000], [1, "Whole ship, Mars to Earth", 19000000]]
+    extras: [["Option to move one of the two departures once, with 30 days' written notice", 2000000]]
+    payment: "Half on signing, half 30 days before the second departure."
+    special: ["The option is new in 2099. If it is not used, its price is not returned.", "Names are supplied seven days before each departure."]
+  - deal: D-1944
+    file: tombaugh-observatory-observer-travel-2099
+    signer: [Ansel Brooks, Director]
+    flying: "Seven reserved seats from Tombaugh Station to Cape Meridian between May 2099 and April 2100, on the leg the Halcyon flies back from Pluto each month. The observers travel out by other means or on the scheduled service, which they book on the public site."
+    lines: [[7, "Pluto to Earth, reserved seat home, economy", 2500000]]
+    payment: "By quarter in arrears, 30 days net."
+    special: ["A seat is named through Support at least 48 hours before the leg.", "No more than two seats on one leg."]
+  - deal: D-1952
+    file: venus-atmospheric-institute-field-season-2099
+    signer: [Paolo Conti, Field Operations]
+    flying: "Seats for the field team on the two Venus legs flown outside the timetable: out from Cape Meridian to Aphrodite Station, back from Aphrodite Station to Cape Meridian, between July and December 2099. Four travellers go out and three come back; one stays the winter at the station."
+    lines: [[4, "Earth to Venus, economy", 1100000], [3, "Venus to Earth, economy", 1200000]]
+    extras: [["Instrument cases in the hold on both legs", 300000]]
+    payment: "Half on signing, half on the last leg."
+    special: ["Instrument cases are declared with dimensions and weight ten days before the leg."]
+  - deal: D-1955
+    file: olympus-summit-tours-guest-allotment-2099-2100
+    signer: [Rosa Delgado, Owner]
+    flying: "Six economy seats from Cape Meridian to Olympus Port on the contract rotations of December 2099, January 2100 and February 2100."
+    lines: [[6, "Earth to Mars, economy", 1000000]]
+    discount: 10
+    discount_why: "The partner rate."
+    payment: "By quarter in advance."
+    special: ["Guests book the way home on the scheduled service.", "A seat not named 14 days before a rotation may be used on a later rotation of the same winter."]
+  - deal: D-2020
+    file: lunar-polytechnic-spring-field-trips-2100
+    signer: [Jonas Weber, Finance Officer]
+    flying: "Twelve seats on the Luna shuttle between Cape Meridian and Tycho Spaceport for the field trips of the spring semester, from March to May 2100. The way home is included in the fare."
+    lines: [[12, "Earth to Moon, economy", 500000]]
+    extras: [["Equipment cases in the hold", 200000]]
+    payment: "One invoice per semester, 30 days net."
+    special: ["A cancelled seat is returned as travel credit valid twelve months, whatever the notice."]
+  - deal: D-2021
+    file: kepler-media-winter-on-mars-production
+    signer: [Arjun Desai, Production Travel]
+    flying: "A production unit of five from Cape Meridian to Olympus Port on the contract rotation of December 2099 and back on the rotation of February 2100."
+    lines: [[5, "Earth to Mars and Mars to Earth, economy", 1950000]]
+    extras: [["Safety sign-off for filming on board, at cost", 50000]]
+    payment: "Half on signing, half on the departure of December."
+    special: ["If the production moves its dates, seats are returned as travel credit valid twelve months.", "Filming on board needs the written sign-off of Galaxium's safety manager before each leg.", "Co-marketing is the subject of a separate agreement."]

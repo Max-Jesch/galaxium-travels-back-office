@@ -298,7 +298,9 @@ def build_win_loss() -> None:
         "Loss reason": "" if d["id"] == flipped else d.get("loss_reason", ""),
         "Competitor": "" if d["id"] == flipped else d.get("competitor", ""),
     } for d in deals]
-    write_xlsx(pack / "drive" / "sales" / "pipeline-tracker-q3-2099.xlsx", {"Closed deals Q3 2099": tracker})
+    # Dev's tracker, like those of the other quarters (scripts/salesbook.py): last touched on the Friday after the quarter.
+    office.table_book(pack / "drive" / "sales" / "pipeline-tracker-q3-2099.xlsx", {"Closed deals Q3 2099": tracker}, plain=True, owner="Dev Malhotra", modified="2099-10-02")
+    office.write_index(pack / "drive")
 
     won = [d for d in deals if d["stage"] == "won"]
     lost = [d for d in deals if d["stage"] == "lost"]

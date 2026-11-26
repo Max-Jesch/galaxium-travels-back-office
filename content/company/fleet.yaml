@@ -117,7 +117,7 @@ ships:
     class: kestrel
     in_service_since: 2094
     home_port: Cape Meridian
-    flies: "Earth to Mars and back"
+    flies: "Earth to Mars and back, twice a month: once on the timetable and once under contract"
     note: "First ship of the fleet and the one the class is named after."
     register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars, Venus", status: In service, next_check: "2099-11-14 (baggage latches)"}
   - name: Meridian
@@ -131,21 +131,21 @@ ships:
     class: kestrel
     in_service_since: 2096
     home_port: Cape Meridian
-    flies: "Earth to Luna, and Luna to Mars"
+    flies: "Earth to Luna, Luna to Mars, and most nights of the Luna shuttle"
     note: "Newest of the class, built with the later overhead latch."
     register: {certified_to: Mars and Venus, routes: "Earth, Luna, Mars", status: In service, next_check: "2099-12-05"}
   - name: Aurora
     class: aurora
     in_service_since: 2096
     home_port: Olympus Port
-    flies: "Mars to Jupiter"
+    flies: "Mars to Jupiter and back, and the Belt call"
     note: "Based on Mars. Her routine checks are done at Olympus Port."
     register: {certified_to: Jupiter, routes: "Mars, Jupiter", status: In service, next_check: "2099-12-12"}
   - name: Halcyon
     class: halcyon
     in_service_since: 2097
     home_port: Cape Meridian
-    flies: "Jupiter to Europa, Europa to Earth, and Earth to Pluto"
+    flies: "Out to Jupiter, Jupiter to Europa, Europa to Earth, and Earth to Pluto and back"
     note: "The only hull certified beyond Jupiter until Perihelion returns."
     register: {certified_to: Pluto, routes: "Jupiter, Europa, Pluto", status: In service (valve assembly replaced 29 October), next_check: "2099-11-25"}
   - name: Perihelion
@@ -153,17 +153,18 @@ ships:
     in_service_since: 2096
     home_port: Cape Meridian
     flies: ""
-    note: "First hull of the class, delivered without the outer-system package. Flew charter rotations as far as Jupiter until the refit began."
+    note: "First hull of the class, delivered without the outer-system package, which is why the class carries the name of the second hull: Hadley Yards names a class after its first complete ship. Flew contract rotations to Jupiter and the Belt call until the refit began. In refit at Hadley Yards, above Luna."
     register: {certified_to: Pluto after refit, routes: "", status: Refit until February 2100, next_check: ""}
 
-# The six crews of the roster of 20 October 2099, kept by Andrei Popescu.
+# The six crews of the roster of 20 October 2099, kept by Andrei Popescu. The members
+# are in people.yaml with `kind: crew`. Standby officers are described in company.yaml.
 crews:
-  - {name: Inner A, size: 3, captain: Ileana Dragomir}
-  - {name: Inner B, size: 3, captain: Tobias Achterberg}
-  - {name: Inner C, size: 3, captain: Nkechi Adebayo}
-  - {name: Outer A, size: 4, captain: Sunniva Dahl}
-  - {name: Outer B, size: 4, captain: Raúl Mendieta}
-  - {name: Outer C, size: 4, captain: Kaito Fujimori}
+  - {name: Inner A, size: 3, captain: Ileana Dragomir, base: Cape Meridian, members: [Ileana Dragomir, Mwangi Kariuki, Saskia Vermeer]}
+  - {name: Inner B, size: 3, captain: Tobias Achterberg, base: Cape Meridian, members: [Tobias Achterberg, Amina Yusuf, Callum Reyes]}
+  - {name: Inner C, size: 3, captain: Nkechi Adebayo, base: Cape Meridian, members: [Nkechi Adebayo, Lars Engström, Hyun-woo Park]}
+  - {name: Outer A, size: 4, captain: Sunniva Dahl, base: Cape Meridian, members: [Sunniva Dahl, Inti Quispe, Bogdan Ilie, Marisol Etxeberria]}
+  - {name: Outer B, size: 4, captain: Raúl Mendieta, base: Olympus Port, members: [Raúl Mendieta, Anjali Deshmukh, Per Holmgren, Zodwa Nkosi]}
+  - {name: Outer C, size: 4, captain: Kaito Fujimori, base: Cape Meridian, members: [Kaito Fujimori, Eleni Papadaki, Idris Benali, Maren Solvik]}
 
 # Which ship and crew fly each scheduled route. Origin and destination are the
 # booking system's names. Block hours are not here: they are read from the snapshot.
@@ -178,3 +179,39 @@ rotations:
   - {origin: Mars, destination: Jupiter, ship: Aurora, crew: Outer B}
   - {origin: Europa, destination: Earth, ship: Halcyon, crew: Outer A}
   - {origin: Earth, destination: Pluto, ship: Halcyon, crew: Outer C}
+
+# Everything a ship flies in a month besides the ten scheduled legs above. The pattern
+# repeats every month of the winter book. Times are UTC. `day` is the day of the month.
+#
+# It has to hold together with the scheduled legs of the snapshot: a ship is where its
+# next leg starts, and a crew has its rest (drive/ops/crew/crew-rest-rules.md). Outer A
+# flies three outer-system legs in thirty days, which is the limit; Outer B and Outer C
+# fly two and have one to spare. What follows from it, in the company's words, is in
+# drive/ops/how-we-fly.md: keep the two in step.
+pattern:
+  shuttle:
+    mornings: [2, 3, 9, 13, 17, 19, 21, 26, 28, 30]   # the days on which the shuttle turns round at Tycho
+    out: "21:50"      # leaves Cape Meridian the evening before, docks at Tycho at 01:50
+    back: "03:20"     # leaves Tycho 90 minutes after docking, arrives at Cape Meridian at 07:20
+    hours: 4
+    ship: "Solstice, or the Kestrel class ship that is at Cape Meridian"
+    crew: "The crew that flies up rests at Tycho and flies the next shuttle down: a slip crew is always on Luna."
+    carries: "Freight in the hold. In the cabin our crews and staff, parts from Hadley Yards, contract travellers, and our own travellers connecting to a departure or going home."
+  contract_mornings: [7, 23]   # a Luna departure under contract, same times as the shuttle
+  legs:
+    - {day: 1,  dep: "10:00", hours: 6,  origin: Mars,    destination: Belt,    ship: Aurora,   crew: Outer B, kind: Contract,    what: "The Belt call, out: Olympus Port to Vesta Yard and on to Ceres Station."}
+    - {day: 2,  dep: "14:00", hours: 6,  origin: Belt,    destination: Mars,    ship: Aurora,   crew: Outer B, kind: Contract,    what: "The Belt call, back."}
+    - {day: 5,  dep: "15:30", hours: 4,  origin: Moon,    destination: Earth,   ship: Solstice, crew: Slip crew, kind: Luna shuttle, what: "Solstice turns round at Tycho after the scheduled arrival and takes travellers home."}
+    - {day: 7,  dep: "22:00", hours: 8,  origin: Earth,   destination: Venus,   ship: Meridian, crew: Inner C, kind: Positioning, what: "Out to Venus for the scheduled departure of the 9th."}
+    - {day: 9,  dep: "22:00", hours: 12, origin: Earth,   destination: Jupiter, ship: Halcyon,  crew: Outer A, kind: Positioning, what: "Out to Ganymede Gate for the scheduled departure of the 11th."}
+    - {day: 14, dep: "17:00", hours: 10, origin: Venus,   destination: Earth,   ship: Meridian, crew: Inner C, kind: Positioning, what: "Home from Venus, 26 hours after the scheduled arrival of the 13th."}
+    - {day: 15, dep: "05:00", hours: 4,  origin: Earth,   destination: Moon,    ship: Solstice, crew: Slip crew, kind: Luna shuttle, what: "Up to Tycho for the scheduled departure to Mars. Inner B is already there."}
+    - {day: 16, dep: "12:00", hours: 8,  origin: Mars,    destination: Earth,   ship: Solstice, crew: Inner B, kind: Positioning, what: "Home from Mars."}
+    - {day: 19, dep: "08:00", hours: 10, origin: Jupiter, destination: Mars,    ship: Aurora,   crew: Outer B, kind: Positioning, what: "The way home from Jupiter."}
+    - {day: 22, dep: "09:00", hours: 8,  origin: Earth,   destination: Mars,    ship: Kestrel,  crew: Inner A, kind: Contract,    what: "The Mars contract rotation, out."}
+    - {day: 24, dep: "06:00", hours: 24, origin: Pluto,   destination: Earth,   ship: Halcyon,  crew: Outer C, kind: Positioning, what: "The way home from Pluto, 48 hours after the scheduled arrival."}
+    - {day: 26, dep: "12:00", hours: 8,  origin: Mars,    destination: Earth,   ship: Kestrel,  crew: Inner A, kind: Contract,    what: "The Mars contract rotation, back."}
+  waits:
+    - {ship: Halcyon, where: "Icebreaker landing field", days: "11th to 19th", what: "On the hardstand beside the pad, between her two Europa legs. Outer A lives aboard and at the station."}
+    - {ship: Meridian, where: "Aphrodite Station, berth 3", days: "8th to 9th and 13th to 14th", what: "26 hours each time, which is the crew's rest."}
+    - {ship: Perihelion, where: "Hadley Yards, above Luna", days: "all month", what: "Refit, until February 2100."}

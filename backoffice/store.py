@@ -2,7 +2,8 @@
 
 Nothing is cached: every call reads `content/` and `state/` again, so editing a
 content file or resetting the state shows up without a restart, and the MCP
-process and the web view always agree.
+process and the web view always agree. The one exception is the text of drive
+files, kept by path, size and modification time, so a changed file is read again.
 """
 
 from __future__ import annotations
@@ -21,6 +22,9 @@ from pathlib import Path
 from typing import Any
 
 import yaml
+
+# The C parser when PyYAML was built with libyaml: the same result, several times faster.
+_YAML_LOADER = getattr(yaml, "CSafeLoader", yaml.SafeLoader)
 
 ROOT = Path(__file__).resolve().parent.parent
 CONTENT = ROOT / "content"
@@ -45,10 +49,14 @@ def _plain(value: Any) -> Any:
     return str(value) if isinstance(value, (date, datetime)) else value
 
 
+def _load_yaml(text: str) -> Any:
+    return yaml.load(text, Loader=_YAML_LOADER)
+
+
 def _yaml(path: Path, default: Any = None) -> Any:
     if not path.exists():
         return default
-    return _plain(yaml.safe_load(path.read_text(encoding="utf-8"))) or default
+    return _plain(_load_yaml(path.read_text(encoding="utf-8"))) or default
 
 
 def _json(path: Path, default: Any) -> Any:
@@ -79,7 +87,7 @@ def _append_jsonl(path: Path, record: dict) -> None:
 def _frontmatter(text: str) -> tuple[dict, str]:
     if text.startswith("---"):
         _, head, body = text.split("---", 2)
-        return _plain(yaml.safe_load(head)) or {}, body.lstrip("\n")
+        return _plain(_load_yaml(head)) or {}, body.lstrip("\n")
     return {}, text
 
 
@@ -130,6 +138,10 @@ def web_url() -> str:
 
 def company() -> dict:
     return _yaml(COMPANY / "company.yaml", {})
+
+
+def finance() -> dict:
+    return _yaml(COMPANY / "finance.yaml", {})
 
 
 def today() -> str:
@@ -411,7 +423,7 @@ def _drive_meta(path: Path, rel: str, source: str, index: dict, owners: dict) ->
         with path.open(encoding="utf-8") as f:
             if f.readline().startswith("---"):
                 head = f.read(600).split("---", 1)[0]
-                meta = {k: v for k, v in (_plain(yaml.safe_load(head)) or {}).items() if k in ("owner", "modified")}
+                meta = {k: v for k, v in (_plain(_load_yaml(head)) or {}).items() if k in ("owner", "modified")}
     if "modified" not in meta:
         day = date.fromisoformat(str(company().get("today")))
         if m := _DATED.search(path.name):  # a dated file was last touched shortly after its date
@@ -511,7 +523,36 @@ def drive_text(path: str, max_chars: int = 60000) -> dict:
     entry = next((f for f in drive_files() if f["path"] == path.strip("/")), None)
     if not entry:
         raise ValueError(f"No file at {path} in the drive")
+    return entry_text(entry, max_chars)
+
+
+_TEXT_CACHE: dict[str, tuple[tuple[int, int], str]] = {}
+
+
+def entry_text(entry: dict, max_chars: int = 60000) -> dict:
+    """drive_text for an entry of drive_files(), without scanning the drive again."""
     local = Path(entry["local_path"])
+    stat = local.stat()
+    key = (stat.st_mtime_ns, stat.st_size)
+    cached = _TEXT_CACHE.get(str(local))
+    if cached and cached[0] == key:
+        text = cached[1]
+    else:  # converting a deck or a workbook takes milliseconds of pure Python, so keep the result
+        text = _file_text(local)
+        _TEXT_CACHE[str(local)] = (key, text)
+    return {**entry, "text": text[:max_chars], "truncated": len(text) > max_chars}
+
+
+def warm_drive_text() -> None:
+    """Convert every drive file once, so the first drive_search is as fast as the next."""
+    for entry in drive_files():
+        try:
+            entry_text(entry)
+        except Exception:  # a broken file shows its error when someone reads it
+            pass
+
+
+def _file_text(local: Path) -> str:
     suffix = local.suffix.lower()
     if suffix in TEXT_SUFFIXES:
         text = local.read_text(encoding="utf-8")
@@ -551,7 +592,7 @@ def drive_text(path: str, max_chars: int = 60000) -> dict:
         text = "\n".join(parts)
     else:
         text = "(binary file, fetch it with drive_download)"
-    return {**entry, "text": text[:max_chars], "truncated": len(text) > max_chars}
+    return text
 
 
 def drive_write(path: str, content: str) -> dict:

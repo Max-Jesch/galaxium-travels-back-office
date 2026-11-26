@@ -11,7 +11,7 @@
     - {name: Oksana Petrenko, title: Travel Manager, email: oksana.petrenko@helixmining.example}
     - {name: Grigor Abashidze, title: Chief Operating Officer, email: grigor.abashidze@helixmining.example}
   notes:
-    - {author: Jamal Carter, date: 2099-10-12, text: "Quarterly check-in. Happy with the rotation charter. Asked for invoices by site, not by traveller."}
+    - {author: Jamal Carter, date: 2099-10-12, text: "Quarterly check-in. Happy with the rotation charter: a whole ship out to Mars in the spring and a whole ship home in the autumn. Asked for invoices by site, not by traveller."}
 - id: A-102
   name: Ceres Agritech
   segment: Mining and Resources
@@ -101,7 +101,7 @@
     - {name: Carla Mendes, title: Guest Travel, email: carla.mendes@redsands.example}
     - {name: Yusuf Demir, title: Commercial Director, email: yusuf.demir@redsands.example}
   notes:
-    - {author: Pilar Navarro, date: 2099-11-03, text: "Winter on Mars group rate approved: 10% for groups of eight or more, 10 December to 28 February, at most 40 seats a month."}
+    - {author: Pilar Navarro, date: 2099-11-03, text: "Winter on Mars group rate approved: 10% for groups of eight or more, 10 December to 28 February, at most 16 seats a month."}
 - id: A-110
   name: Kepler Media Group
   segment: Hospitality and Media
@@ -132,15 +132,17 @@
   since: 2099
   contacts:
     - {name: Tariq Hassan, title: Yard Manager, email: tariq.hassan@vestashipwrights.example}
+  notes:
+    - {author: Dev Malhotra, date: 2099-10-09, text: "The yard is at Vesta. We reach it on the Belt call from Olympus Port, which Aurora flies on the 1st. Until June Perihelion flew it twice a month."}
 - {id: A-113, name: Ganymede Deepcore, segment: Mining and Resources, home: Jupiter, contact: "Milos Petrovic, Shift Planning", owner: Bastien Moreau, tier: Standard, since: 2099, contacts: [{name: Milos Petrovic, title: Shift Planning, email: milos.petrovic@deepcore.example}]}
 - {id: A-114, name: Phobos Aggregates, segment: Mining and Resources, home: Mars, contact: "Dana Whitfield, Office Manager", owner: Bastien Moreau, tier: Standard, since: 2098, contacts: [{name: Dana Whitfield, title: Office Manager, email: dana.whitfield@phobosagg.example}]}
 - {id: A-115, name: Belt Rare Metals, segment: Mining and Resources, home: Asteroid Belt, contact: "Kwabena Owusu, Logistics Lead", owner: Dev Malhotra, tier: Prospect, contacts: [{name: Kwabena Owusu, title: Logistics Lead, email: kwabena.owusu@beltrare.example}]}
-- {id: A-116, name: Meridian Parcel Network, segment: Logistics, home: Earth, contact: "Sara Lindqvist, Network Planning", owner: Dev Malhotra, tier: Standard, since: 2097, contacts: [{name: Sara Lindqvist, title: Network Planning, email: sara.lindqvist@meridianparcel.example}]}
+- {id: A-116, name: Zenith Parcel Network, segment: Logistics, home: Earth, contact: "Sara Okabe, Network Planning", owner: Dev Malhotra, tier: Standard, since: 2097, contacts: [{name: Sara Okabe, title: Network Planning, email: sara.okabe@zenithparcel.example}]}
 - {id: A-117, name: Callisto Cold Chain, segment: Logistics, home: Jupiter, contact: "Emre Kaya, Fleet Coordinator", owner: Bastien Moreau, tier: Prospect, contacts: [{name: Emre Kaya, title: Fleet Coordinator, email: emre.kaya@callistocold.example}]}
 - {id: A-118, name: Tranquility Freight Forwarders, segment: Logistics, home: Moon, contact: "Aoife Brennan, Managing Partner", owner: Lena Fischer, tier: Standard, since: 2098, contacts: [{name: Aoife Brennan, title: Managing Partner, email: aoife.brennan@tranquilityff.example}]}
 - {id: A-119, name: University of New Lagos, segment: Research and Education, home: Earth, contact: "Prof. Chiamaka Nwosu, Planetary Sciences", owner: Lena Fischer, tier: Standard, since: 2099, contacts: [{name: Chiamaka Nwosu, title: Professor of Planetary Sciences, email: c.nwosu@unl.example}]}
 - {id: A-120, name: Tombaugh Observatory Consortium, segment: Research and Education, home: Pluto, contact: "Dr. Ansel Brooks, Director", owner: Lena Fischer, tier: Key account, since: 2097, contacts: [{name: Ansel Brooks, title: Director, email: ansel.brooks@tombaughobs.example}, {name: Lin Qiao, title: Travel Coordinator, email: lin.qiao@tombaughobs.example}]}
-- {id: A-121, name: Riverside School Trust, segment: Research and Education, home: Earth, contact: "Marguerite Lowell, Physics Teacher", owner: Lena Fischer, tier: Prospect, contacts: [{name: Marguerite Lowell, title: Physics Teacher, email: m.lowell@riversideschool.example}]}
+- {id: A-121, name: Riverside School Trust, segment: Research and Education, home: Earth, contact: "Marguerite Ashby, Physics Teacher", owner: Lena Fischer, tier: Prospect, contacts: [{name: Marguerite Ashby, title: Physics Teacher, email: m.ashby@riversideschool.example}]}
 - {id: A-122, name: Venus Atmospheric Institute, segment: Research and Education, home: Venus, contact: "Dr. Paolo Conti, Field Operations", owner: Lena Fischer, tier: Standard, since: 2098, contacts: [{name: Paolo Conti, title: Field Operations, email: paolo.conti@venusatmo.example}]}
 - {id: A-123, name: Olympus Summit Tours, segment: Hospitality and Media, home: Mars, contact: "Rosa Delgado, Owner", owner: Bastien Moreau, tier: Partner, since: 2098, contacts: [{name: Rosa Delgado, title: Owner, email: rosa.delgado@olympussummit.example}]}
 - {id: A-124, name: Farside Films, segment: Hospitality and Media, home: Moon, contact: "Theo Marchetti, Line Producer", owner: Dev Malhotra, tier: Prospect, contacts: [{name: Theo Marchetti, title: Line Producer, email: theo.marchetti@farsidefilms.example}]}
@@ -148,3 +150,8 @@
 - {id: A-126, name: Interplanetary Games Committee, segment: Hospitality and Media, home: Earth, contact: "Marcus Oyelaran, Team Logistics", owner: Dev Malhotra, tier: Prospect, contacts: [{name: Marcus Oyelaran, title: Team Logistics, email: m.oyelaran@ipgames.example}]}
 - {id: A-127, name: Hellas Water Works, segment: Mining and Resources, home: Mars, contact: "Fatima Zahra, Plant Manager", owner: Bastien Moreau, tier: Standard, since: 2099, contacts: [{name: Fatima Zahra, title: Plant Manager, email: fatima.zahra@hellaswater.example}]}
 - {id: A-128, name: Lagrange Medical Relief, segment: Research and Education, home: Earth, contact: "Dr. Naledi Khumalo, Deployments", owner: Lena Fischer, tier: Standard, since: 2097, contacts: [{name: Naledi Khumalo, title: Deployments, email: naledi.khumalo@lagrangerelief.example}]}
+# Accounts that appear only in the history of 2098 and the first half of 2099.
+- {id: A-129, name: Pallas Survey Group, segment: Mining and Resources, home: Asteroid Belt, contact: "Kofi Mensah, Survey Operations", owner: Dev Malhotra, tier: Former customer, since: 2097, contacts: [{name: Kofi Mensah, title: Survey Operations, email: kofi.mensah@pallassurvey.example}], notes: [{author: Dev Malhotra, date: 2099-05-18, text: "Customer from 2097 to June 2099. Left when the Belt call went from two a month to one."}]}
+- {id: A-130, name: Copernicus Conference Centre, segment: Hospitality and Media, home: Moon, contact: "Halima Yusuf, Events Director", owner: Lena Fischer, tier: Standard, since: 2098, contacts: [{name: Halima Yusuf, title: Events Director, email: halima.yusuf@copernicuscc.example}]}
+- {id: A-131, name: Trojan Line Haulage, segment: Logistics, home: Jupiter, contact: "Stefan Lindqvist, Depot Manager", owner: Dev Malhotra, tier: Standard, since: 2098, contacts: [{name: Stefan Lindqvist, title: Depot Manager, email: stefan.lindqvist@trojanline.example}]}
+- {id: A-132, name: Maxwell Institute of Technology, segment: Research and Education, home: Earth, contact: "Dr. Irene Castell, International Office", owner: Lena Fischer, tier: Prospect, contacts: [{name: Irene Castell, title: International Office, email: irene.castell@maxwellinstitute.example}]}

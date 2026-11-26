@@ -14,6 +14,9 @@ engineering/releases/release-4.12-test-matrix.xlsx:
 engineering/roadmap/booking-roadmap-2100-q1.pptx:
   modified: '2099-10-23'
   owner: Maya Goldberg
+finance/analysis/charter-revenue-by-quarter.xlsx:
+  modified: '2099-11-02'
+  owner: Tomás Rivera
 finance/annual/financial-summary-2094-2099.xlsx:
   modified: '2099-09-18'
   owner: Ingrid Solberg
@@ -80,6 +83,9 @@ legal/privacy/security-training-status-2099-10-30.xlsx:
 legal/templates/data-processing-addendum.docx:
   modified: '2099-09-01'
   owner: Isaac Brandt
+legal/templates/master-terms-corporate-customers.docx:
+  modified: '2097-12-06'
+  owner: Helena Vogt
 legal/vendor-register.xlsx:
   modified: '2099-10-30'
   owner: Sam Whitlock
@@ -245,8 +251,86 @@ people/templates/offer-letter-template.docx:
 sales/case-studies/helix-mining-case-study.docx:
   modified: '2099-10-14'
   owner: Jamal Carter
+sales/case-studies/kepler-media-case-study.docx:
+  modified: '2099-10-05'
+  owner: Dev Malhotra
+sales/case-studies/lagrange-medical-relief-case-study.docx:
+  modified: '2099-08-11'
+  owner: Jamal Carter
+sales/case-studies/lunar-polytechnic-case-study.docx:
+  modified: '2099-10-28'
+  owner: Lena Fischer
+sales/case-studies/outer-belt-logistics-case-study.docx:
+  modified: '2099-06-18'
+  owner: Jamal Carter
+sales/case-studies/red-sands-hospitality-case-study.docx:
+  modified: '2099-09-14'
+  owner: Lena Fischer
+sales/case-studies/tombaugh-observatory-case-study.docx:
+  modified: '2099-09-08'
+  owner: Lena Fischer
+sales/case-studies/venus-atmospheric-institute-case-study.docx:
+  modified: '2099-07-20'
+  owner: Lena Fischer
+sales/contracts/ceres-agritech-harvest-crews-2098.docx:
+  modified: '2098-04-15'
+  owner: Dev Malhotra
+sales/contracts/contract-register.xlsx:
+  modified: '2099-11-02'
+  owner: Sinead Byrne
+sales/contracts/europa-research-trust-field-season-2099.docx:
+  modified: '2098-10-07'
+  owner: Lena Fischer
+sales/contracts/europa-research-trust-summer-relief-2098.docx:
+  modified: '2098-05-27'
+  owner: Lena Fischer
+sales/contracts/helix-mining-rotation-charter-2098.docx:
+  modified: '2098-04-08'
+  owner: Dev Malhotra
+sales/contracts/helix-mining-rotation-charter-2099.docx:
+  modified: '2099-04-17'
+  owner: Dev Malhotra
+sales/contracts/kepler-media-winter-on-mars-production.docx:
+  modified: '2099-10-30'
+  owner: Dev Malhotra
+sales/contracts/lagrange-medical-relief-framework-2099.docx:
+  modified: '2098-12-01'
+  owner: Lena Fischer
+sales/contracts/lagrange-medical-relief-ganymede-clinic-staff-2099.docx:
+  modified: '2099-03-19'
+  owner: Lena Fischer
+sales/contracts/lunar-polytechnic-semester-transfers-2098-99.docx:
+  modified: '2098-07-15'
+  owner: Lena Fischer
+sales/contracts/lunar-polytechnic-spring-field-trips-2100.docx:
+  modified: '2099-10-23'
+  owner: Lena Fischer
+sales/contracts/nimbus-freight-crew-travel-2099.docx:
+  modified: '2099-01-15'
+  owner: Dev Malhotra
+sales/contracts/olympus-summit-tours-guest-allotment-2099-2100.docx:
+  modified: '2099-06-26'
+  owner: Lena Fischer
+sales/contracts/outer-belt-logistics-crew-rotation-2099.docx:
+  modified: '2098-11-04'
+  owner: Dev Malhotra
+sales/contracts/pallas-survey-group-belt-rotations-2098.docx:
+  modified: '2098-03-24'
+  owner: Dev Malhotra
+sales/contracts/red-sands-hospitality-winter-guests-2098-99.docx:
+  modified: '2098-07-08'
+  owner: Lena Fischer
+sales/contracts/tombaugh-observatory-observer-travel-2099.docx:
+  modified: '2099-05-06'
+  owner: Lena Fischer
+sales/contracts/venus-atmospheric-institute-field-season-2099.docx:
+  modified: '2099-06-11'
+  owner: Lena Fischer
 sales/contracts/vesta-shipwrights-charter-order-2100.docx:
   modified: '2099-10-09'
+  owner: Dev Malhotra
+sales/contracts/vesta-shipwrights-yard-crew-travel-2099-h1.docx:
+  modified: '2099-01-08'
   owner: Dev Malhotra
 sales/corporate-overview-deck.pptx:
   modified: '2099-10-05'
@@ -257,6 +341,27 @@ sales/forecast-2099-q4.xlsx:
 sales/pipeline-review-2099-11-03.pptx:
   modified: '2099-11-02'
   owner: Sinead Byrne
+sales/pipeline-tracker-q1-2098.xlsx:
+  modified: '2098-04-04'
+  owner: Dev Malhotra
+sales/pipeline-tracker-q1-2099.xlsx:
+  modified: '2099-04-03'
+  owner: Dev Malhotra
+sales/pipeline-tracker-q2-2098.xlsx:
+  modified: '2098-07-04'
+  owner: Dev Malhotra
+sales/pipeline-tracker-q2-2099.xlsx:
+  modified: '2099-07-03'
+  owner: Dev Malhotra
+sales/pipeline-tracker-q3-2098.xlsx:
+  modified: '2098-10-03'
+  owner: Dev Malhotra
+sales/pipeline-tracker-q4-2098.xlsx:
+  modified: '2099-01-02'
+  owner: Dev Malhotra
+sales/pipeline-tracker-q4-2099.xlsx:
+  modified: '2099-10-30'
+  owner: Dev Malhotra
 sales/rate-card-2099.xlsx:
   modified: '2099-01-12'
   owner: Sinead Byrne
